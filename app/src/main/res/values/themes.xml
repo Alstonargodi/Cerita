@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.Ceritaku" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">?attr/colorControlNormal</item>
+        <item name="colorPrimaryVariant">#7E7D7D</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>

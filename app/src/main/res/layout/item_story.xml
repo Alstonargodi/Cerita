@@ -5,8 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
-    app:cardElevation="2dp">
+    android:layout_margin="5dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -17,39 +18,38 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginTop="5dp"
             android:fontFamily="@font/notomedium"
             android:includeFontPadding="false"
             android:text="Original Poster"
+            android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tv_stories_date"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_stories_date"
-            android:layout_width="0dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="5dp"
+            android:layout_width="224dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="10dp"
             android:fontFamily="@font/notomedium"
+            android:gravity="center|right"
             android:includeFontPadding="false"
-            android:text="00-000-000"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/imageView3"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_stories_img" />
+            android:text="00-00-000 00:00"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlHardcoded" />
 
         <ImageView
             android:id="@+id/tv_stories_img"
             android:layout_width="0dp"
-            android:layout_height="180dp"
-            android:layout_marginStart="10dp"
+            android:layout_height="220dp"
             android:layout_marginTop="5dp"
-            android:layout_marginEnd="10dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -59,30 +59,17 @@
         <TextView
             android:id="@+id/tv_stories_desc"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:fontFamily="@font/poppinsregular"
+            android:fontFamily="@font/notoregular"
             android:includeFontPadding="false"
             android:text="Description"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_stories_nameop" />
-
-        <ImageView
-            android:id="@+id/imageView3"
-            android:layout_width="33dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_stories_img"
-            app:layout_constraintVertical_bias="1.0"
-            app:srcCompat="@drawable/ic_baseline_share_24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
