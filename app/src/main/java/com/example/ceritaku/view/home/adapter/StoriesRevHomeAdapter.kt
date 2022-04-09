@@ -18,7 +18,7 @@ class StoriesRevHomeAdapter(private val dataList : List<Story>):
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = dataList[position]
             holder.binding.apply {
-                tvStoriesNameop.text = item.name
+                tvStoriesNameop.text = "u / ${item.name}"
                 tvStoriesDate.text = item.createdAt
                 tvStoriesDesc.text = item.description
 

@@ -1,5 +1,6 @@
 package com.example.ceritaku.view.authentication
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -26,6 +27,10 @@ class RegisterActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 register()
             }
+        }
+
+        binding.btncancel.setOnClickListener {
+            startActivity(Intent(this,LoginActivity::class.java))
         }
     }
 

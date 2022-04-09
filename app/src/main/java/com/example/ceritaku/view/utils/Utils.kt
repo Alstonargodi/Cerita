@@ -1,15 +1,15 @@
 package com.example.ceritaku.view.utils
 
 import android.app.Application
+import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.net.Uri
 import android.os.Environment
 import com.example.ceritaku.R
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.FileOutputStream
+import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,7 +35,7 @@ fun createFile(application: Application): File {
 fun rotateBitmap(bitmap: Bitmap, isBackCamera: Boolean = false): Bitmap {
     val matrix = Matrix()
     return if (isBackCamera) {
-        matrix.postRotate(-90f)
+        matrix.postRotate(90f)
         Bitmap.createBitmap(
             bitmap,
             0,
@@ -46,7 +46,7 @@ fun rotateBitmap(bitmap: Bitmap, isBackCamera: Boolean = false): Bitmap {
             true
         )
     } else {
-        matrix.postRotate(90f)
+        matrix.postRotate(-90f)
         matrix.postScale(-1f, 1f, bitmap.width / 2f, bitmap.height / 2f)
         Bitmap.createBitmap(
             bitmap,
@@ -73,4 +73,24 @@ fun reduceImageSize(file: File): File {
     } while (streamLength > 1000000)
     bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
     return file
+}
+
+fun uriToFile(selectimg : Uri, context: Context): File{
+    val contentResolver: ContentResolver = context.contentResolver
+    val myFile = createTempFile(context)
+
+    val inputStream = contentResolver.openInputStream(selectimg) as InputStream
+    val outputStream: OutputStream = FileOutputStream(myFile)
+    val buf = ByteArray(1024)
+    var len: Int
+    while (inputStream.read(buf).also { len = it } > 0) outputStream.write(buf, 0, len)
+    outputStream.close()
+    inputStream.close()
+
+    return myFile
+}
+
+fun createTempFile(context: Context): File {
+    val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+    return File.createTempFile(timeStamp, ".jpg", storageDir)
 }

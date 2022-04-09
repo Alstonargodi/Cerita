@@ -5,13 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    app:cardCornerRadius="5dp"
+    android:layout_marginTop="20dp"
+    app:cardBackgroundColor="#00FFFFFF"
     app:cardElevation="1dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF">
 
         <TextView
             android:id="@+id/tv_stories_nameop"
@@ -21,7 +22,7 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/notomedium"
             android:includeFontPadding="false"
-            android:text="Original Poster"
+            android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/tv_stories_date"
@@ -46,7 +47,7 @@
         <ImageView
             android:id="@+id/tv_stories_img"
             android:layout_width="0dp"
-            android:layout_height="220dp"
+            android:layout_height="200dp"
             android:layout_marginTop="5dp"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -59,13 +60,15 @@
         <TextView
             android:id="@+id/tv_stories_desc"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:fontFamily="@font/notoregular"
             android:includeFontPadding="false"
-            android:text="Description"
+            android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+            android:textSize="16sp"
+            app:autoSizeTextType="none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

@@ -1,14 +1,17 @@
 package com.example.ceritaku.view.making
 
 import android.Manifest
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
@@ -20,6 +23,7 @@ import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
 import com.example.ceritaku.databinding.FragmentInertNewStoryBinding
 import com.example.ceritaku.view.utils.createFile
+import com.example.ceritaku.view.utils.uriToFile
 import java.io.File
 
 
@@ -28,6 +32,26 @@ class NewStoryFragment : Fragment() {
     private var imageCapture : ImageCapture? = null
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
+
+    private val launcherIntentGallery = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ respon->
+        if (respon.resultCode == RESULT_OK){
+            val selectedImg: Uri = respon.data?.data as Uri
+            val myFile = uriToFile(selectedImg, requireContext())
+
+            val bundle = Bundle()
+            val fragment = NewStoryResultFragment()
+            val imageFiles = ArrayList<File>()
+            imageFiles.add(myFile)
+            bundle.putSerializable("picture",imageFiles)
+
+            val fragmentManager = requireActivity().supportFragmentManager
+            fragment.arguments = bundle
+            fragmentManager
+                .beginTransaction()
+                .replace(R.id.fragmentview,fragment)
+                .commit()
+        }
+    }
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -71,6 +95,9 @@ class NewStoryFragment : Fragment() {
 
         binding.btncapture.setOnClickListener { capturePhoto() }
 
+        binding.btnpickimage.setOnClickListener {
+            pickImageGallery()
+        }
         startCamera()
 
         return binding.root
@@ -156,6 +183,14 @@ class NewStoryFragment : Fragment() {
         )
     }
 
+    private fun pickImageGallery(){
+        val intent = Intent()
+        intent.action = Intent.ACTION_GET_CONTENT
+        intent.type = "image/*"
+
+        launcherIntentGallery.launch(intent)
+
+    }
 
     companion object{
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)

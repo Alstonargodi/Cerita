@@ -3,7 +3,7 @@ package com.example.ceritaku.data.local
 import android.content.Context
 import com.example.ceritaku.data.local.entity.UserDetailModel
 
-internal class UserPrefrences(context: Context) {
+internal class UserPrefrencesConfig(context: Context) {
     companion object{
         private const val name = "pref_name"
         private const val token = "pref_token"
@@ -19,6 +19,7 @@ internal class UserPrefrences(context: Context) {
         editor.putString(token,data.token)
         editor.putBoolean(onBoard,data.onBoard)
         editor.putBoolean(theme,data.theme)
+        editor.apply()
     }
 
     fun getUserDetail(): UserDetailModel{

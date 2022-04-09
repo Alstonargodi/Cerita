@@ -49,7 +49,7 @@ class NewStoryResultFragment : Fragment() {
     private fun showResultCamera(){
         val file = arguments?.getSerializable("picture") as ArrayList<File>
         getFile = file[0]
-        val result = rotateBitmap(BitmapFactory.decodeFile(file[0].path))
+        val result = BitmapFactory.decodeFile(file[0].path)
         binding.imageView3.setImageBitmap(result)
     }
 
