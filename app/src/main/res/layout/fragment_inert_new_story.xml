@@ -18,7 +18,7 @@
     </androidx.camera.view.PreviewView>
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/btncapture"
         android:layout_width="88dp"
         android:layout_height="73dp"
         android:src="@drawable/ic_baseline_camera_24"
@@ -36,7 +36,7 @@
         android:layout_marginStart="28dp"
         android:src="@drawable/ic_baseline_image_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+        app:layout_constraintEnd_toStartOf="@+id/btncapture"
         app:layout_constraintHorizontal_bias="0.022"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

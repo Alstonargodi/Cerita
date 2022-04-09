@@ -61,4 +61,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detailtoolbar"
         tools:listitem="@layout/item_story" />
+
+    <ProgressBar
+        android:id="@+id/pgbarhome"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="129dp"
+        android:layout_height="135dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/listStoryHome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailtoolbar"
+        app:layout_constraintVertical_bias="0.509" />
 </androidx.constraintlayout.widget.ConstraintLayout>

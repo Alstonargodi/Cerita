@@ -4,22 +4,26 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.3195" />
+        <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/drawable/ic_baseline_arrow_back_ios_new_24_camera.xml" value="0.3005" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/drawable/ic_baseline_camera_24.xml" value="0.3005" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.3195" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/drawable/ic_hidepass.xml" value="0.3195" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/drawable/ic_showpass.xml" value="0.3195" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/drawable/ic_story.xml" value="0.3195" />
+        <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/activity_insert_story.xml" value="0.2753623188405797" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/activity_register.xml" value="0.29270833333333335" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/activity_splash_screen.xml" value="0.2871376811594203" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_add_story.xml" value="0.29270833333333335" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_detail_story.xml" value="0.29270833333333335" />
-        <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_home.xml" value="0.22" />
+        <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_home.xml" value="0.2" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_inert_new_story.xml" value="0.1" />
+        <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_new_story_result.xml" value="0.33" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/item_story.xml" value="0.25" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/menu/bottom_menu.xml" value="0.3125" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/menu/bottommenu.xml" value="0.29270833333333335" />
+        <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/xml/filepaths.xml" value="0.2708333333333333" />
       </map>
     </option>
   </component>

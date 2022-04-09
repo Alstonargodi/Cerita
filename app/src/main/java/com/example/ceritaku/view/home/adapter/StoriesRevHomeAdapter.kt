@@ -2,12 +2,10 @@ package com.example.ceritaku.view.home.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ceritaku.databinding.ItemStoryBinding
-import com.example.ceritaku.remote.response.story.Story
-import com.example.ceritaku.remote.response.story.StoryResponse
+import com.example.ceritaku.data.remote.response.story.Story
 
 class StoriesRevHomeAdapter(private val dataList : List<Story>):
     RecyclerView.Adapter<StoriesRevHomeAdapter.ViewHolder>()
@@ -28,16 +26,10 @@ class StoriesRevHomeAdapter(private val dataList : List<Story>):
                     .load(item.photoUrl)
                     .into(tvStoriesImg)
 
-
-                tvStoriesImg.setOnClickListener {
-                    val scale = holder.binding.tvStoriesImg.scaleType
-                    if (scale == ImageView.ScaleType.CENTER_CROP){
-                        tvStoriesImg.scaleType = ImageView.ScaleType.CENTER
-                    }else{
-                        tvStoriesImg.scaleType = ImageView.ScaleType.CENTER_CROP
-                    }
-
+                tvStoriesDesc.setOnClickListener {
+                    tvStoriesDesc.height = 200
                 }
+
             }
         }
 

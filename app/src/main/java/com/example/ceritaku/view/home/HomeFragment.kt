@@ -6,14 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.ceritaku.R
 import com.example.ceritaku.databinding.FragmentHomeBinding
-import com.example.ceritaku.remote.Result
-import com.example.ceritaku.remote.response.story.Story
+import com.example.ceritaku.data.remote.utils.Result
+import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.view.home.adapter.StoriesRevHomeAdapter
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
@@ -37,17 +35,20 @@ class HomeFragment : Fragment() {
 
     private suspend fun getStoryList(){
         val page = 0
-        val size = 20
+        val size = 100
 
         viewModel.getStoryList(page, size, authKey).observe(viewLifecycleOwner){
             when(it){
+                is Result.Loading->{
+                    binding.pgbarhome.visibility = View.VISIBLE
+                }
                 is Result.Sucess->{
-                    Log.d("getStorylist",it.data.message)
-                    Log.d("getStoryPoster",it.data.listStory[0].name)
+                    binding.pgbarhome.visibility = View.GONE
                     showRecyclerList(it.data.listStory)
 
                 }
                 is Result.Error->{
+                    binding.pgbarhome.visibility = View.GONE
                     Log.d("getStorylist",it.error)
                 }
             }

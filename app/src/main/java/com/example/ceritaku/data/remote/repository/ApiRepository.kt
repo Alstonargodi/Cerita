@@ -1,11 +1,14 @@
-package com.example.ceritaku.remote
+package com.example.ceritaku.data.remote.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import com.example.ceritaku.remote.response.LoginResponse
-import com.example.ceritaku.remote.response.register.RegisterResponse
-import com.example.ceritaku.remote.response.story.StoryResponse
-import com.example.ceritaku.remote.service.ApiService
+import com.example.ceritaku.data.remote.utils.Result
+import com.example.ceritaku.data.response.LoginResponse
+import com.example.ceritaku.data.remote.response.register.RegisterResponse
+import com.example.ceritaku.data.remote.response.story.NewStoryResponse
+import com.example.ceritaku.data.remote.response.story.StoryResponse
+import com.example.ceritaku.data.remote.service.ApiService
+import okhttp3.MultipartBody
 
 class ApiRepository(private val apiService: ApiService) {
 
@@ -37,6 +40,17 @@ class ApiRepository(private val apiService: ApiService) {
             val respon = apiService.getStoriesList(page,size,auth)
             emit(Result.Sucess(respon))
         }catch (e : Exception){
+            emit(Result.Error(e.message.toString()))
+        }
+    }
+
+    suspend fun postStory(file : MultipartBody.Part, desc : String,lat : Float, lon : Float,auth : Any)
+    :LiveData<Result<NewStoryResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val respon = apiService.postStory(file,desc,lat, lon,auth)
+            emit(Result.Sucess(respon))
+        }catch (e :  Exception){
             emit(Result.Error(e.message.toString()))
         }
     }

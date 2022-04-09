@@ -2,8 +2,8 @@ package com.example.ceritaku.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.ceritaku.remote.ApiRepository
-import com.example.ceritaku.remote.Injection
+import com.example.ceritaku.data.remote.repository.ApiRepository
+import com.example.ceritaku.data.remote.injection.Injection
 
 class VModelFactory private constructor(private val repository : ApiRepository):
     ViewModelProvider.NewInstanceFactory() {

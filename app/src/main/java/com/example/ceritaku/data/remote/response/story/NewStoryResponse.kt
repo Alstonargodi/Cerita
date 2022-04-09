@@ -1,9 +1,9 @@
-package com.example.ceritaku.remote.response.register
+package com.example.ceritaku.data.remote.response.story
 
 
 import com.google.gson.annotations.SerializedName
 
-data class RegisterResponse(
+data class NewStoryResponse(
     @SerializedName("error")
     val error: Boolean,
     @SerializedName("message")

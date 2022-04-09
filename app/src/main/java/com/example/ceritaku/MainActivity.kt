@@ -1,10 +1,16 @@
 package com.example.ceritaku
 
+import android.Manifest
+import android.content.Intent
+import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.ceritaku.databinding.ActivityMainBinding
 import com.example.ceritaku.view.home.HomeFragment
@@ -17,12 +23,17 @@ class MainActivity : AppCompatActivity() {
     private val viewModel : StoryViewModel by viewModels{
         VModelFactory.getInstance()
     }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+
+
+
 
         binding.bottommenu.setOnItemSelectedListener{
             when(it.itemId){
@@ -48,5 +59,8 @@ class MainActivity : AppCompatActivity() {
         transFragment.commit()
 
     }
+
+
+
 
 }

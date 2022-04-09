@@ -1,4 +1,4 @@
-package com.example.ceritaku.remote.response
+package com.example.ceritaku.data.response
 
 
 import com.google.gson.annotations.SerializedName

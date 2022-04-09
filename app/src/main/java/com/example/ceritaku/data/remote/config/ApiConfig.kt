@@ -1,7 +1,7 @@
-package com.example.ceritaku.remote.config
+package com.example.ceritaku.data.remote.config
 
 import com.example.ceritaku.BuildConfig
-import com.example.ceritaku.remote.service.ApiService
+import com.example.ceritaku.data.remote.service.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

@@ -5,9 +5,8 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.ceritaku.R
 import com.example.ceritaku.databinding.ActivityRegisterBinding
-import com.example.ceritaku.remote.Result
+import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.viewmodel.AuthViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import kotlinx.coroutines.launch
