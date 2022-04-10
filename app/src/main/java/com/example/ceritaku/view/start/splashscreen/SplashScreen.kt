@@ -32,9 +32,9 @@ class SplashScreen : AppCompatActivity() {
 
     private fun sessionChecker(){
         userDetailModel = userPreferenceConfig.getUserDetail()
-        val curSession = userDetailModel.name
+        val curSession = userDetailModel.onBoard
 
-        if (curSession.isNullOrEmpty()){
+        if (curSession){
             startActivity(Intent(this, LoginActivity::class.java))
         }else{
             startActivity(Intent(this, OnBoardingActivity::class.java))
