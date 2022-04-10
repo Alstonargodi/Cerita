@@ -15,7 +15,6 @@ import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.viewmodel.AuthViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -24,26 +23,52 @@ class LoginActivity : AppCompatActivity() {
         VModelFactory.getInstance()
     }
     private var userDetailModel: UserDetailModel = UserDetailModel()
-    private lateinit var userPrefrencesConfig: UserPrefrencesConfig
+    private lateinit var userPreferenceConfig: UserPrefrencesConfig
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        userPrefrencesConfig = UserPrefrencesConfig(this)
+        userPreferenceConfig = UserPrefrencesConfig(this)
+
 
         binding.btnlogin.setOnClickListener {
-            lifecycleScope.launch {
-                login()
-            }
+            sessionChecker()
         }
-        userChecker()
-
 
         binding.register.setOnClickListener {
             startActivity(Intent(this,RegisterActivity::class.java))
         }
 
+    }
+
+
+    private fun boxChecker(): Boolean{
+        val email = binding.email.text
+        val password = binding.password.text
+        if(email.isNullOrEmpty())
+            return true
+        else if (password.isNullOrEmpty())
+            return true
+        else (password.isNotEmpty() && email.isNotEmpty())
+        return false
+    }
+
+    private fun sessionChecker(){
+        userDetailModel = userPreferenceConfig.getUserDetail()
+        val curSession = userDetailModel.name
+
+        if (curSession.isNullOrEmpty()){
+            if (boxChecker()){
+                showMessage("plese fill the textbox first")
+            }else{
+                lifecycleScope.launch { login() }
+            }
+        }else{
+            startActivity(
+                Intent(this,MainActivity::class.java)
+            )
+        }
     }
 
     private suspend fun login(){
@@ -57,18 +82,22 @@ class LoginActivity : AppCompatActivity() {
                 }
                 is Result.Sucess->{
                     binding.pgbarlogin.visibility = View.GONE
-                    Log.d(tag, it.data.loginResult.name)
                     saveUserLogin(
                         it.data.loginResult.name,
                         it.data.loginResult.token,
                         true,
                         false
                     )
-                    Log.d(tag, it.data.loginResult.name)
-
+                    showMessage("welcome + ${it.data.loginResult.name}")
+                    startActivity(Intent(this@LoginActivity,MainActivity::class.java))
                 }
                 is Result.Error->{
                     binding.pgbarlogin.visibility = View.GONE
+                    if (it.error == invalid){
+                        showMessage("Invalid form")
+                    }else{
+                        showMessage(it.error)
+                    }
                     Log.d(tag, it.error)
                 }
             }
@@ -89,27 +118,17 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
-    private fun userChecker(){
-        userDetailModel = userPrefrencesConfig.getUserDetail()
-        if (userDetailModel.name != null){
-            showSnackbar(userDetailModel.name.toString())
-            lifecycleScope.launch {
-                delay(2000L)
-                startActivity(Intent(this@LoginActivity,MainActivity::class.java))
-            }
-
-        }
-    }
-
-    private fun showSnackbar(message : String){
+    private fun showMessage(message : String){
         Snackbar.make(
             binding.root,
-            "Welcome $message",
+            message,
             Snackbar.LENGTH_LONG
         ).show()
     }
 
+
     companion object{
         const val tag = "LoginActivity"
+        const val invalid = "HTTP 400 Bad Request"
     }
 }

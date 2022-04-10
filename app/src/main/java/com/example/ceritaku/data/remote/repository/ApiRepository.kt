@@ -9,6 +9,7 @@ import com.example.ceritaku.data.remote.response.story.NewStoryResponse
 import com.example.ceritaku.data.remote.response.story.StoryResponse
 import com.example.ceritaku.data.remote.service.ApiService
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 
 class ApiRepository(private val apiService: ApiService) {
 
@@ -44,7 +45,7 @@ class ApiRepository(private val apiService: ApiService) {
         }
     }
 
-    suspend fun postStory(file : MultipartBody.Part, desc : String,lat : Float, lon : Float,auth : Any)
+    suspend fun postStory(file : MultipartBody.Part, desc : RequestBody, lat : Float, lon : Float, auth : Any)
     :LiveData<Result<NewStoryResponse>> = liveData {
         emit(Result.Loading)
         try {

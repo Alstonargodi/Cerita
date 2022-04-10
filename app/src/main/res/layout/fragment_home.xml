@@ -34,7 +34,7 @@
             tools:layout_editor_absoluteY="86dp">
 
             <TextView
-                android:id="@+id/textView2"
+                android:id="@+id/tvdetailstory_op"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="10dp"
@@ -73,4 +73,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detailtoolbar"
         app:layout_constraintVertical_bias="0.509" />
+
+    <TextView
+        android:id="@+id/tverrorview"
+        android:layout_width="329dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="200dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/detailtoolbar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

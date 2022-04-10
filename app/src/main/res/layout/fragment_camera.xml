@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.making.NewStoryFragment">
+    tools:context=".view.upload.CameraFragment">
 
     <androidx.camera.view.PreviewView
         android:id="@+id/previewFInder"
@@ -18,22 +18,11 @@
     </androidx.camera.view.PreviewView>
 
     <ImageView
-        android:id="@+id/btncapture"
-        android:layout_width="88dp"
-        android:layout_height="60dp"
-        android:src="@drawable/ic_baseline_camera_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.529"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.948" />
-
-    <ImageView
         android:id="@+id/btnpickimage"
         android:layout_width="45dp"
-        android:layout_height="52dp"
+        android:layout_height="40dp"
         android:layout_marginStart="28dp"
+        android:layout_marginTop="100dp"
         android:src="@drawable/ic_baseline_image_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btncapture"
@@ -44,14 +33,27 @@
 
     <ImageView
         android:id="@+id/btnbackcamera"
-        android:layout_width="53dp"
-        android:layout_height="54dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginTop="24dp"
         android:src="@drawable/ic_baseline_arrow_back_ios_new_24_camera"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.044"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/btncapture"
+        android:layout_width="88dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="150dp"
+        android:src="@drawable/ic_baseline_camera_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.529"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.948" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

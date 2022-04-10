@@ -12,6 +12,11 @@ class StoriesRevHomeAdapter(private val dataList : List<Story>):
     {
         class ViewHolder(val binding : ItemStoryBinding):RecyclerView.ViewHolder(binding.root)
 
+        private lateinit var onItemCLickDetail : OnClickDetail
+
+        fun onItemClickDetail(onItemCLickDetail : OnClickDetail){
+            this.onItemCLickDetail = onItemCLickDetail
+        }
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
             ViewHolder(ItemStoryBinding.inflate(LayoutInflater.from(parent.context),parent,false))
 
@@ -30,9 +35,17 @@ class StoriesRevHomeAdapter(private val dataList : List<Story>):
                     tvStoriesDesc.height = 200
                 }
 
+                tvStoriesImg.setOnClickListener {
+                    onItemCLickDetail.onItemClickDetail(item)
+                }
+
             }
         }
 
         override fun getItemCount(): Int = dataList.size
 
+
+        interface OnClickDetail{
+            fun onItemClickDetail(data : Story)
+        }
     }

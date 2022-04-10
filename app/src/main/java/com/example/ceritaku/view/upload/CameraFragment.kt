@@ -1,4 +1,4 @@
-package com.example.ceritaku.view.making
+package com.example.ceritaku.view.upload
 
 import android.Manifest
 import android.app.Activity.RESULT_OK
@@ -21,17 +21,17 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
-import com.example.ceritaku.databinding.FragmentInertNewStoryBinding
+import com.example.ceritaku.databinding.FragmentCameraBinding
 import com.example.ceritaku.view.utils.createFile
 import com.example.ceritaku.view.utils.uriToFile
 import java.io.File
 
 
-class NewStoryFragment : Fragment() {
-    private lateinit var binding : FragmentInertNewStoryBinding
+class CameraFragment : Fragment() {
+
+    private lateinit var binding : FragmentCameraBinding
     private var imageCapture : ImageCapture? = null
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
 
     private val launcherIntentGallery = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ respon->
         if (respon.resultCode == RESULT_OK){
@@ -39,7 +39,7 @@ class NewStoryFragment : Fragment() {
             val myFile = uriToFile(selectedImg, requireContext())
 
             val bundle = Bundle()
-            val fragment = NewStoryResultFragment()
+            val fragment = InsertStoryFragment()
             val imageFiles = ArrayList<File>()
             imageFiles.add(myFile)
             bundle.putSerializable("picture",imageFiles)
@@ -49,6 +49,7 @@ class NewStoryFragment : Fragment() {
             fragmentManager
                 .beginTransaction()
                 .replace(R.id.fragmentview,fragment)
+                .addToBackStack(null)
                 .commit()
         }
     }
@@ -79,7 +80,7 @@ class NewStoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentInertNewStoryBinding.inflate(layoutInflater)
+        binding = FragmentCameraBinding.inflate(layoutInflater)
 
         if (!allPermissiongranted()) {
             ActivityCompat.requestPermissions(
@@ -156,7 +157,7 @@ class NewStoryFragment : Fragment() {
                     ).show()
 
                     val bundle = Bundle()
-                    val fragment = NewStoryResultFragment()
+                    val fragment = InsertStoryFragment()
                     val imageFiles = ArrayList<File>()
                     imageFiles.add(imageFile)
                     bundle.putSerializable("picture",imageFiles)
@@ -165,6 +166,7 @@ class NewStoryFragment : Fragment() {
                     fragment.arguments = bundle
                     fragmentManager
                         .beginTransaction()
+                        .addToBackStack(null)
                         .replace(R.id.fragmentview,fragment)
                         .commit()
 

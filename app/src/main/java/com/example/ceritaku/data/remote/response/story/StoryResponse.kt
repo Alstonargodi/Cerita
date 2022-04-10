@@ -1,7 +1,9 @@
 package com.example.ceritaku.data.remote.response.story
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
 data class StoryResponse(
     @SerializedName("error")
@@ -12,6 +14,7 @@ data class StoryResponse(
     val message: String
 )
 
+@Parcelize
 data class Story(
     @SerializedName("createdAt")
     val createdAt: String,
@@ -20,11 +23,11 @@ data class Story(
     @SerializedName("id")
     val id: String,
     @SerializedName("lat")
-    val lat: Any,
+    val lat: Float,
     @SerializedName("lon")
-    val lon: Any,
+    val lon: Float,
     @SerializedName("name")
     val name: String,
     @SerializedName("photoUrl")
     val photoUrl: String
-)
+): Parcelable

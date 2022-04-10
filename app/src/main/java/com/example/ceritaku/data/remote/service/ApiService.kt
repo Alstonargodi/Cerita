@@ -5,6 +5,7 @@ import com.example.ceritaku.data.remote.response.register.RegisterResponse
 import com.example.ceritaku.data.remote.response.story.NewStoryResponse
 import com.example.ceritaku.data.remote.response.story.StoryResponse
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface ApiService {
@@ -36,7 +37,7 @@ interface ApiService {
     @POST("stories")
     suspend fun postStory(
         @Part file: MultipartBody.Part,
-        @Part("description") description : String,
+        @Part("description") description : RequestBody,
         @Part("lat") lat : Float,
         @Part("lon") lon : Float,
         @Header("Authorization") auth: Any

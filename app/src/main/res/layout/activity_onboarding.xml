@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/activity_onboarding_scene"
+    tools:context=".view.start.onboarding.OnBoardingActivity">
+
+  <TextView
+      android:id="@+id/textView2"
+      android:layout_width="365dp"
+      android:layout_height="91dp"
+      android:fontFamily="@font/notomedium"
+      android:text="For First Time.."
+      android:textAlignment="center"
+      android:textSize="50dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintVertical_bias="0.457" />
+
+  <TextView
+      android:id="@+id/textView7"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginEnd="16dp"
+      android:fontFamily="@font/notoregular"
+      android:text="let we introduce our apps"
+      android:textSize="16dp"
+      app:layout_constraintEnd_toEndOf="parent"
+      tools:layout_editor_absoluteY="589dp" />
+
+  <include
+      android:id="@+id/include"
+      layout="@layout/activity_login"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      tools:layout_editor_absoluteX="43dp"
+      tools:layout_editor_absoluteY="73dp" />
+</androidx.constraintlayout.motion.widget.MotionLayout>

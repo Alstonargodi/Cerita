@@ -6,10 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ceritaku.data.local.UserPrefrencesConfig
+import com.example.ceritaku.data.local.entity.UserDetailModel
 import com.example.ceritaku.databinding.FragmentHomeBinding
 import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.data.remote.response.story.Story
@@ -24,22 +26,25 @@ class HomeFragment : Fragment() {
     private val viewModel : StoryViewModel by viewModels{
         VModelFactory.getInstance()
     }
-    private lateinit var recviewAdapter : StoriesRevHomeAdapter
+    private lateinit var recViewAdapter : StoriesRevHomeAdapter
+    private var userDetailModel: UserDetailModel = UserDetailModel()
+    private lateinit var userPrefConfig: UserPrefrencesConfig
+    private var userToken = ""
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentHomeBinding.inflate(layoutInflater)
+        userPrefConfig = UserPrefrencesConfig(requireContext())
+        userDetailModel = userPrefConfig.getUserDetail()
+        userToken = "Bearer ${userDetailModel.token.toString()}"
 
-        lifecycleScope.launch {
-            getStoryList()
-        }
+        lifecycleScope.launch { getStoryList() }
+
         return binding.root
     }
 
-    private suspend fun getStoryList(){
-        val page = 0
-        val size = 100
 
-        viewModel.getStoryList(page, size, authKey).observe(viewLifecycleOwner){
+    private suspend fun getStoryList(){
+        viewModel.getStoryList(page, size, userToken).observe(viewLifecycleOwner){
             when(it){
                 is Result.Loading->{
                     binding.pgbarhome.visibility = View.VISIBLE
@@ -51,6 +56,7 @@ class HomeFragment : Fragment() {
                 }
                 is Result.Error->{
                     binding.pgbarhome.visibility = View.GONE
+                    showError(it.error)
                     Log.d("getStorylist",it.error)
                 }
             }
@@ -58,14 +64,38 @@ class HomeFragment : Fragment() {
     }
 
     private fun showRecyclerList(data : List<Story>){
-        recviewAdapter = StoriesRevHomeAdapter(data)
-        binding.listStoryHome.adapter = recviewAdapter
+        recViewAdapter = StoriesRevHomeAdapter(data)
+        binding.listStoryHome.adapter = recViewAdapter
         binding.listStoryHome.layoutManager = LinearLayoutManager(requireContext())
+
+        recViewAdapter.onItemClickDetail(object : StoriesRevHomeAdapter.OnClickDetail{
+            override fun onItemClickDetail(data: Story) {
+                findNavController().navigate(HomeFragmentDirections.actionHomeFragmentToDetailStoryFragment(data))
+            }
+        })
+
+
+    }
+
+    private fun showError(error : String){
+        binding.tverrorview.apply {
+            visibility = View.VISIBLE
+            text = error + "\n please try again :("
+            setOnClickListener {
+                lifecycleScope.launch {
+                    getStoryList()
+                    visibility = View.GONE
+                }
+            }
+        }
     }
 
     companion object{
-        const val authKey = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLWp6b2pEWUd4NFV0cUs5clUiLCJpYXQiOjE2NDkzOTc3OTh9.VrMbbMLriptuq8rmNfBGA2VZ88CNVJ6hJm93IAdcg7k"
+        const val page = 0
+        const val size = 100
     }
+
+
 
 
 }
