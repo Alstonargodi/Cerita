@@ -1,6 +1,6 @@
 package com.example.ceritaku.data.remote.service
 
-import com.example.ceritaku.data.response.LoginResponse
+import com.example.ceritaku.data.remote.response.login.LoginResponse
 import com.example.ceritaku.data.remote.response.register.RegisterResponse
 import com.example.ceritaku.data.remote.response.story.NewStoryResponse
 import com.example.ceritaku.data.remote.response.story.StoryResponse
@@ -15,7 +15,7 @@ interface ApiService {
     suspend fun postLogin(
         @Field("email") email : String,
         @Field("password") password : String,
-    ):LoginResponse
+    ): LoginResponse
 
     @FormUrlEncoded
     @POST("register")

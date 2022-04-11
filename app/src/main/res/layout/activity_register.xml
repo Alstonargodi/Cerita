@@ -14,7 +14,7 @@
         android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/poppinsregular"
-        android:text="Register"
+        android:text="@string/Register"
         android:textAlignment="center"
         android:textSize="34sp"
         android:textStyle="bold"
@@ -23,17 +23,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <com.example.ceritaku.view.componen.EditTextPassword
         android:id="@+id/tvregisterpassword"
         android:layout_width="0dp"
         android:layout_height="51dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
-        android:drawableLeft="@drawable/ic_baseline_lock_24"
+        android:drawableStart="@drawable/ic_baseline_lock_24"
         android:drawablePadding="10dp"
         android:fontFamily="@font/poppinsregular"
-        android:hint="Password"
+        android:hint="@string/Password"
         android:padding="5dp"
         android:textColor="#636060"
         android:textStyle="bold"
@@ -49,13 +49,15 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
-        android:drawableLeft="@drawable/ic_baseline_person_24"
+        android:drawableStart="@drawable/ic_baseline_person_24"
         android:drawablePadding="10dp"
-        android:hint="Username"
+        android:hint="@string/Username"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        android:autofillHints="name"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/tvregisemail"
@@ -64,13 +66,15 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
-        android:drawableLeft="@drawable/ic_baseline_email_24"
+        android:drawableStart="@drawable/ic_baseline_email_24"
         android:drawablePadding="10dp"
-        android:hint="Email"
+        android:hint="@string/Email"
         android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvregisname" />
+        app:layout_constraintTop_toBottomOf="@+id/tvregisname"
+        android:autofillHints="emailAddress"
+        android:inputType="textEmailAddress" />
 
     <Button
         android:id="@+id/btnregister"
@@ -79,7 +83,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
-        android:text="sign me up"
+        android:text="@string/Register_order"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
@@ -92,7 +96,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
         android:gravity="center"
-        android:text="Cancel"
+        android:text="@string/cancel"
         android:textColor="#3C9AE4"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -102,6 +106,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnregister"
         app:layout_constraintVertical_bias="0.094" />
+
+    <ProgressBar
+        android:id="@+id/pgbarregister"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="110dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="180dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

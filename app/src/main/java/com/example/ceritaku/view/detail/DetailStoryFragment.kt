@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.ceritaku.R
+import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.databinding.FragmentDetailStoryBinding
+import com.example.ceritaku.view.home.HomeFragment
+import com.example.ceritaku.view.home.HomeFragment.Companion.extra_key_detail
 
 
 class DetailStoryFragment : Fragment() {
@@ -17,32 +19,30 @@ class DetailStoryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentDetailStoryBinding.inflate(layoutInflater)
 
-
-        val data = DetailStoryFragmentArgs.fromBundle(arguments as Bundle).detailStory
+        val data = arguments?.getParcelable<Story>(extra_key_detail)
 
         binding.apply {
-            tvdetailstoryDate.text = data.createdAt
-            tvdetailstoryDesc.text = data.description
-            tvdetailstoryOp.text = data.name + " story"
-
+            tvdetailstoryDate.text = data?.createdAt
+            tvdetailstoryDesc.text = data?.description
+            val author = data?.name +  getString(R.string.Detail_title)
+            tvdetailstoryOp.text = author
 
             Glide.with(binding.root.context)
-                .load(data.photoUrl)
+                .load(data?.photoUrl)
                 .into(tvdetailstoryImg)
         }
 
         binding.tvdetailstoryBack.setOnClickListener {
-            findNavController().navigate(
-                DetailStoryFragmentDirections.actionDetailStoryFragmentToHomeFragment()
-            )
+            val supFragment = requireActivity().supportFragmentManager
+            supFragment.beginTransaction()
+                .replace(R.id.fragmentview,HomeFragment())
+                .addToBackStack(null)
+                .commit()
+
         }
-
-
-
-
 
 
         return binding.root

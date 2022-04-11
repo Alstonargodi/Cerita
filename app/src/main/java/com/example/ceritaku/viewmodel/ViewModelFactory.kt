@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.ceritaku.data.remote.repository.ApiRepository
 import com.example.ceritaku.data.remote.injection.Injection
 
+@Suppress("UNCHECKED_CAST")
 class VModelFactory private constructor(private val repository : ApiRepository):
     ViewModelProvider.NewInstanceFactory() {
 

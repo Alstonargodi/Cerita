@@ -18,17 +18,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/ic_sharephoto" />
+        app:srcCompat="@drawable/ic_sharephoto"
+        android:contentDescription="@string/Onboard_icon3" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/notomedium"
-        android:text="also you can add a picture"
+        android:text="@string/Onboard_text3"
         android:textAlignment="center"
         android:textColor="#EBE7E7"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.427"
         app:layout_constraintStart_toStartOf="parent"

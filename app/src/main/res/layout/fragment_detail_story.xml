@@ -51,7 +51,8 @@
                         android:src="@drawable/ic_baseline_arrow_back_ios_new_24_camera"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:contentDescription="@string/Detail_backhom" />
 
                     <TextView
                         android:id="@+id/tvdetailstory_op"
@@ -59,9 +60,9 @@
                         android:layout_height="0dp"
                         android:layout_marginStart="10dp"
                         android:fontFamily="@font/notomedium"
-                        android:gravity="center|left"
+                        android:gravity="center|start"
                         android:includeFontPadding="false"
-                        android:text="Story"
+                        android:text="@string/Detail_name"
                         android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -84,7 +85,8 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/detailtoolbar3"
-                tools:src="@tools:sample/avatars" />
+                tools:src="@tools:sample/avatars"
+                android:contentDescription="@string/Detail_pic" />
 
             <TextView
                 android:id="@+id/tvdetailstory_date"
@@ -93,7 +95,6 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="10dp"
-                android:text="date"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.915"
                 app:layout_constraintStart_toStartOf="parent"
@@ -108,12 +109,12 @@
                 android:layout_marginEnd="10dp"
                 android:fontFamily="@font/poppinsregular"
                 android:includeFontPadding="false"
-                android:text="Description"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvdetailstory_date" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

@@ -3,15 +3,11 @@ package com.example.ceritaku
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
 import com.example.ceritaku.databinding.ActivityMainBinding
 import com.example.ceritaku.view.home.HomeFragment
+import com.example.ceritaku.view.profile.ProfileFragment
 import com.example.ceritaku.view.upload.CameraFragment
-import com.example.ceritaku.viewmodel.StoryViewModel
-import com.example.ceritaku.viewmodel.VModelFactory
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
@@ -31,6 +27,9 @@ class MainActivity : AppCompatActivity() {
                     setFragment(CameraFragment())
                     binding.bottommenu.visibility = View.GONE
                 }
+                R.id.setting->{
+                    setFragment(ProfileFragment())
+                }
             }
 
             true
@@ -45,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         transFragment
             .replace(R.id.fragmentview,fragment)
             .commit()
-
     }
 
 

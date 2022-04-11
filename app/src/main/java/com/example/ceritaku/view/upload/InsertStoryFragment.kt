@@ -3,13 +3,12 @@ package com.example.ceritaku.view.upload
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
 import com.example.ceritaku.data.local.UserPrefrencesConfig
@@ -17,9 +16,9 @@ import com.example.ceritaku.data.local.entity.UserDetailModel
 import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.databinding.FragmentInsertstoryBinding
 import com.example.ceritaku.view.utils.reduceImageSize
+import com.example.ceritaku.view.utils.rotateBitmap
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
@@ -52,7 +51,12 @@ class InsertStoryFragment : Fragment() {
         showResultCamera()
 
         binding.btnupload.setOnClickListener {
-            lifecycleScope.launch { uploadResult() }
+            binding.pgbarupload.visibility = View.VISIBLE
+            binding.proesetitle.visibility = View.VISIBLE
+            showMessage("Uploading")
+            lifecycleScope.launch {
+                uploadResult()
+            }
         }
 
         binding.btnbacktohome.setOnClickListener {
@@ -66,12 +70,14 @@ class InsertStoryFragment : Fragment() {
         val arrayFile = arguments?.getSerializable("picture") as ArrayList<*>
         val file = arrayFile[0] as File
         getFile = file
-        val result = BitmapFactory.decodeFile(file.path)
+        val result = rotateBitmap(BitmapFactory.decodeFile(file.path))
         binding.imageView3.setImageBitmap(result)
     }
 
 
     private suspend fun uploadResult(){
+
+
         val desc = binding.descarea.text
             .toString()
             .toRequestBody("text/plain".toMediaType())
@@ -119,11 +125,11 @@ class InsertStoryFragment : Fragment() {
     }
 
     private fun showMessage(message : String){
-        Snackbar.make(
-            binding.root,
-            message,
-            Snackbar.LENGTH_LONG
-        ).show()
+        binding.apply {
+            proesetitle.text = message
+            proesetitle.visibility = View.VISIBLE
+            pgbarupload.visibility = View.VISIBLE
+        }
     }
 
 

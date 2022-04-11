@@ -22,7 +22,6 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/notomedium"
             android:includeFontPadding="false"
-            android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/tv_stories_date"
@@ -38,7 +37,6 @@
             android:fontFamily="@font/notomedium"
             android:gravity="center|right"
             android:includeFontPadding="false"
-            android:text="00-00-000 00:00"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -55,18 +53,18 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_stories_desc"
-            tools:srcCompat="@tools:sample/avatars" />
+            tools:srcCompat="@tools:sample/avatars"
+            android:contentDescription="@string/Itemcv_photo" />
 
         <TextView
             android:id="@+id/tv_stories_desc"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="65dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
             android:fontFamily="@font/notoregular"
             android:includeFontPadding="false"
-            android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
             android:textSize="16sp"
             app:autoSizeTextType="none"
             app:layout_constraintEnd_toEndOf="parent"

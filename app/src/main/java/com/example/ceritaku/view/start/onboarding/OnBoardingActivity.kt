@@ -3,7 +3,6 @@ package com.example.ceritaku.view.start.onboarding
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.ceritaku.R
 import com.example.ceritaku.databinding.ActivityOnboardingBinding
 import com.example.ceritaku.view.authentication.LoginActivity
 

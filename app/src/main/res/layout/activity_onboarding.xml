@@ -12,9 +12,9 @@
       android:layout_width="365dp"
       android:layout_height="91dp"
       android:fontFamily="@font/notomedium"
-      android:text="For First Time.."
+      android:text="@string/Onboard_title"
       android:textAlignment="center"
-      android:textSize="50dp"
+      android:textSize="30sp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
@@ -27,8 +27,8 @@
       android:layout_height="wrap_content"
       android:layout_marginEnd="16dp"
       android:fontFamily="@font/notoregular"
-      android:text="let we introduce our apps"
-      android:textSize="16dp"
+      android:text="@string/Onboard_subtitle"
+      android:textSize="16sp"
       app:layout_constraintEnd_toEndOf="parent"
       tools:layout_editor_absoluteY="589dp" />
 
@@ -41,7 +41,8 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:srcCompat="@drawable/ic_arrow_up"
-      tools:layout_editor_absoluteY="535dp" />
+      tools:layout_editor_absoluteY="535dp"
+      android:contentDescription="@string/Onboard_indicator1" />
 
   <ImageButton
       android:id="@+id/imageButton2"
@@ -52,7 +53,8 @@
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"
       app:srcCompat="@drawable/ic_arrow_up"
-      tools:layout_editor_absoluteY="535dp" />
+      tools:layout_editor_absoluteY="535dp"
+      android:contentDescription="@string/Onboard_indicator2" />
 
   <ImageButton
       android:id="@+id/imageButton3"
@@ -62,7 +64,8 @@
       android:scaleType="fitXY"
       app:srcCompat="@drawable/ic_arrow_up"
       tools:layout_editor_absoluteX="143dp"
-      tools:layout_editor_absoluteY="535dp" />
+      tools:layout_editor_absoluteY="535dp"
+      android:contentDescription="@string/Onboard_indicator3" />
 
   <include
       android:id="@+id/include_layout1"
@@ -97,9 +100,9 @@
       android:layout_width="365dp"
       android:layout_height="91dp"
       android:fontFamily="@font/notomedium"
-      android:text="click me !"
+      android:text="@string/Onboard_final"
       android:textAlignment="center"
-      android:textSize="40dp"
+      android:textSize="40sp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
       app:layout_constraintStart_toStartOf="parent"

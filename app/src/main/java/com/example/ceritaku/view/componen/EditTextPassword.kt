@@ -13,102 +13,111 @@ import androidx.core.content.ContextCompat
 import com.example.ceritaku.R
 
 class EditTextPassword:  AppCompatEditText, View.OnTouchListener {
-    private lateinit var hideButton : Drawable
+    private lateinit var iconTextImage: Drawable
+    private lateinit var onItemHide : SetHideCallBack
+
+    fun onItemClickDetail(onItemHide : SetHideCallBack){
+        this.onItemHide = onItemHide
+    }
 
     constructor(context: Context) : super(context) {
-        initButton(ContextCompat.getDrawable(context,R.drawable.ic_hidepass) as Drawable)
+        init()
     }
 
     constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
-        initButton(ContextCompat.getDrawable(context,R.drawable.ic_hidepass) as Drawable)
+        init()
     }
 
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
-        initButton(ContextCompat.getDrawable(context,R.drawable.ic_hidepass) as Drawable)
+        init()
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-
+        hint = "Password"
+        textAlignment = View.TEXT_ALIGNMENT_VIEW_START
     }
 
-    private fun initButton(button : Drawable){
-        hideButton = button
+    private fun init() {
+        iconTextImage = ContextCompat.getDrawable(context,  R.drawable.ic_hidepass) as Drawable
         setOnTouchListener(this)
+        addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
 
-        addTextChangedListener(object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
+            override fun onTextChanged(word: CharSequence, start: Int, before: Int, count: Int) {
+               showEditIcon()
+               warnText(word.count())
             }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-
-            }
-
-            override fun afterTextChanged(p0: Editable?) {
-                showButton()
-            }
-
+            override fun afterTextChanged(s: Editable) {}
         })
     }
 
-    private fun hideButton(){
-        setButtonDrawable(endText = hideButton)
-        initButton(ContextCompat.getDrawable(context,R.drawable.ic_hidepass) as Drawable)
-    }
 
-    private fun showButton(){
-        setButtonDrawable(endText = hideButton)
-        initButton(ContextCompat.getDrawable(context, R.drawable.ic_showpass) as Drawable)
-    }
-
-
-    private fun setButtonDrawable(
-        startText : Drawable? = null,
-        topText : Drawable? = null,
-        bottomText : Drawable? = null,
-        endText : Drawable? = null
-    ){
-        setCompoundDrawablesRelativeWithIntrinsicBounds(
-            startText,
-            topText,
-            bottomText,
-            endText
+    private fun showEditIcon() {
+        setButtonDrawables(
+            endOfTheText = iconTextImage,
+            startOfTheText = ContextCompat.getDrawable(context, R.drawable.ic_baseline_lock_24) as Drawable
         )
+    }
 
+    private fun warnText(number : Int){
+        iconTextImage = if (number <= 7){
+            ContextCompat.getDrawable(context,R.drawable.ic_baseline_warning_24) as Drawable
+
+        }else{
+            ContextCompat.getDrawable(context,R.drawable.ic_hidepass) as Drawable
+        }
     }
 
 
-    override fun onTouch(v: View?, event: MotionEvent?): Boolean {
-        if (compoundDrawables[2] != null){
-            val hideButtonStart : Float
-            val hideButtonEnd : Float
-            var isHideButtonClicked = false
-            if (layoutDirection == View.LAYOUT_DIRECTION_RTL){
-                hideButtonEnd = (hideButton.intrinsicWidth + paddingStart).toFloat()
-                when {
-                    event!!.x < hideButtonEnd -> isHideButtonClicked = true
-                }
-            }else{
-                hideButtonStart = (width - paddingEnd - hideButton.intrinsicWidth).toFloat()
-                when {
-                    event!!.x < hideButtonStart -> isHideButtonClicked = true
-                }
-            }
 
-            if (isHideButtonClicked){
-                when(event?.action){
-                    MotionEvent.ACTION_DOWN->{
-                        showButton()
-                        return true
-                    }
-                    MotionEvent.ACTION_UP->{
-                        hideButton()
-                        return true
-                    }
+
+    private fun setButtonDrawables(startOfTheText: Drawable? = null, topOfTheText:Drawable? = null, endOfTheText:Drawable? = null, bottomOfTheText: Drawable? = null){
+        setCompoundDrawablesWithIntrinsicBounds(startOfTheText, topOfTheText, endOfTheText, bottomOfTheText)
+    }
+
+    override fun onTouch(v: View?, event: MotionEvent): Boolean {
+        if (compoundDrawables[2] != null) {
+            val iconTextStart: Float
+            val iconTextEnd: Float
+            var isClearButtonClicked = false
+
+            if (layoutDirection == View.LAYOUT_DIRECTION_RTL) {
+                iconTextEnd = (iconTextImage.intrinsicWidth + paddingStart).toFloat()
+                when {
+                    event.x < iconTextEnd -> isClearButtonClicked = true
+                }
+            } else {
+                iconTextStart = (width - paddingEnd - iconTextImage.intrinsicWidth).toFloat()
+                when {
+                    event.x > iconTextStart -> isClearButtonClicked = true
                 }
             }
+            if (isClearButtonClicked) {
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        iconTextImage = ContextCompat.getDrawable(context,
+                            R.drawable.ic_showpass
+                        ) as Drawable
+                        onItemHide.setHideCallback(false)
+                        return true
+                    }
+                    MotionEvent.ACTION_UP -> {
+                        iconTextImage = ContextCompat.getDrawable(context,R.drawable.ic_hidepass) as Drawable
+                        onItemHide.setHideCallback(true)
+
+                        return true
+                    }
+                    else -> return false
+                }
+            } else return false
         }
-       return false
+        return false
+    }
+
+
+    interface SetHideCallBack{
+        fun setHideCallback(status : Boolean)
     }
 }

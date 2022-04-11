@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ceritaku</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--spalshscreen-->
+    <string name="Splash">peoplespalh</string>
+    <string name="splash_text">Cerita</string>
+
+    <!--onboard page-->
+    <string name="Onboard_title">İlk Kez..</string>
+    <string name="Onboard_subtitle">uygulamalarımızı tanıtalım</string>
+    <string name="Onboard_final">beni tıklayın !</string>
+    <string name="Onboard_indicator1">sayfa 1</string>
+    <string name="Onboard_indicator2">sayfa2</string>
+    <string name="Onboard_indicator3">sayfa3</string>
+    <string name="Onboard_iconpage1">iconpage1</string>
+    <string name="Onboard_text1">Hikayelerinizi başkalarıyla anlatın</string>
+    <string name="Onboard_text2">destansı hikayelerini dinleyin</string>
+    <string name="Onboard_icon2">icon2</string>
+    <string name="Onboard_icon3">icon3</string>
+    <string name="Onboard_text3">bir resim de ekleyebilirsiniz</string>
+
+    <!--auth page-->
+    <string name="Login">Giriş</string>
+    <string name="Email">E-posta</string>
+    <string name="Password">Parola</string>
+    <string name="Signin_order">Hadi gidelim</string>
+    <string name="Register">Kaydol</string>
+    <string name="Signin_or">yeni gelenler?</string>
+    <string name="Sigin_subtitle">Gitmeden önce…</string>
+    <string name="Username">Kullanıcı adı</string>
+    <string name="Register_order">kaydol beni</string>
+    <string name="cancel">İptal</string>
+
+    <!--home-->
+    <string name="Home_title">Cerita</string>
+    <string name="Home_error">Error view</string>
+
+
+    <!--insert page-->
+    <string name="insert_back">eve dönüş</string>
+    <string name="insert_title">yeni gönderi</string>
+    <string name="insert_order">Yükle</string>
+    <string name="insert_photoresult">photoresult</string>
+    <string name="insert_description">Açıklama</string>
+    <string name="insert_descinput">deskripsi</string>
+    <string name="insert_uploading">Yükleniyor</string>
+
+
+    <!--camera page-->
+    <string name="Camera_gallery">pickimage</string>
+    <string name="Camera_backhome">btnbackhome</string>
+    <string name="Camera_capture">capture</string>
+    <string name="Detail_backhom">backtohome</string>
+    <string name="Detail_name">Story</string>
+    <string name="Detail_pic">detail pic</string>
+    <string name="Setting_title">Setting</string>
+    <string name="Setting_account">Current account</string>
+    <string name="Setting_name">name profile</string>
+    <string name="Setting_order">Logout</string>
+    <string name="Itemcv_photo">imgprofile</string>
+    <string name="Setting_langauge">Delir</string>
+    <!--Login activity-->
+    <string name="Login_error">lütfen tekrar kontrol edin</string>
+    <string name="Login_formerror">Geçersiz form</string>
+    <string name="Login_fail">gagal</string>
+    <!--home activity-->
+    <string name="Home_try">lütfen tekrar deneyin :(</string>
+    <string name="Home_empty">Veri yok, görünüşe göre kimse hikayesini eklemiyor</string>
+    <!--detail activity-->
+    <string name="Detail_title"> Story</string>
+</resources>

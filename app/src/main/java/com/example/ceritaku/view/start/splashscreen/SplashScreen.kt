@@ -1,5 +1,6 @@
 package com.example.ceritaku.view.start.splashscreen
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -13,6 +14,7 @@ import com.example.ceritaku.data.local.entity.UserDetailModel
 import com.example.ceritaku.view.authentication.LoginActivity
 import com.example.ceritaku.view.start.onboarding.OnBoardingActivity
 
+@SuppressLint("CustomSplashScreen")
 class SplashScreen : AppCompatActivity() {
 
     private var userDetailModel: UserDetailModel = UserDetailModel()
@@ -32,10 +34,17 @@ class SplashScreen : AppCompatActivity() {
 
     private fun sessionChecker(){
         userDetailModel = userPreferenceConfig.getUserDetail()
-        val curSession = userDetailModel.onBoard
+        val curSessionBoard = userDetailModel.onBoard
+        val curSessionName = userDetailModel.name
 
-        if (curSession){
-            startActivity(Intent(this, LoginActivity::class.java))
+        if (curSessionBoard){
+            if (curSessionName != null) {
+                if (curSessionName.isEmpty()){
+                    startActivity(Intent(this, LoginActivity::class.java))
+                }else{
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
+            }
         }else{
             startActivity(Intent(this, OnBoardingActivity::class.java))
         }

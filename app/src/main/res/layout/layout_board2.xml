@@ -10,10 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
         android:fontFamily="@font/notomedium"
-        android:text="hear their epic story"
+        android:text="@string/Onboard_text2"
         android:textAlignment="center"
         android:textColor="#EBE7E7"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +33,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.106"
-        app:srcCompat="@drawable/ic_listen_ic" />
+        app:srcCompat="@drawable/ic_listen_ic"
+        android:contentDescription="@string/Onboard_icon2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

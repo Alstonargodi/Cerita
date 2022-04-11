@@ -3,25 +3,38 @@ package com.example.ceritaku.view.authentication
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.example.ceritaku.MainActivity
+import com.example.ceritaku.data.local.UserPrefrencesConfig
+import com.example.ceritaku.data.local.entity.UserDetailModel
 import com.example.ceritaku.databinding.ActivityRegisterBinding
 import com.example.ceritaku.data.remote.utils.Result
+import com.example.ceritaku.view.componen.EditTextPassword
 import com.example.ceritaku.viewmodel.AuthViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
+@Suppress("SameParameterValue")
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private val viewModel : AuthViewModel by viewModels{
         VModelFactory.getInstance()
     }
+    private var userDetailModel: UserDetailModel = UserDetailModel()
+    private lateinit var userPreferenceConfig: UserPrefrencesConfig
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        userPreferenceConfig = UserPrefrencesConfig(this)
+        setEditTextPassword()
 
         binding.btnregister.setOnClickListener {
             lifecycleScope.launch {
@@ -34,21 +47,117 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
+    private fun boxChecker(): Boolean{
+        val name = binding.tvregisname.text.toString()
+        val email = binding.tvregisemail.text.toString()
+        val password = binding.tvregisterpassword.text.toString()
+
+        when {
+            email.isEmpty() -> return true
+            password.isEmpty() -> return true
+            name.isEmpty() -> return true
+            else -> (password.isNotEmpty() && email.isNotEmpty())
+        }
+            return false
+    }
+
     private suspend fun register(){
         val name = binding.tvregisname.text.toString()
         val email = binding.tvregisemail.text.toString()
         val password = binding.tvregisterpassword.text.toString()
 
-        viewModel.postRegister(name, email, password).observe(this){
-            when(it){
-                is Result.Sucess ->{
-                    Log.d("loading",it.data.message)
+        if(!boxChecker()){
+            viewModel.postRegister(name, email, password).observe(this){
+                when(it){
+                    is Result.Loading ->{
+                        binding.pgbarregister.visibility = View.VISIBLE
+                    }
+
+                    is Result.Sucess ->{
+                        binding.pgbarregister.visibility = View.GONE
+                        showMessage(it.data.message + " and welcome")
+                        lifecycleScope.launch {
+                            loginRegister()
+                        }
+                    }
+
+                    is Result.Error ->{
+                        binding.pgbarregister.visibility = View.GONE
+                        showMessage(it.error + "try again")
+                    }
+
                 }
-                is Result.Error ->{
-                    Log.d("loading",it.error.toString())
+            }
+        }else{
+            showMessage("fill textbox first")
+        }
+    }
+
+    private suspend fun loginRegister(){
+        val email = binding.tvregisemail.text.toString()
+        val password = binding.tvregisterpassword.text.toString()
+
+        viewModel.postLogin(email,password).observe(this){
+            when(it){
+                is Result.Loading->{
+                    binding.pgbarregister.visibility = View.VISIBLE
+                }
+                is Result.Sucess->{
+                    binding.pgbarregister.visibility = View.GONE
+                    saveUserLogin(
+                        it.data.loginResult.name,
+                        it.data.loginResult.token,
+                        true,
+                        theme = false
+                    )
+                    showMessage("welcome + ${it.data.loginResult.name}")
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
+                is Result.Error->{
+                    binding.pgbarregister.visibility = View.GONE
+                    if (it.error == LoginActivity.invalid){
+                        showMessage("Invalid form")
+                    }else{
+                        showMessage(it.error)
+                    }
+                    Log.d(LoginActivity.tag, it.error)
                 }
             }
         }
+    }
 
+    private fun saveUserLogin(name : String, token : String, onBoard : Boolean, theme : Boolean){
+        try {
+            val userPreferences = UserPrefrencesConfig(this)
+            userDetailModel.name = name
+            userDetailModel.token = token
+            userDetailModel.onBoard = onBoard
+            userDetailModel.theme = theme
+            userPreferences.setUserDetail(userDetailModel)
+        }catch (e : Exception){
+            Log.d(LoginActivity.tag, "fail ${e.message}")
+        }
+    }
+
+    private fun setEditTextPassword(){
+
+        binding.tvregisterpassword.transformationMethod = PasswordTransformationMethod.getInstance()
+        binding.tvregisterpassword.onItemClickDetail(object  : EditTextPassword.SetHideCallBack{
+            override fun setHideCallback(status: Boolean) {
+                if (status){
+                    binding.tvregisterpassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                }else{
+                    binding.tvregisterpassword.transformationMethod = null
+                }
+            }
+        })
+    }
+
+    private fun showMessage(message : String){
+        Snackbar.make(
+            binding.root,
+            message,
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 }
