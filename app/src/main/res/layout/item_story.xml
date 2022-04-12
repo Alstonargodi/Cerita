@@ -37,7 +37,7 @@
             android:fontFamily="@font/notomedium"
             android:gravity="center|right"
             android:includeFontPadding="false"
-            android:textSize="12sp"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="RtlHardcoded" />

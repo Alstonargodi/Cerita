@@ -58,5 +58,16 @@
         app:layout_constraintVertical_bias="0.948"
         android:contentDescription="@string/Camera_capture" />
 
+    <ImageView
+        android:id="@+id/btn_rotate"
+        android:layout_width="57dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="500dp"
+        android:src="@drawable/ic_baseline_rotate_left_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btncapture"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

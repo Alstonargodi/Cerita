@@ -1,11 +1,15 @@
 package com.example.ceritaku.view.home.adapter
 
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ceritaku.databinding.ItemStoryBinding
 import com.example.ceritaku.data.remote.response.story.Story
+import com.example.ceritaku.view.utils.dateFormat
+
 
 class StoriesRevHomeAdapter(private val dataList : List<Story>):
     RecyclerView.Adapter<StoriesRevHomeAdapter.ViewHolder>()
@@ -20,12 +24,15 @@ class StoriesRevHomeAdapter(private val dataList : List<Story>):
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
             ViewHolder(ItemStoryBinding.inflate(LayoutInflater.from(parent.context),parent,false))
 
+        @RequiresApi(Build.VERSION_CODES.O)
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = dataList[position]
+
+
             holder.binding.apply {
                 val name = "u / ${item.name}"
                 tvStoriesNameop.text = name
-                tvStoriesDate.text = item.createdAt
+                tvStoriesDate.text = dateFormat(item.createdAt)
                 tvStoriesDesc.text = item.description
 
                 Glide.with(root.context)

@@ -7,10 +7,15 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
+import androidx.annotation.RequiresApi
 import com.example.ceritaku.R
 import java.io.*
+import java.text.DateFormat
 import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 private const val FILENAME_FORMAT = "dd-MMM-yyyy"
@@ -19,6 +24,16 @@ val timeStamp: String = SimpleDateFormat(
     FILENAME_FORMAT,
     Locale.US
 ).format(System.currentTimeMillis())
+
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun dateFormat(created : String): String {
+    val inputFormat : DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
+    val outputFormat : DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyy", Locale.ENGLISH)
+    val date : LocalDate = LocalDate.parse(created,inputFormat)
+    val result : String = outputFormat.format(date)
+    return result
+}
 
 fun createFile(application: Application): File {
     val mediaDir = application.externalMediaDirs.firstOrNull()?.let {

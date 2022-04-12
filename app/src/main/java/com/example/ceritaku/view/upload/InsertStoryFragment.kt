@@ -128,7 +128,6 @@ class InsertStoryFragment : Fragment() {
         binding.apply {
             proesetitle.text = message
             proesetitle.visibility = View.VISIBLE
-            pgbarupload.visibility = View.VISIBLE
         }
     }
 

@@ -15,6 +15,7 @@ import com.example.ceritaku.data.local.entity.UserDetailModel
 import com.example.ceritaku.databinding.FragmentHomeBinding
 import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.data.remote.response.story.Story
+import com.example.ceritaku.databinding.LayoutBoard1Binding
 import com.example.ceritaku.view.detail.DetailStoryFragment
 import com.example.ceritaku.view.home.adapter.StoriesRevHomeAdapter
 import com.example.ceritaku.viewmodel.StoryViewModel
@@ -24,6 +25,8 @@ import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var bindingError : LayoutBoard1Binding
+
     private val viewModel : StoryViewModel by viewModels{
         VModelFactory.getInstance()
     }
@@ -34,6 +37,7 @@ class HomeFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentHomeBinding.inflate(layoutInflater)
+        bindingError = LayoutBoard1Binding.inflate(layoutInflater)
         userPrefConfig = UserPrefrencesConfig(requireContext())
         userDetailModel = userPrefConfig.getUserDetail()
 
@@ -59,12 +63,13 @@ class HomeFragment : Fragment() {
                 }
                 is Result.Sucess->{
                     binding.pgbarhome.visibility = View.GONE
+
                     showRecyclerList(it.data.listStory)
 
                 }
                 is Result.Error->{
                     binding.pgbarhome.visibility = View.GONE
-                    showMessage(it.error + getString(R.string.Home_error))
+                    fetchError(it.error + getString(R.string.Home_error))
                     Log.d(TAG,it.error)
                 }
             }
@@ -77,9 +82,8 @@ class HomeFragment : Fragment() {
         binding.listStoryHome.layoutManager = LinearLayoutManager(requireContext())
         viewModel.setEmptys(false)
 
-
         if (recViewAdapter.itemCount == 0){
-            showMessage(getString(R.string.Home_empty))
+            emptyData(getString(R.string.Home_empty))
         }
         recViewAdapter.onItemClickDetail(object : StoriesRevHomeAdapter.OnClickDetail{
             override fun onItemClickDetail(data: Story) {
@@ -100,14 +104,29 @@ class HomeFragment : Fragment() {
 
     }
 
-    private fun showMessage(message : String){
-        binding.tverrorview.apply {
-            visibility = View.VISIBLE
-            text = message
-            setOnClickListener {
+    private fun fetchError(message : String){
+        binding.layoutEmpty.apply {
+            root.visibility = View.VISIBLE
+            tverror.text = message
+            imgerror.setImageResource(R.drawable.ic_error_connect)
+            imgerror.setOnClickListener {
                 lifecycleScope.launch {
                     getStoryList()
-                    visibility = View.GONE
+                    root.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+    private fun emptyData(message : String){
+        binding.layoutEmpty.apply {
+            root.visibility = View.VISIBLE
+            tverror.text = message
+            imgerror.setImageResource(R.drawable.ic_notfound)
+            imgerror.setOnClickListener {
+                lifecycleScope.launch {
+                    getStoryList()
+                    root.visibility = View.GONE
                 }
             }
         }

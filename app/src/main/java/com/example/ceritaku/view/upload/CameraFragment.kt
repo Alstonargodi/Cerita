@@ -90,8 +90,24 @@ class CameraFragment : Fragment() {
             )
         }
 
+        startCamera()
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.btnbackcamera.setOnClickListener {
             startActivity(Intent(context,MainActivity::class.java))
+        }
+
+        binding.btnRotate.setOnClickListener {
+            cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA)
+                CameraSelector.DEFAULT_FRONT_CAMERA
+            else
+                CameraSelector.DEFAULT_BACK_CAMERA
+
+            startCamera()
         }
 
         binding.btncapture.setOnClickListener { capturePhoto() }
@@ -99,11 +115,7 @@ class CameraFragment : Fragment() {
         binding.btnpickimage.setOnClickListener {
             pickImageGallery()
         }
-        startCamera()
-
-        return binding.root
     }
-
 
     private fun startCamera(){
         val cameraProvider = ProcessCameraProvider
@@ -124,7 +136,7 @@ class CameraFragment : Fragment() {
                 cameraProv.unbindAll()
                 cameraProv.bindToLifecycle(
                     viewLifecycleOwner,
-                    CameraSelector.DEFAULT_BACK_CAMERA,
+                    cameraSelector,
                     preview,
                     imageCapture
                 )

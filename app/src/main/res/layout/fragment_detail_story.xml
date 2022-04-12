@@ -100,6 +100,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tvdetailstory_img" />
 
+            <include
+                android:id="@+id/detail_empty"
+                layout="@layout/layout_empty"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginBottom="400dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/tvdetailstory_desc"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <TextView
                 android:id="@+id/tvdetailstory_desc"
                 android:layout_width="0dp"

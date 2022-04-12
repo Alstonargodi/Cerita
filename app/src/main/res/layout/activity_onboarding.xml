@@ -13,7 +13,7 @@
       android:layout_height="91dp"
       android:fontFamily="@font/notomedium"
       android:text="@string/Onboard_title"
-      android:textAlignment="center"
+      android:textAlignment="textStart"
       android:textSize="30sp"
       app:layout_constraintBottom_toBottomOf="parent"
       app:layout_constraintEnd_toEndOf="parent"
