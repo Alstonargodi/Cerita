@@ -14,7 +14,7 @@ import com.example.ceritaku.data.local.UserPrefrencesConfig
 import com.example.ceritaku.data.local.entity.UserDetailModel
 import com.example.ceritaku.databinding.ActivityLoginBinding
 import com.example.ceritaku.data.remote.utils.Result
-import com.example.ceritaku.view.componen.EditTextPassword
+import com.example.ceritaku.view.componen.PasswordBoxCustom
 import com.example.ceritaku.viewmodel.AuthViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -39,24 +39,30 @@ class LoginActivity : AppCompatActivity() {
 
         binding.btnlogin.setOnClickListener {
             sessionChecker()
+
         }
 
         binding.register.setOnClickListener {
             startActivity(Intent(this,RegisterActivity::class.java))
+            finish()
         }
 
     }
 
 
     private fun boxChecker(): Boolean{
-        val email = binding.email.text
+        val email = binding.email.text.toString().trim()
         val password = binding.password.text
-        val passSize = binding.password.text?.count()
 
         when {
-            email.isEmpty() -> return true
-            password!!.isEmpty() -> return true
-            passSize!! < 6 -> return true
+            email.isEmpty() -> {
+                showMessage("need email")
+                return true
+            }
+            password!!.isEmpty() -> {
+                showMessage("need password")
+                return true
+            }
             else -> (password.isNotEmpty() && email.isNotEmpty())
         }
             return false
@@ -78,6 +84,7 @@ class LoginActivity : AppCompatActivity() {
             startActivity(
                 Intent(this,MainActivity::class.java)
             )
+            finishAffinity()
         }
     }
 
@@ -99,7 +106,7 @@ class LoginActivity : AppCompatActivity() {
                         theme = false
                     )
                     showMessage("welcome + ${it.data.loginResult.name}")
-                    startActivity(Intent(this@LoginActivity,MainActivity::class.java))
+                    nextPageSucess()
                 }
                 is Result.Error->{
                     binding.pgbarlogin.visibility = View.GONE
@@ -127,6 +134,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private fun nextPageSucess(){
+        startActivity(Intent(this,MainActivity::class.java))
+        finishAffinity()
+    }
+
     private fun showMessage(message : String){
         Snackbar.make(
             binding.root,
@@ -135,19 +147,23 @@ class LoginActivity : AppCompatActivity() {
         ).show()
     }
 
-    private fun setEditTextPassword(){
 
-        binding.password.transformationMethod = PasswordTransformationMethod.getInstance()
-        binding.password.onItemClickDetail(object  : EditTextPassword.SetHideCallBack{
-            override fun setHideCallback(status: Boolean) {
-                if (status){
-                    binding.password.transformationMethod = PasswordTransformationMethod.getInstance()
-                }else{
-                    binding.password.transformationMethod = null
+
+    private fun setEditTextPassword(){
+        binding.password.apply {
+            transformationMethod = PasswordTransformationMethod.getInstance()
+            onItemClickDetail(object  : PasswordBoxCustom.SetHideCallBack{
+                override fun setHideCallback(status: Boolean) {
+                    if (status){
+                        binding.password.transformationMethod = PasswordTransformationMethod.getInstance()
+                    }else{
+                        binding.password.transformationMethod = null
+                    }
                 }
-            }
-        })
+            })
+        }
     }
+
 
 
     companion object{

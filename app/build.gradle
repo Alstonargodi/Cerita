@@ -14,7 +14,7 @@ android {
         targetSdk 32
         versionCode 1
         versionName "1.0"
-
+        buildConfigField 'String', 'BASE_URL_STORY', '"https://story-api.dicoding.dev/v1/"'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -91,5 +91,6 @@ dependencies {
     implementation "androidx.camera:camera-camera2:1.1.0-beta02"
     implementation "androidx.camera:camera-lifecycle:1.1.0-beta02"
     implementation "androidx.camera:camera-view:1.1.0-beta02"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2"
 
 }

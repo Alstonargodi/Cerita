@@ -41,12 +41,15 @@ class SplashScreen : AppCompatActivity() {
             if (curSessionName != null) {
                 if (curSessionName.isEmpty()){
                     startActivity(Intent(this, LoginActivity::class.java))
+                    finishAffinity()
                 }else{
                     startActivity(Intent(this, MainActivity::class.java))
+                    finishAffinity()
                 }
             }
         }else{
             startActivity(Intent(this, OnBoardingActivity::class.java))
+            finishAffinity()
         }
     }
 }

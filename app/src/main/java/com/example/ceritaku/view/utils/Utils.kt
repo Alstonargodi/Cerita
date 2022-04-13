@@ -9,103 +9,111 @@ import android.graphics.Matrix
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.util.Patterns
 import androidx.annotation.RequiresApi
 import com.example.ceritaku.R
 import java.io.*
-import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-private const val FILENAME_FORMAT = "dd-MMM-yyyy"
 
-val timeStamp: String = SimpleDateFormat(
-    FILENAME_FORMAT,
-    Locale.US
-).format(System.currentTimeMillis())
+object Utils {
+    private const val FILENAME_FORMAT = "dd-MMM-yyyy"
+
+    private val timeStamp: String = SimpleDateFormat(
+        FILENAME_FORMAT,
+        Locale.US
+    ).format(System.currentTimeMillis())
 
 
-@RequiresApi(Build.VERSION_CODES.O)
-fun dateFormat(created : String): String {
-    val inputFormat : DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
-    val outputFormat : DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyy", Locale.ENGLISH)
-    val date : LocalDate = LocalDate.parse(created,inputFormat)
-    val result : String = outputFormat.format(date)
-    return result
-}
+    fun CharSequence.validEmailChecker() =
+        Patterns
+            .EMAIL_ADDRESS.matcher(this)
+            .matches()
 
-fun createFile(application: Application): File {
-    val mediaDir = application.externalMediaDirs.firstOrNull()?.let {
-        File(it, application.resources.getString(R.string.app_name)).apply { mkdirs() }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun dateFormat(created: String): String {
+        val inputFormat: DateTimeFormatter =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
+        val outputFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyy", Locale.ENGLISH)
+        val date: LocalDate = LocalDate.parse(created, inputFormat)
+        return outputFormat.format(date)
     }
 
-    val outputDirectory = if (
-        mediaDir != null && mediaDir.exists()
-    ) mediaDir else application.filesDir
+    fun createFile(application: Application): File {
+        val mediaDir = application.externalMediaDirs.firstOrNull()?.let {
+            File(it, application.resources.getString(R.string.app_name)).apply { mkdirs() }
+        }
 
-    return File(outputDirectory, "$timeStamp.jpg")
-}
+        val outputDirectory = if (
+            mediaDir != null && mediaDir.exists()
+        ) mediaDir else application.filesDir
 
-fun rotateBitmap(bitmap: Bitmap, isBackCamera: Boolean = false): Bitmap {
-    val matrix = Matrix()
-    return if (isBackCamera) {
-        matrix.postRotate(90f)
-        Bitmap.createBitmap(
-            bitmap,
-            0,
-            0,
-            bitmap.width,
-            bitmap.height,
-            matrix,
-            true
-        )
-    } else {
-        matrix.postRotate(-90f)
-        matrix.postScale(-1f, 1f, bitmap.width / 2f, bitmap.height / 2f)
-        Bitmap.createBitmap(
-            bitmap,
-            0,
-            0,
-            bitmap.width,
-            bitmap.height,
-            matrix,
-            true
-        )
+        return File(outputDirectory, "$timeStamp.jpg")
     }
-}
 
-fun reduceImageSize(file: File): File {
-    val bitmap = BitmapFactory.decodeFile(file.path)
-    var compressQuality = 100
-    var streamLength: Int
-    do {
-        val bmpStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
-        val bmpPicByteArray = bmpStream.toByteArray()
-        streamLength = bmpPicByteArray.size
-        compressQuality -= 5
-    } while (streamLength > 1000000)
-    bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
-    return file
-}
+    fun rotateBitmap(bitmap: Bitmap, isBackCamera: Boolean = false): Bitmap {
+        val matrix = Matrix()
+        return if (isBackCamera) {
+            matrix.postRotate(90f)
+            Bitmap.createBitmap(
+                bitmap,
+                0,
+                0,
+                bitmap.width,
+                bitmap.height,
+                matrix,
+                true
+            )
+        } else {
+            matrix.postRotate(-90f)
+            matrix.postScale(-1f, 1f, bitmap.width / 2f, bitmap.height / 2f)
+            Bitmap.createBitmap(
+                bitmap,
+                0,
+                0,
+                bitmap.width,
+                bitmap.height,
+                matrix,
+                true
+            )
+        }
+    }
 
-fun uriToFile(selectimg : Uri, context: Context): File{
-    val contentResolver: ContentResolver = context.contentResolver
-    val myFile = createTempFile(context)
+    fun reduceImageSize(file: File): File {
+        val bitmap = BitmapFactory.decodeFile(file.path)
+        var compressQuality = 100
+        var streamLength: Int
+        do {
+            val bmpStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, bmpStream)
+            val bmpPicByteArray = bmpStream.toByteArray()
+            streamLength = bmpPicByteArray.size
+            compressQuality -= 5
+        } while (streamLength > 1000000)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, compressQuality, FileOutputStream(file))
+        return file
+    }
 
-    val inputStream = contentResolver.openInputStream(selectimg) as InputStream
-    val outputStream: OutputStream = FileOutputStream(myFile)
-    val buf = ByteArray(1024)
-    var len: Int
-    while (inputStream.read(buf).also { len = it } > 0) outputStream.write(buf, 0, len)
-    outputStream.close()
-    inputStream.close()
+    fun uriToFile(selectimg : Uri, context: Context): File{
+        val contentResolver: ContentResolver = context.contentResolver
+        val myFile = createTempFile(context)
 
-    return myFile
-}
+        val inputStream = contentResolver.openInputStream(selectimg) as InputStream
+        val outputStream: OutputStream = FileOutputStream(myFile)
+        val buf = ByteArray(1024)
+        var len: Int
+        while (inputStream.read(buf).also { len = it } > 0) outputStream.write(buf, 0, len)
+        outputStream.close()
+        inputStream.close()
 
-fun createTempFile(context: Context): File {
-    val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-    return File.createTempFile(timeStamp, ".jpg", storageDir)
+        return myFile
+    }
+
+    fun createTempFile(context: Context): File {
+        val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile(timeStamp, ".jpg", storageDir)
+    }
 }

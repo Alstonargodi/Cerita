@@ -13,7 +13,7 @@ import com.example.ceritaku.data.local.UserPrefrencesConfig
 import com.example.ceritaku.data.local.entity.UserDetailModel
 import com.example.ceritaku.databinding.ActivityRegisterBinding
 import com.example.ceritaku.data.remote.utils.Result
-import com.example.ceritaku.view.componen.EditTextPassword
+import com.example.ceritaku.view.componen.PasswordBoxCustom
 import com.example.ceritaku.viewmodel.AuthViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import com.google.android.material.snackbar.Snackbar
@@ -44,6 +44,7 @@ class RegisterActivity : AppCompatActivity() {
 
         binding.btncancel.setOnClickListener {
             startActivity(Intent(this,LoginActivity::class.java))
+            finishAffinity()
         }
     }
 
@@ -112,10 +113,11 @@ class RegisterActivity : AppCompatActivity() {
                     )
                     showMessage("welcome + ${it.data.loginResult.name}")
                     startActivity(Intent(this, MainActivity::class.java))
+                    finishAffinity()
                 }
                 is Result.Error->{
                     binding.pgbarregister.visibility = View.GONE
-                    if (it.error == LoginActivity.invalid){
+                    if (it.error == invalid){
                         showMessage("Invalid form")
                     }else{
                         showMessage(it.error)
@@ -135,14 +137,14 @@ class RegisterActivity : AppCompatActivity() {
             userDetailModel.theme = theme
             userPreferences.setUserDetail(userDetailModel)
         }catch (e : Exception){
-            Log.d(LoginActivity.tag, "fail ${e.message}")
+            Log.d(tag, "fail ${e.message}")
         }
     }
 
     private fun setEditTextPassword(){
 
         binding.tvregisterpassword.transformationMethod = PasswordTransformationMethod.getInstance()
-        binding.tvregisterpassword.onItemClickDetail(object  : EditTextPassword.SetHideCallBack{
+        binding.tvregisterpassword.onItemClickDetail(object  : PasswordBoxCustom.SetHideCallBack{
             override fun setHideCallback(status: Boolean) {
                 if (status){
                     binding.tvregisterpassword.transformationMethod = PasswordTransformationMethod.getInstance()
@@ -159,5 +161,10 @@ class RegisterActivity : AppCompatActivity() {
             message,
             Snackbar.LENGTH_LONG
         ).show()
+    }
+
+    companion object{
+        const val tag = "RegisterAcitivy"
+        const val invalid = "HTTP 400 Bad Requesttry again"
     }
 }

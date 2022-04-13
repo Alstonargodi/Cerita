@@ -12,6 +12,7 @@ import com.example.ceritaku.view.upload.CameraFragment
 class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -37,7 +38,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
     private fun setFragment(fragment : Fragment){
         val supFragment = supportFragmentManager
         val transFragment = supFragment.beginTransaction()
@@ -45,8 +45,5 @@ class MainActivity : AppCompatActivity() {
             .replace(R.id.fragmentview,fragment)
             .commit()
     }
-
-
-
 
 }

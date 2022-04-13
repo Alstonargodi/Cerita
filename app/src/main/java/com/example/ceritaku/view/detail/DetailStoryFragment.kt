@@ -7,15 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.ceritaku.R
 import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.databinding.FragmentDetailStoryBinding
 import com.example.ceritaku.view.home.HomeFragment
 import com.example.ceritaku.view.home.HomeFragment.Companion.extra_key_detail
-import com.example.ceritaku.view.utils.dateFormat
-import kotlinx.coroutines.launch
+import com.example.ceritaku.view.utils.Utils.dateFormat
 import java.lang.Exception
 
 

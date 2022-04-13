@@ -5,9 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="20dp"
-    app:cardBackgroundColor="#00FFFFFF"
-    app:cardElevation="1dp">
+    android:layout_margin="10dp"
+    android:layout_marginBottom="20dp"
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,6 +23,7 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/notomedium"
             android:includeFontPadding="false"
+            android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/tv_stories_date"
@@ -47,14 +49,14 @@
             android:layout_width="0dp"
             android:layout_height="200dp"
             android:layout_marginTop="5dp"
+            android:contentDescription="@string/Itemcv_photo"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_stories_desc"
-            tools:srcCompat="@tools:sample/avatars"
-            android:contentDescription="@string/Itemcv_photo" />
+            tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/tv_stories_desc"

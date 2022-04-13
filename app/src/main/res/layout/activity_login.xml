@@ -23,7 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-    <EditText
+    <com.example.ceritaku.view.componen.EmailBoxCustom
         android:id="@+id/email"
         android:layout_width="0dp"
         android:layout_height="61dp"
@@ -43,7 +43,7 @@
         android:inputType="textEmailAddress"
         android:autofillHints="email" />
 
-    <com.example.ceritaku.view.componen.EditTextPassword
+    <com.example.ceritaku.view.componen.PasswordBoxCustom
         android:id="@+id/password"
         android:layout_width="0dp"
         android:layout_height="61dp"

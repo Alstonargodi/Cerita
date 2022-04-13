@@ -15,8 +15,8 @@ import com.example.ceritaku.data.local.UserPrefrencesConfig
 import com.example.ceritaku.data.local.entity.UserDetailModel
 import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.databinding.FragmentInsertstoryBinding
-import com.example.ceritaku.view.utils.reduceImageSize
-import com.example.ceritaku.view.utils.rotateBitmap
+import com.example.ceritaku.view.utils.Utils.reduceImageSize
+import com.example.ceritaku.view.utils.Utils.rotateBitmap
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import kotlinx.coroutines.delay
@@ -103,6 +103,7 @@ class InsertStoryFragment : Fragment() {
                         lifecycleScope.launch {
                             delay(2000L)
                             startActivity(Intent(requireContext(),MainActivity::class.java))
+                            activity?.finish()
                         }
                     }
                     is Result.Error->{

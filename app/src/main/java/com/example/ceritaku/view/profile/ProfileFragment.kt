@@ -37,11 +37,13 @@ class ProfileFragment : Fragment() {
 
 
         binding.btnlogout.setOnClickListener {
-            showMessage("logging out")
-            lifecycleScope.launch {
-                delay(1000)
-                logout()
-            }
+            val userPreferences = UserPrefrencesConfig(requireContext())
+            userDetailModel.name = ""
+            userDetailModel.token = ""
+            userDetailModel.onBoard = true
+            userDetailModel.theme = false
+            userPreferences.setUserDetail(userDetailModel)
+            activity?.finishAffinity()
         }
 
         binding.btnlanguage.setOnClickListener {
@@ -50,26 +52,8 @@ class ProfileFragment : Fragment() {
         return binding.root
     }
 
-    private fun logout(){
-        try {
-            val userPreferences = UserPrefrencesConfig(requireContext())
-            userDetailModel.name = ""
-            userDetailModel.token = ""
-            userDetailModel.onBoard = true
-            userDetailModel.theme = false
-            userPreferences.setUserDetail(userDetailModel)
-            startActivity(Intent(context,LoginActivity::class.java))
-        }catch (e : Exception){
-            Log.d(LoginActivity.tag, "fail ${e.message}")
-        }
-    }
 
-    private fun showMessage(message : String){
-        Snackbar.make(
-            binding.root,
-            message,
-            Snackbar.LENGTH_LONG
-        ).show()
-    }
+
+
 
 }

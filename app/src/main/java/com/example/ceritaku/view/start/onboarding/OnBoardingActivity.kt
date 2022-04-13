@@ -16,6 +16,7 @@ class OnBoardingActivity : AppCompatActivity() {
 
         binding.tvlogin.setOnClickListener {
             startActivity(Intent(this,LoginActivity::class.java))
+            finishAffinity()
         }
     }
 }

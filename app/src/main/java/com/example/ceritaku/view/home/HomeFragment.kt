@@ -1,20 +1,21 @@
 package com.example.ceritaku.view.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ceritaku.R
 import com.example.ceritaku.data.local.UserPrefrencesConfig
 import com.example.ceritaku.data.local.entity.UserDetailModel
-import com.example.ceritaku.databinding.FragmentHomeBinding
-import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.data.remote.response.story.Story
+import com.example.ceritaku.data.remote.utils.Result
+import com.example.ceritaku.databinding.FragmentHomeBinding
 import com.example.ceritaku.databinding.LayoutBoard1Binding
 import com.example.ceritaku.view.detail.DetailStoryFragment
 import com.example.ceritaku.view.home.adapter.StoriesRevHomeAdapter
@@ -42,6 +43,8 @@ class HomeFragment : Fragment() {
         userDetailModel = userPrefConfig.getUserDetail()
 
         userToken = "Bearer ${userDetailModel.token.toString()}"
+
+
 
         lifecycleScope.launch { getStoryList() }
 
@@ -131,6 +134,7 @@ class HomeFragment : Fragment() {
             }
         }
     }
+
 
     companion object{
         const val TAG = "HomeFragment"

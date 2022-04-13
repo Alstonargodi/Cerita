@@ -23,13 +23,11 @@
             android:name=".view.start.onboarding.OnBoardingActivity"
             android:exported="false" />
         <activity
-            android:name=".InsertStory"
-            android:exported="false" />
-        <activity
             android:name=".view.authentication.RegisterActivity"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
+
             android:exported="false" />
         <activity
             android:name=".view.authentication.LoginActivity"

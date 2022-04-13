@@ -22,8 +22,8 @@ import androidx.core.content.ContextCompat
 import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
 import com.example.ceritaku.databinding.FragmentCameraBinding
-import com.example.ceritaku.view.utils.createFile
-import com.example.ceritaku.view.utils.uriToFile
+import com.example.ceritaku.view.utils.Utils.createFile
+import com.example.ceritaku.view.utils.Utils.uriToFile
 import java.io.File
 
 
@@ -201,9 +201,7 @@ class CameraFragment : Fragment() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
         intent.type = "image/*"
-
         launcherIntentGallery.launch(intent)
-
     }
 
     companion object{

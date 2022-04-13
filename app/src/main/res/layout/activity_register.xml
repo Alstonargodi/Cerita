@@ -23,7 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.example.ceritaku.view.componen.EditTextPassword
+    <com.example.ceritaku.view.componen.PasswordBoxCustom
         android:id="@+id/tvregisterpassword"
         android:layout_width="0dp"
         android:layout_height="51dp"
@@ -35,7 +35,6 @@
         android:fontFamily="@font/poppinsregular"
         android:hint="@string/Password"
         android:padding="5dp"
-        android:textColor="#636060"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.44"
@@ -59,7 +58,7 @@
         android:autofillHints="name"
         android:inputType="text" />
 
-    <EditText
+    <com.example.ceritaku.view.componen.EmailBoxCustom
         android:id="@+id/tvregisemail"
         android:layout_width="0dp"
         android:layout_height="61dp"
