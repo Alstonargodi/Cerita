@@ -11,4 +11,5 @@ class AuthViewModel(private val apiRepository: ApiRepository): ViewModel() {
     suspend fun postRegister(name : String,email : String,password: String) =
         apiRepository.postRegister(name, email, password)
 
+
 }

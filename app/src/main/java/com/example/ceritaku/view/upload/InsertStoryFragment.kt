@@ -3,22 +3,28 @@ package com.example.ceritaku.view.upload
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
-import com.example.ceritaku.data.local.UserPrefrencesConfig
-import com.example.ceritaku.data.local.entity.UserDetailModel
+import com.example.ceritaku.data.local.preferences.UserPrefrencesConfig
+import com.example.ceritaku.data.local.preferences.entity.UserDetailModel
+import com.example.ceritaku.data.local.store.UserPrefrences
+import com.example.ceritaku.data.local.store.dataStore
 import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.databinding.FragmentInsertstoryBinding
 import com.example.ceritaku.view.utils.Utils.reduceImageSize
 import com.example.ceritaku.view.utils.Utils.rotateBitmap
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
+import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
+import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
@@ -31,12 +37,9 @@ import java.io.File
 
 class InsertStoryFragment : Fragment() {
     private lateinit var binding : FragmentInsertstoryBinding
+    private val viewModel : StoryViewModel by viewModels{ VModelFactory.getInstance() }
+    private lateinit var prefViewModel : SettingPrefViewModel
     private var getFile: File? = null
-    private val viewModel : StoryViewModel by viewModels{
-        VModelFactory.getInstance()
-    }
-    private var userDetailModel: UserDetailModel = UserDetailModel()
-    private lateinit var userPrefConfig: UserPrefrencesConfig
     private var userToken = ""
 
     override fun onCreateView(
@@ -44,12 +47,20 @@ class InsertStoryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentInsertstoryBinding.inflate(layoutInflater)
-        userPrefConfig = UserPrefrencesConfig(requireContext())
-        userDetailModel = userPrefConfig.getUserDetail()
-        userToken = "Bearer ${userDetailModel.token.toString()}"
+
+        prefViewModel = ViewModelProvider(requireActivity(),
+            PrefViewModelFactory(UserPrefrences.getInstance(requireContext().dataStore))
+        )[SettingPrefViewModel::class.java]
+
+        prefViewModel.getUserToken().observe(viewLifecycleOwner){ userToken = "Bearer $it" }
 
         showResultCamera()
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.btnupload.setOnClickListener {
             binding.pgbarupload.visibility = View.VISIBLE
             binding.proesetitle.visibility = View.VISIBLE
@@ -62,8 +73,6 @@ class InsertStoryFragment : Fragment() {
         binding.btnbacktohome.setOnClickListener {
             backToHome()
         }
-
-        return binding.root
     }
 
     private fun showResultCamera(){
@@ -76,8 +85,6 @@ class InsertStoryFragment : Fragment() {
 
 
     private suspend fun uploadResult(){
-
-
         val desc = binding.descarea.text
             .toString()
             .toRequestBody("text/plain".toMediaType())
@@ -103,7 +110,7 @@ class InsertStoryFragment : Fragment() {
                         lifecycleScope.launch {
                             delay(2000L)
                             startActivity(Intent(requireContext(),MainActivity::class.java))
-                            activity?.finish()
+                            activity?.finishAffinity()
                         }
                     }
                     is Result.Error->{

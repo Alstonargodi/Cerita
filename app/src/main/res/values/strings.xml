@@ -64,5 +64,6 @@
     <string name="Home_empty">No data, looks no one add their story</string>
     <!--detail activity-->
     <string name="Detail_title"> Story</string>
+    <string name="rotatecamera">rotatecamera</string>
 
 </resources>

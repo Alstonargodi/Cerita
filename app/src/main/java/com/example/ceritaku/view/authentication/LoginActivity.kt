@@ -7,39 +7,47 @@ import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
-import com.example.ceritaku.data.local.UserPrefrencesConfig
-import com.example.ceritaku.data.local.entity.UserDetailModel
+import com.example.ceritaku.data.local.UserPrefrences
+import com.example.ceritaku.data.local.dataStore
 import com.example.ceritaku.databinding.ActivityLoginBinding
 import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.view.componen.PasswordBoxCustom
 import com.example.ceritaku.viewmodel.AuthViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
+import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
+import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
-@Suppress("SameParameterValue")
+
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding : ActivityLoginBinding
     private val viewModel : AuthViewModel by viewModels{
         VModelFactory.getInstance()
     }
-    private var userDetailModel: UserDetailModel = UserDetailModel()
-    private lateinit var userPreferenceConfig: UserPrefrencesConfig
+    private lateinit var prefViewModel : SettingPrefViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        userPreferenceConfig = UserPrefrencesConfig(this)
+
+
+        prefViewModel = ViewModelProvider(this,
+            PrefViewModelFactory(UserPrefrences.getInstance(dataStore))
+        )[SettingPrefViewModel::class.java]
+
+
         setEditTextPassword()
 
 
         binding.btnlogin.setOnClickListener {
             sessionChecker()
-
         }
 
         binding.register.setOnClickListener {
@@ -52,14 +60,14 @@ class LoginActivity : AppCompatActivity() {
 
     private fun boxChecker(): Boolean{
         val email = binding.email.text.toString().trim()
-        val password = binding.password.text
+        val password = binding.password.text.toString()
 
         when {
             email.isEmpty() -> {
                 showMessage("need email")
                 return true
             }
-            password!!.isEmpty() -> {
+            password.isEmpty() -> {
                 showMessage("need password")
                 return true
             }
@@ -70,21 +78,19 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun sessionChecker(){
-        userDetailModel = userPreferenceConfig.getUserDetail()
-        val curSession = userDetailModel.name
-
-
-        if (curSession.isNullOrEmpty()){
-            if (boxChecker()){
-                showMessage(getString(R.string.Login_error))
+        prefViewModel.getUserName().observe(this){ respon->
+            if (respon.isNullOrEmpty()){
+                if (boxChecker()){
+                    showMessage(getString(R.string.Login_error))
+                }else{
+                    lifecycleScope.launch { login() }
+                }
             }else{
-                lifecycleScope.launch { login() }
+                startActivity(
+                    Intent(this,MainActivity::class.java)
+                )
+                finishAffinity()
             }
-        }else{
-            startActivity(
-                Intent(this,MainActivity::class.java)
-            )
-            finishAffinity()
         }
     }
 
@@ -103,7 +109,6 @@ class LoginActivity : AppCompatActivity() {
                         it.data.loginResult.name,
                         it.data.loginResult.token,
                         onBoard = true,
-                        theme = false
                     )
                     showMessage("welcome + ${it.data.loginResult.name}")
                     nextPageSucess()
@@ -121,17 +126,12 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUserLogin(name : String, token : String, onBoard : Boolean, theme : Boolean){
-        try {
-            val userPreferences = UserPrefrencesConfig(this)
-            userDetailModel.name = name
-            userDetailModel.token = token
-            userDetailModel.onBoard = onBoard
-            userDetailModel.theme = theme
-            userPreferences.setUserDetail(userDetailModel)
-        }catch (e : Exception){
-            Log.d(tag, e.message.toString())
-        }
+    private fun saveUserLogin(name : String, token : String, onBoard : Boolean){
+        prefViewModel.saveThemeSetting(
+            onBoard,
+            name,
+            token
+        )
     }
 
     private fun nextPageSucess(){

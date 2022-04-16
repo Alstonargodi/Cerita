@@ -70,4 +70,5 @@
     <string name="Home_empty">Veri yok, görünüşe göre kimse hikayesini eklemiyor</string>
     <!--detail activity-->
     <string name="Detail_title"> Story</string>
+    <string name="rotatecamera">rotatecamera</string>
 </resources>

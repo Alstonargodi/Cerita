@@ -7,33 +7,38 @@ import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.ceritaku.MainActivity
-import com.example.ceritaku.data.local.UserPrefrencesConfig
-import com.example.ceritaku.data.local.entity.UserDetailModel
+import com.example.ceritaku.data.local.UserPrefrences
+import com.example.ceritaku.data.local.dataStore
 import com.example.ceritaku.databinding.ActivityRegisterBinding
 import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.view.componen.PasswordBoxCustom
 import com.example.ceritaku.viewmodel.AuthViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
+import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
+import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
-@Suppress("SameParameterValue")
+
 class RegisterActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRegisterBinding
     private val viewModel : AuthViewModel by viewModels{
         VModelFactory.getInstance()
     }
-    private var userDetailModel: UserDetailModel = UserDetailModel()
-    private lateinit var userPreferenceConfig: UserPrefrencesConfig
-
+    private lateinit var prefViewModel : SettingPrefViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        userPreferenceConfig = UserPrefrencesConfig(this)
+
+        prefViewModel = ViewModelProvider(this,
+            PrefViewModelFactory(UserPrefrences.getInstance(dataStore))
+        )[SettingPrefViewModel::class.java]
+
         setEditTextPassword()
 
         binding.btnregister.setOnClickListener {
@@ -109,7 +114,6 @@ class RegisterActivity : AppCompatActivity() {
                         it.data.loginResult.name,
                         it.data.loginResult.token,
                         true,
-                        theme = false
                     )
                     showMessage("welcome + ${it.data.loginResult.name}")
                     startActivity(Intent(this, MainActivity::class.java))
@@ -128,17 +132,12 @@ class RegisterActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveUserLogin(name : String, token : String, onBoard : Boolean, theme : Boolean){
-        try {
-            val userPreferences = UserPrefrencesConfig(this)
-            userDetailModel.name = name
-            userDetailModel.token = token
-            userDetailModel.onBoard = onBoard
-            userDetailModel.theme = theme
-            userPreferences.setUserDetail(userDetailModel)
-        }catch (e : Exception){
-            Log.d(tag, "fail ${e.message}")
-        }
+    private fun saveUserLogin(name : String, token : String, onBoard : Boolean){
+        prefViewModel.saveThemeSetting(
+            onBoard,
+            name,
+            token
+        )
     }
 
     private fun setEditTextPassword(){
@@ -164,7 +163,6 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     companion object{
-        const val tag = "RegisterAcitivy"
         const val invalid = "HTTP 400 Bad Requesttry again"
     }
 }
