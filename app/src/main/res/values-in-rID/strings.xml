@@ -71,4 +71,7 @@
     <!--detail activity-->
     <string name="Detail_title"> Story</string>
     <string name="rotatecamera">rotatecamera</string>
+
+    <string name="tabone">List</string>
+    <string name="tabtwo">Maps</string>
 </resources>

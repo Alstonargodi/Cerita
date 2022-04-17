@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import com.example.ceritaku.databinding.ActivityMainBinding
 import com.example.ceritaku.view.home.HomeFragment
+import com.example.ceritaku.view.home.maps.MapsFragment
 import com.example.ceritaku.view.profile.ProfileFragment
 import com.example.ceritaku.view.upload.CameraFragment
 
@@ -17,6 +18,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
 
         binding.bottommenu.visibility = View.VISIBLE
         binding.bottommenu.setOnItemSelectedListener{

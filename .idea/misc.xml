@@ -24,9 +24,11 @@
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_add_story.xml" value="0.29270833333333335" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_camera.xml" value="0.33" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_detail_story.xml" value="0.15" />
-        <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_home.xml" value="0.15" />
+        <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_home.xml" value="0.2037037037037037" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_inert_new_story.xml" value="0.33" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_insertstory.xml" value="0.33" />
+        <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_list_story.xml" value="0.22418478260869565" />
+        <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_maps.xml" value="0.26403985507246375" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_new_story_result.xml" value="0.33" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_profile.xml" value="0.33" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/item_story.xml" value="0.25" />
@@ -34,6 +36,7 @@
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/layout_board2.xml" value="0.28306159420289856" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/layout_board3.xml" value="0.24094202898550723" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/layout_empty.xml" value="0.29270833333333335" />
+        <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/layout_loading.xml" value="0.1" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/layout_nodata.xml" value="0.29270833333333335" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/layout_notfound.xml" value="0.29270833333333335" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/menu/bottom_menu.xml" value="0.3125" />
