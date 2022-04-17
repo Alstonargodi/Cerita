@@ -13,10 +13,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
-import com.example.ceritaku.data.local.preferences.UserPrefrencesConfig
-import com.example.ceritaku.data.local.preferences.entity.UserDetailModel
-import com.example.ceritaku.data.local.store.UserPrefrences
-import com.example.ceritaku.data.local.store.dataStore
+import com.example.ceritaku.data.local.UserPrefrences
+import com.example.ceritaku.data.local.dataStore
 import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.databinding.FragmentInsertstoryBinding
 import com.example.ceritaku.view.utils.Utils.reduceImageSize

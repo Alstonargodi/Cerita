@@ -2,7 +2,7 @@ package com.example.ceritaku.viewmodel.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.ceritaku.data.local.store.UserPrefrences
+import com.example.ceritaku.data.local.UserPrefrences
 
 class PrefViewModelFactory(private val pref : UserPrefrences)
     : ViewModelProvider.NewInstanceFactory(){

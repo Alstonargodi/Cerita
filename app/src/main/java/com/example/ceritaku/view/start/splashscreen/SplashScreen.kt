@@ -10,10 +10,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
-import com.example.ceritaku.data.local.preferences.UserPrefrencesConfig
-import com.example.ceritaku.data.local.preferences.entity.UserDetailModel
-import com.example.ceritaku.data.local.store.UserPrefrences
-import com.example.ceritaku.data.local.store.dataStore
+import com.example.ceritaku.data.local.UserPrefrences
+import com.example.ceritaku.data.local.dataStore
 import com.example.ceritaku.view.authentication.LoginActivity
 import com.example.ceritaku.view.start.onboarding.OnBoardingActivity
 import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
@@ -22,12 +20,12 @@ import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
 @SuppressLint("CustomSplashScreen")
 class SplashScreen : AppCompatActivity() {
     private lateinit var prefViewModel : SettingPrefViewModel
-    private lateinit var userPreferenceConfig: UserPrefrencesConfig
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash_screen)
-        userPreferenceConfig = UserPrefrencesConfig(this)
+
 
         prefViewModel = ViewModelProvider(this,
             PrefViewModelFactory(UserPrefrences.getInstance(dataStore))
