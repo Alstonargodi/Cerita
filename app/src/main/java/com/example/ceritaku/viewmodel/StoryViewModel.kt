@@ -19,6 +19,9 @@ class StoryViewModel(private val apiRepository: ApiRepository): ViewModel() {
         apiRepository.getStoriesList(auth).cachedIn(viewModelScope)
 
 
+    suspend fun getMapsStories(page : Int,auth : String) =
+        apiRepository.getLocStories(page, auth)
+
     suspend fun postStory(file : MultipartBody.Part, desc : RequestBody, lat : Float, lon : Float, auth : Any) =
         apiRepository.postStory(file, desc, lat, lon,auth)
 

@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import com.example.ceritaku.data.local.UserPrefrences
-import com.example.ceritaku.data.local.dataStore
+import com.example.ceritaku.data.local.datastore.UserPrefrences
+import com.example.ceritaku.data.local.datastore.dataStore
 import com.example.ceritaku.databinding.FragmentProfileBinding
 import com.example.ceritaku.view.authentication.LoginActivity
 import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory

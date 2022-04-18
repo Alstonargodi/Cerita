@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.ceritaku.data.local.UserPrefrences
+import com.example.ceritaku.data.local.datastore.UserPrefrences
 import kotlinx.coroutines.launch
 
 class SettingPrefViewModel(private val prefrences : UserPrefrences): ViewModel() {

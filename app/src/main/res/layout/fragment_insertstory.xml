@@ -52,6 +52,7 @@
                 android:gravity="center|start"
                 android:includeFontPadding="false"
                 android:text="@string/insert_title"
+                android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -81,29 +82,30 @@
         android:id="@+id/imageView3"
         android:layout_width="0dp"
         android:layout_height="250dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/insert_photoresult"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detailtoolbar2"
-        tools:src="@tools:sample/avatars"
-        android:contentDescription="@string/insert_photoresult" />
+        tools:src="@tools:sample/avatars" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="0dp"
-        android:layout_height="24dp"
+        android:layout_height="32dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="10dp"
         android:fontFamily="@font/notomedium"
         android:includeFontPadding="false"
         android:text="@string/insert_description"
+        android:textColor="#F6F5F5"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.139"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
+        app:layout_constraintTop_toBottomOf="@+id/uploadlocation" />
 
     <com.example.ceritaku.view.componen.DescBoxCustom
         android:id="@+id/descarea"
@@ -114,9 +116,10 @@
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="100dp"
         android:autofillHints="name"
-        android:background="#00FFFFFF"
+        android:background="#393939"
         android:gravity="top"
         android:inputType="text"
+        android:padding="5dp"
         android:singleLine="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -152,4 +155,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView3"
         app:layout_constraintVertical_bias="0.325" />
+
+    <TextView
+        android:id="@+id/uploadlocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:fontFamily="@font/notomedium"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:text="Add Location"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 </androidx.constraintlayout.widget.ConstraintLayout>

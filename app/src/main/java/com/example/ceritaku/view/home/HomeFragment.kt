@@ -1,36 +1,14 @@
 package com.example.ceritaku.view.home
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.paging.PagingData
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ceritaku.R
-import com.example.ceritaku.data.local.UserPrefrences
-import com.example.ceritaku.data.local.dataStore
-import com.example.ceritaku.data.remote.response.story.Story
-import com.example.ceritaku.data.remote.response.story.StoryResponse
-import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.databinding.FragmentHomeBinding
-import com.example.ceritaku.databinding.LayoutBoard1Binding
-import com.example.ceritaku.view.detail.DetailStoryFragment
 import com.example.ceritaku.view.home.adapter.SectionPagerAdapter
-import com.example.ceritaku.view.home.adapter.StoriesRevHomeAdapter
-import com.example.ceritaku.view.utils.paging.LoadingListAdapter
-import com.example.ceritaku.view.utils.paging.StoryListAdapter
-import com.example.ceritaku.viewmodel.StoryViewModel
-import com.example.ceritaku.viewmodel.VModelFactory
-import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
-import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
 import com.google.android.material.tabs.TabLayoutMediator
-import kotlinx.coroutines.launch
-
 
 
 class HomeFragment : Fragment() {

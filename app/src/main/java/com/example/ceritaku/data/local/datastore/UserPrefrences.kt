@@ -1,4 +1,4 @@
-package com.example.ceritaku.data.local
+package com.example.ceritaku.data.local.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore

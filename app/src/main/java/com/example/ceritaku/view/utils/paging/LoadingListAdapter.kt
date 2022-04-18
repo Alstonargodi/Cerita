@@ -12,15 +12,13 @@ class LoadingListAdapter(private val retry: () -> Unit)
     : LoadStateAdapter<LoadingListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(
-        parent: ViewGroup, loadState: LoadState)
-            : ViewHolder {
+        parent: ViewGroup, loadState: LoadState): ViewHolder {
         val binding = LayoutLoadingBinding.inflate(
             LayoutInflater.from(parent.context),parent,false)
         return ViewHolder(binding, retry)
     }
 
-    override fun onBindViewHolder(
-        holder: ViewHolder, loadState: LoadState) {
+    override fun onBindViewHolder(holder: ViewHolder, loadState: LoadState) {
         holder.bind(loadState)
     }
 

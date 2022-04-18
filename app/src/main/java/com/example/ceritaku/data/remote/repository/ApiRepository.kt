@@ -2,10 +2,8 @@ package com.example.ceritaku.data.remote.repository
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.liveData
+import androidx.paging.*
+import com.example.ceritaku.data.local.mediator.database.MediatorDatabase
 import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.data.remote.response.login.LoginResponse
 import com.example.ceritaku.data.remote.response.register.RegisterResponse
@@ -14,10 +12,11 @@ import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.data.remote.response.story.StoryResponse
 import com.example.ceritaku.data.remote.service.ApiService
 import com.example.ceritaku.view.utils.paging.StoryPagingSource
+import com.example.ceritaku.view.utils.paging.StoryRemoteMediator
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-class ApiRepository(private val apiService: ApiService) {
+class ApiRepository(val mediatorDatabase: MediatorDatabase,private val apiService: ApiService) {
 
 
     suspend fun postLogin(email : String,password : String): LiveData<Result<LoginResponse>> =
@@ -41,11 +40,23 @@ class ApiRepository(private val apiService: ApiService) {
         }
     }
 
+    suspend fun getLocStories(page : Int,auth : String): LiveData<Result<StoryResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val respon = apiService.getMapsStories(page,auth)
+            emit(Result.Sucess(respon))
+        }catch (e : Exception){
+            emit(Result.Error(e.message.toString()))
+        }
+    }
 
+
+    @OptIn(ExperimentalPagingApi::class)
     fun getStoriesList(auth : String): LiveData<PagingData<Story>>{
         return Pager(
             config = PagingConfig(5),
-            pagingSourceFactory = { StoryPagingSource(apiService,auth)}
+//            remoteMediator = StoryRemoteMediator(mediatorDatabase,apiService,auth),
+            pagingSourceFactory = { StoryPagingSource(apiService, auth)}
         ).liveData
     }
 

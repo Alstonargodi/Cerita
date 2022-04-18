@@ -12,13 +12,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ceritaku.R
-import com.example.ceritaku.data.local.UserPrefrences
-import com.example.ceritaku.data.local.dataStore
+import com.example.ceritaku.data.local.datastore.UserPrefrences
+import com.example.ceritaku.data.local.datastore.dataStore
 import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.databinding.FragmentListStoryBinding
 import com.example.ceritaku.databinding.LayoutBoard1Binding
+import com.example.ceritaku.view.detail.DetailStoryFragment
 import com.example.ceritaku.view.utils.paging.LoadingListAdapter
-import com.example.ceritaku.view.utils.paging.StoryListAdapter
+import com.example.ceritaku.view.home.adapter.StoryListAdapter
+import com.example.ceritaku.view.home.maps.MapsFragment
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
@@ -27,7 +29,7 @@ import kotlinx.coroutines.launch
 
 
 class ListStoryFragment : Fragment() {
-    private val viewModel : StoryViewModel by viewModels{ VModelFactory.getInstance() }
+    private val viewModel : StoryViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
     private lateinit var binding: FragmentListStoryBinding
     private lateinit var bindingError : LayoutBoard1Binding
 
@@ -54,6 +56,8 @@ class ListStoryFragment : Fragment() {
             }
         }
 
+
+
         return binding.root
     }
 
@@ -73,6 +77,20 @@ class ListStoryFragment : Fragment() {
         rViewAdapter.submitData(lifecycle,data)
 
         binding.listHomeStory.layoutManager = LinearLayoutManager(requireContext())
+
+        rViewAdapter.onItemClickDetail(object : StoryListAdapter.OnClickDetail{
+            override fun onClickDetail(data: Story) {
+                val bundle = Bundle()
+                val fragment = DetailStoryFragment()
+                bundle.putParcelable(extra_key_detail,data)
+                fragment.arguments = bundle
+                val supFragment = requireActivity().supportFragmentManager
+                supFragment.beginTransaction()
+                    .replace(R.id.fragmentview,fragment)
+                    .addToBackStack(null)
+                    .commit()
+            }
+        })
 
 
     }

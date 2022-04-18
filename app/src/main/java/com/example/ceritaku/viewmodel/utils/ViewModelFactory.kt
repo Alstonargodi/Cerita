@@ -1,12 +1,15 @@
 package com.example.ceritaku.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.ceritaku.data.local.mediator.database.MediatorDatabase
 import com.example.ceritaku.data.remote.repository.ApiRepository
 import com.example.ceritaku.data.remote.injection.Injection
 
 @Suppress("UNCHECKED_CAST")
-class VModelFactory private constructor(private val repository : ApiRepository):
+class VModelFactory private constructor(
+    private val repository : ApiRepository):
     ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -21,9 +24,9 @@ class VModelFactory private constructor(private val repository : ApiRepository):
     companion object{
         @Volatile
         private var instance : VModelFactory? = null
-        fun getInstance(): VModelFactory =
+        fun getInstance(context: Context): VModelFactory =
             instance ?: synchronized(this){
-                instance ?: VModelFactory(Injection.provideRepository())
+                instance ?: VModelFactory(Injection.provideRepository(context))
             }.also { instance = it }
     }
 }

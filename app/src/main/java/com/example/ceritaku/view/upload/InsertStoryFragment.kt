@@ -1,20 +1,26 @@
 package com.example.ceritaku.view.upload
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
-import com.example.ceritaku.data.local.UserPrefrences
-import com.example.ceritaku.data.local.dataStore
+import com.example.ceritaku.data.local.datastore.UserPrefrences
+import com.example.ceritaku.data.local.datastore.dataStore
 import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.databinding.FragmentInsertstoryBinding
 import com.example.ceritaku.view.utils.Utils.reduceImageSize
@@ -23,6 +29,8 @@ import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
 import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
@@ -34,11 +42,29 @@ import java.io.File
 
 
 class InsertStoryFragment : Fragment() {
+
     private lateinit var binding : FragmentInsertstoryBinding
-    private val viewModel : StoryViewModel by viewModels{ VModelFactory.getInstance() }
+    private val viewModel : StoryViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
     private lateinit var prefViewModel : SettingPrefViewModel
     private var getFile: File? = null
     private var userToken = ""
+
+
+
+    private val runningQOrLater =
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
+
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private val requestBackgroundLocationPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                currentLocation()
+            }
+        }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +76,7 @@ class InsertStoryFragment : Fragment() {
             PrefViewModelFactory(UserPrefrences.getInstance(requireContext().dataStore))
         )[SettingPrefViewModel::class.java]
 
+
         prefViewModel.getUserToken().observe(viewLifecycleOwner){ userToken = "Bearer $it" }
 
         showResultCamera()
@@ -57,6 +84,7 @@ class InsertStoryFragment : Fragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.btnupload.setOnClickListener {
@@ -71,6 +99,10 @@ class InsertStoryFragment : Fragment() {
         binding.btnbacktohome.setOnClickListener {
             backToHome()
         }
+
+        currentLocation()
+
+
     }
 
     private fun showResultCamera(){
@@ -95,6 +127,7 @@ class InsertStoryFragment : Fragment() {
                 tempFile.name,
                 requestFile
             )
+
 
             viewModel.postStory(multiPart, desc, 0f, 0f,userToken).observe(viewLifecycleOwner){
                 when(it){
@@ -137,6 +170,43 @@ class InsertStoryFragment : Fragment() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun currentLocation(){
+        if (checkPermission()){
+            OnMapReadyCallback{
+                it.isMyLocationEnabled = true
+                it.setOnMyLocationChangeListener {
+                    Log.d("long",it.longitude.toString())
+                    Log.d("lat",it.latitude.toString())
+                    binding.uploadlocation.text = it.latitude.toString()
+                }
+            }
+        }else{
+            requestBackgroundLocationPermissionLauncher.launch(
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    private fun checkPermission():Boolean{
+        val foregroundLocationApproved = checkPermission(
+            Manifest.permission.ACCESS_FINE_LOCATION)
+        val backgroundPermissionApproved =
+            if (runningQOrLater) {
+                checkPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+            } else {
+                true
+            }
+        return foregroundLocationApproved && backgroundPermissionApproved
+    }
+
+    private fun checkPermission(permission: String): Boolean {
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
 
 
 

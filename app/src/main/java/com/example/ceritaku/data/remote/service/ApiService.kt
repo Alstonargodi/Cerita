@@ -35,6 +35,12 @@ interface ApiService {
         @Header("Authorization") auth: Any
     ): StoryResponse
 
+    @GET("stories")
+    suspend fun getMapsStories(
+        @Query("location") page: Int,
+        @Header("Authorization") auth: Any
+    ): StoryResponse
+
     @Multipart
     @POST("stories")
     suspend fun postStory(

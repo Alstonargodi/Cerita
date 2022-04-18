@@ -11,8 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
-import com.example.ceritaku.data.local.UserPrefrences
-import com.example.ceritaku.data.local.dataStore
+import com.example.ceritaku.data.local.datastore.UserPrefrences
+import com.example.ceritaku.data.local.datastore.dataStore
 import com.example.ceritaku.databinding.ActivityLoginBinding
 import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.view.componen.PasswordBoxCustom
@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding : ActivityLoginBinding
     private val viewModel : AuthViewModel by viewModels{
-        VModelFactory.getInstance()
+        VModelFactory.getInstance(this)
     }
     private lateinit var prefViewModel : SettingPrefViewModel
 

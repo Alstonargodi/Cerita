@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModelProvider
 import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
-import com.example.ceritaku.data.local.UserPrefrences
-import com.example.ceritaku.data.local.dataStore
+import com.example.ceritaku.data.local.datastore.UserPrefrences
+import com.example.ceritaku.data.local.datastore.dataStore
 import com.example.ceritaku.view.authentication.LoginActivity
 import com.example.ceritaku.view.start.onboarding.OnBoardingActivity
 import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory

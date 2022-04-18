@@ -14,7 +14,9 @@ import androidx.annotation.RequiresApi
 import com.example.ceritaku.R
 import java.io.*
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -35,11 +37,10 @@ object Utils {
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun dateFormat(created: String): String {
-        val inputFormat: DateTimeFormatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.ENGLISH)
-        val outputFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyy", Locale.ENGLISH)
-        val date: LocalDate = LocalDate.parse(created, inputFormat)
-        return outputFormat.format(date)
+        val instant = Instant.parse(created)
+        val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy - HH:mm")
+            .withZone(ZoneId.of(TimeZone.getDefault().id))
+        return formatter.format(instant)
     }
 
     fun createFile(application: Application): File {
