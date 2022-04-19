@@ -1,6 +1,7 @@
 package com.example.ceritaku.view.home.liststory
 
 import android.os.Bundle
+import android.util.Log
 
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -25,6 +26,7 @@ import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
 import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -51,30 +53,30 @@ class ListStoryFragment : Fragment() {
 
         prefViewModel.getUserToken().observe(viewLifecycleOwner){
             lifecycleScope.launch {
-                getStoryList("Bearer $it")
+                showRecyclerList("Bearer $it")
                 userToken = "Bearer $it"
             }
         }
-
-
-
         return binding.root
     }
 
-    private fun getStoryList(userToken : String){
-        viewModel.getStoryList(userToken).observe(viewLifecycleOwner){
-            showRecyclerList(it)
-        }
-    }
 
-    private  fun showRecyclerList(data : PagingData<Story>){
+
+    private suspend fun showRecyclerList(userToken : String){
         val rViewAdapter = StoryListAdapter()
         binding.listHomeStory.adapter = rViewAdapter.withLoadStateFooter(
             footer = LoadingListAdapter{
                 rViewAdapter.retry()
             }
         )
-        rViewAdapter.submitData(lifecycle,data)
+        viewModel.getStoryList(userToken).observe(viewLifecycleOwner){
+            rViewAdapter.submitData(requireActivity().lifecycle,it)
+        }
+//        viewModel.getStoryList(userToken).collect{
+//            rViewAdapter.submitData(lifecycle,it)
+//            Log.d("data",it.toString())
+//        }
+
 
         binding.listHomeStory.layoutManager = LinearLayoutManager(requireContext())
 
@@ -95,33 +97,6 @@ class ListStoryFragment : Fragment() {
 
     }
 
-    private fun fetchError(message : String){
-        binding.layoutEmpty.apply {
-            root.visibility = View.VISIBLE
-            tverror.text = message
-            imgerror.setImageResource(R.drawable.ic_error_connect)
-            imgerror.setOnClickListener {
-                lifecycleScope.launch {
-                    getStoryList(userToken)
-                    root.visibility = View.GONE
-                }
-            }
-        }
-    }
-
-    private fun emptyData(message : String){
-        binding.layoutEmpty.apply {
-            root.visibility = View.VISIBLE
-            tverror.text = message
-            imgerror.setImageResource(R.drawable.ic_notfound)
-            imgerror.setOnClickListener {
-                lifecycleScope.launch {
-                    getStoryList(userToken)
-                    root.visibility = View.GONE
-                }
-            }
-        }
-    }
 
 
 

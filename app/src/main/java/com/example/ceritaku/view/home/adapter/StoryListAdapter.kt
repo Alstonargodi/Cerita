@@ -1,6 +1,7 @@
 package com.example.ceritaku.view.home.adapter
 
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
@@ -76,10 +77,8 @@ class StoryListAdapter
                 oldItem: Story,
                 newItem: Story
             ): Boolean {
-                return oldItem.id == newItem.id
+                return oldItem == newItem
             }
-
-
         }
     }
 

@@ -30,7 +30,7 @@ class LoadingListAdapter(private val retry: () -> Unit)
 
         fun bind(loadState: LoadState){
             if (loadState is LoadState.Error){
-                binding.errorMsg.text = loadState.error.localizedMessage
+                binding.errorMsg.text = loadState.error.toString()
             }
             binding.progressBar.isVisible = loadState is LoadState.Loading
             binding.retryButton.isVisible = loadState is LoadState.Error

@@ -11,8 +11,8 @@ import com.example.ceritaku.data.remote.response.story.NewStoryResponse
 import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.data.remote.response.story.StoryResponse
 import com.example.ceritaku.data.remote.service.ApiService
-import com.example.ceritaku.view.utils.paging.StoryPagingSource
 import com.example.ceritaku.view.utils.paging.StoryRemoteMediator
+import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
@@ -52,12 +52,15 @@ class ApiRepository(val mediatorDatabase: MediatorDatabase,private val apiServic
 
 
     @OptIn(ExperimentalPagingApi::class)
-    fun getStoriesList(auth : String): LiveData<PagingData<Story>>{
+    suspend fun getStoriesList(auth : String): Flow<PagingData<Story>> {
         return Pager(
-            config = PagingConfig(5),
-//            remoteMediator = StoryRemoteMediator(mediatorDatabase,apiService,auth),
-            pagingSourceFactory = { StoryPagingSource(apiService, auth)}
-        ).liveData
+            config = PagingConfig(
+                pageSize = 5,
+                enablePlaceholders = true,
+            ),
+            remoteMediator = StoryRemoteMediator(mediatorDatabase,apiService,auth),
+            pagingSourceFactory = { mediatorDatabase.storyDao().getAllStory()}
+        ).flow
     }
 
     suspend fun postStory(file : MultipartBody.Part, desc : RequestBody, lat : Float, lon : Float, auth : Any)
