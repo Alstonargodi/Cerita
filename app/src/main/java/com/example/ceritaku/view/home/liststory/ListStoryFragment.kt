@@ -1,8 +1,6 @@
 package com.example.ceritaku.view.home.liststory
 
 import android.os.Bundle
-import android.util.Log
-
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ceritaku.R
 import com.example.ceritaku.data.local.datastore.UserPrefrences
@@ -21,12 +18,10 @@ import com.example.ceritaku.databinding.LayoutBoard1Binding
 import com.example.ceritaku.view.detail.DetailStoryFragment
 import com.example.ceritaku.view.utils.paging.LoadingListAdapter
 import com.example.ceritaku.view.home.adapter.StoryListAdapter
-import com.example.ceritaku.view.home.maps.MapsFragment
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
 import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
@@ -41,7 +36,7 @@ class ListStoryFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentListStoryBinding.inflate(layoutInflater)
         bindingError = LayoutBoard1Binding.inflate(layoutInflater)
 
@@ -72,10 +67,6 @@ class ListStoryFragment : Fragment() {
         viewModel.getStoryList(userToken).observe(viewLifecycleOwner){
             rViewAdapter.submitData(requireActivity().lifecycle,it)
         }
-//        viewModel.getStoryList(userToken).collect{
-//            rViewAdapter.submitData(lifecycle,it)
-//            Log.d("data",it.toString())
-//        }
 
 
         binding.listHomeStory.layoutManager = LinearLayoutManager(requireContext())
@@ -99,11 +90,7 @@ class ListStoryFragment : Fragment() {
 
 
 
-
     companion object{
-        const val TAG = "HomeFragment"
-        const val page = 0
-        const val size = 100
         const val extra_key_detail = "detailstory"
     }
 

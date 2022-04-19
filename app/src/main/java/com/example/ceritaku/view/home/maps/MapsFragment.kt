@@ -1,10 +1,7 @@
 package com.example.ceritaku.view.home.maps
 
 import androidx.fragment.app.Fragment
-
 import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -19,19 +16,15 @@ import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.data.remote.utils.Result
 import com.example.ceritaku.view.detail.DetailStoryFragment
 import com.example.ceritaku.view.home.liststory.ListStoryFragment
-import com.example.ceritaku.view.upload.InsertStoryFragment
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
 import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
-
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.launch
 
@@ -80,6 +73,7 @@ class MapsFragment : Fragment(){
     }
 
 
+
     private fun showMapStories(listData : List<Story>){
         val callback = OnMapReadyCallback { googleMap ->
 
@@ -89,7 +83,6 @@ class MapsFragment : Fragment(){
                     MarkerOptions()
                         .position(position)
                         .title(data.name)
-                        .snippet(data.toString())
                 )
                 googleMap.setOnInfoWindowClickListener {
 
@@ -122,6 +115,7 @@ class MapsFragment : Fragment(){
         mapFragment?.getMapAsync(callback)
     }
 
+    //TODO 1.2 Maps Detail Story
     private fun toDetailPage(data : Story){
         val bundle = Bundle()
         val fragment = DetailStoryFragment()
@@ -134,10 +128,6 @@ class MapsFragment : Fragment(){
             .commit()
     }
 
-    companion object{
-        const val CURRENT_LOC_LONG = "value_long"
-        const val CURRENT_LOC_LAT = "value_lat"
-    }
 
 
 }

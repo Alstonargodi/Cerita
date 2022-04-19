@@ -41,30 +41,16 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 
 
-class InsertStoryFragment : Fragment() {
+class InsertStoryFragment : Fragment(){
 
+    //TODO 2.5 insert Current Location
     private lateinit var binding : FragmentInsertstoryBinding
     private val viewModel : StoryViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
     private lateinit var prefViewModel : SettingPrefViewModel
     private var getFile: File? = null
     private var userToken = ""
 
-
-
-    private val runningQOrLater =
-        Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-
-
-    @RequiresApi(Build.VERSION_CODES.Q)
-    private val requestBackgroundLocationPermissionLauncher =
-        registerForActivityResult(
-            ActivityResultContracts.RequestPermission()
-        ) { isGranted: Boolean ->
-            if (isGranted) {
-                currentLocation()
-            }
-        }
-
+    private lateinit var mMap : GoogleMap
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -99,10 +85,6 @@ class InsertStoryFragment : Fragment() {
         binding.btnbacktohome.setOnClickListener {
             backToHome()
         }
-
-        currentLocation()
-
-
     }
 
     private fun showResultCamera(){
@@ -170,36 +152,7 @@ class InsertStoryFragment : Fragment() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
-    private fun currentLocation(){
-        if (checkPermission()){
-            OnMapReadyCallback{
-                it.isMyLocationEnabled = true
-                it.setOnMyLocationChangeListener {
-                    Log.d("long",it.longitude.toString())
-                    Log.d("lat",it.latitude.toString())
-                    binding.uploadlocation.text = it.latitude.toString()
-                }
-            }
-        }else{
-            requestBackgroundLocationPermissionLauncher.launch(
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
-        }
-    }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
-    private fun checkPermission():Boolean{
-        val foregroundLocationApproved = checkPermission(
-            Manifest.permission.ACCESS_FINE_LOCATION)
-        val backgroundPermissionApproved =
-            if (runningQOrLater) {
-                checkPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-            } else {
-                true
-            }
-        return foregroundLocationApproved && backgroundPermissionApproved
-    }
 
     private fun checkPermission(permission: String): Boolean {
         return ContextCompat.checkSelfPermission(
@@ -207,7 +160,6 @@ class InsertStoryFragment : Fragment() {
             permission
         ) == PackageManager.PERMISSION_GRANTED
     }
-
 
 
 
