@@ -9,6 +9,7 @@ import com.example.ceritaku.data.local.mediator.database.MediatorDatabase
 import com.example.ceritaku.data.local.mediator.keys.RemoteKeys
 import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.data.remote.service.ApiService
+import com.example.ceritaku.view.utils.wrapperIdling
 
 @OptIn(ExperimentalPagingApi::class)
 class StoryRemoteMediator(
@@ -71,32 +72,28 @@ class StoryRemoteMediator(
                 database.keysDao().insertAll(keys)
                 database.storyDao().insertStory(responseData)
             }
-            return MediatorResult.Success(
-                endOfPaginationReached = endOfPaginationReached)
+            return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
         } catch (exception: Exception) {
             return MediatorResult.Error(exception)
         }
     }
 
 
-    private suspend fun getRemoteKeyForLastItem(
-        state: PagingState<Int, Story>): RemoteKeys? {
+    private suspend fun getRemoteKeyForLastItem(state: PagingState<Int, Story>): RemoteKeys? {
         return state.pages.lastOrNull {
             it.data.isNotEmpty() }?.data?.lastOrNull()?.let { data ->
             database.keysDao().getRemoteKeysId(data.id)
         }
     }
 
-    private suspend fun getRemoteKeyForFirstItem(
-        state: PagingState<Int, Story>): RemoteKeys? {
+    private suspend fun getRemoteKeyForFirstItem(state: PagingState<Int, Story>): RemoteKeys? {
         return state.pages.firstOrNull {
             it.data.isNotEmpty() }?.data?.firstOrNull()?.let { data ->
             database.keysDao().getRemoteKeysId(data.id)
         }
     }
 
-    private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, Story>): RemoteKeys? {
+    private suspend fun getRemoteKeyClosestToCurrentPosition(state: PagingState<Int, Story>): RemoteKeys? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { id ->
                 database.keysDao().getRemoteKeysId(id)

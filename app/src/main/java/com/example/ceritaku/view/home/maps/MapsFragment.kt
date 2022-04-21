@@ -13,7 +13,7 @@ import com.example.ceritaku.R
 import com.example.ceritaku.data.local.datastore.UserPrefrences
 import com.example.ceritaku.data.local.datastore.dataStore
 import com.example.ceritaku.data.remote.response.story.Story
-import com.example.ceritaku.data.remote.utils.Result
+import com.example.ceritaku.data.remote.utils.MediatorResult
 import com.example.ceritaku.view.detail.DetailStoryFragment
 import com.example.ceritaku.view.home.liststory.ListStoryFragment
 import com.example.ceritaku.viewmodel.StoryViewModel
@@ -58,14 +58,14 @@ class MapsFragment : Fragment(){
     private suspend fun getMapsStories(token : String){
         viewModel.getMapsStories(1,token).observe(viewLifecycleOwner){respon ->
             when(respon){
-                is Result.Loading->{
+                is MediatorResult.Loading->{
                     Log.d("lokasi","loading")
                 }
-                is Result.Sucess->{
+                is MediatorResult.Sucess->{
                     Log.d("jumlah lokasi",respon.data.listStory.size.toString())
                     showMapStories(respon.data.listStory)
                 }
-                is Result.Error->{
+                is MediatorResult.Error->{
                     Log.d("lokasi","error")
                 }
             }

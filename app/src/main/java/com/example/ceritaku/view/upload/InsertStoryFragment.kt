@@ -1,16 +1,13 @@
 package com.example.ceritaku.view.upload
 
-import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -21,7 +18,7 @@ import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
 import com.example.ceritaku.data.local.datastore.UserPrefrences
 import com.example.ceritaku.data.local.datastore.dataStore
-import com.example.ceritaku.data.remote.utils.Result
+import com.example.ceritaku.data.remote.utils.MediatorResult
 import com.example.ceritaku.databinding.FragmentInsertstoryBinding
 import com.example.ceritaku.view.utils.Utils.reduceImageSize
 import com.example.ceritaku.view.utils.Utils.rotateBitmap
@@ -30,7 +27,6 @@ import com.example.ceritaku.viewmodel.VModelFactory
 import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
 import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
@@ -113,11 +109,11 @@ class InsertStoryFragment : Fragment(){
 
             viewModel.postStory(multiPart, desc, 0f, 0f,userToken).observe(viewLifecycleOwner){
                 when(it){
-                    is Result.Loading ->{
+                    is MediatorResult.Loading ->{
                         binding.pgbarupload.visibility = View.VISIBLE
                         showMessage("Uploading")
                     }
-                    is Result.Sucess->{
+                    is MediatorResult.Sucess->{
                         binding.pgbarupload.visibility = View.GONE
                         showMessage(it.data.message)
                         lifecycleScope.launch {
@@ -126,7 +122,7 @@ class InsertStoryFragment : Fragment(){
                             activity?.finishAffinity()
                         }
                     }
-                    is Result.Error->{
+                    is MediatorResult.Error->{
                         binding.pgbarupload.visibility = View.GONE
                         showMessage(it.error + "try again")
                     }

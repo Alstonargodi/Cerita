@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.databinding.ItemStoryBinding
 import com.example.ceritaku.view.utils.Utils
+import com.example.ceritaku.view.utils.wrapperIdling
 
 
 class StoryListAdapter
@@ -36,25 +37,26 @@ class StoryListAdapter
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val data = getItem(position)
-
-
         if (data !=null){
             holder.binding.apply {
-                val name = "u / ${data.name}"
-                tvStoriesNameop.text = name
-                tvStoriesDate.text = Utils.dateFormat(data.createdAt)
-                tvStoriesDesc.text = data.description
+                wrapperIdling {
+                    val name = "u / ${data.name}"
 
-                Glide.with(root.context)
-                    .load(data.photoUrl)
-                    .into(tvStoriesImg)
+                    tvStoriesNameop.text = name
+                    tvStoriesDate.text = Utils.dateFormat(data.createdAt)
+                    tvStoriesDesc.text = data.description
 
-                tvStoriesDesc.setOnClickListener {
-                    tvStoriesDesc.height = 200
-                }
+                    Glide.with(root.context)
+                        .load(data.photoUrl)
+                        .into(tvStoriesImg)
 
-                tvStoriesImg.setOnClickListener {
-                    onClickDetail.onClickDetail(data)
+                    tvStoriesDesc.setOnClickListener {
+                        tvStoriesDesc.height = 200
+                    }
+
+                    tvStoriesImg.setOnClickListener {
+                        onClickDetail.onClickDetail(data)
+                    }
                 }
             }
         }

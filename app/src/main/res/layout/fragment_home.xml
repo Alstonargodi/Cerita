@@ -56,7 +56,7 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayoutHome"
         android:layout_width="0dp"
-        android:layout_height="30dp"
+        android:layout_height="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/detailtoolbar">

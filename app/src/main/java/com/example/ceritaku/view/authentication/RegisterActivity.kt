@@ -13,7 +13,7 @@ import com.example.ceritaku.MainActivity
 import com.example.ceritaku.data.local.datastore.UserPrefrences
 import com.example.ceritaku.data.local.datastore.dataStore
 import com.example.ceritaku.databinding.ActivityRegisterBinding
-import com.example.ceritaku.data.remote.utils.Result
+import com.example.ceritaku.data.remote.utils.MediatorResult
 import com.example.ceritaku.view.componen.PasswordBoxCustom
 import com.example.ceritaku.viewmodel.AuthViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
@@ -75,11 +75,11 @@ class RegisterActivity : AppCompatActivity() {
         if(!boxChecker()){
             viewModel.postRegister(name, email, password).observe(this){
                 when(it){
-                    is Result.Loading ->{
+                    is MediatorResult.Loading ->{
                         binding.pgbarregister.visibility = View.VISIBLE
                     }
 
-                    is Result.Sucess ->{
+                    is MediatorResult.Sucess ->{
                         binding.pgbarregister.visibility = View.GONE
                         showMessage(it.data.message + " and welcome")
                         lifecycleScope.launch {
@@ -87,7 +87,7 @@ class RegisterActivity : AppCompatActivity() {
                         }
                     }
 
-                    is Result.Error ->{
+                    is MediatorResult.Error ->{
                         binding.pgbarregister.visibility = View.GONE
                         showMessage(it.error + "try again")
                     }
@@ -105,10 +105,10 @@ class RegisterActivity : AppCompatActivity() {
 
         viewModel.postLogin(email,password).observe(this){
             when(it){
-                is Result.Loading->{
+                is MediatorResult.Loading->{
                     binding.pgbarregister.visibility = View.VISIBLE
                 }
-                is Result.Sucess->{
+                is MediatorResult.Sucess->{
                     binding.pgbarregister.visibility = View.GONE
                     saveUserLogin(
                         it.data.loginResult.name,
@@ -119,7 +119,7 @@ class RegisterActivity : AppCompatActivity() {
                     startActivity(Intent(this, MainActivity::class.java))
                     finishAffinity()
                 }
-                is Result.Error->{
+                is MediatorResult.Error->{
                     binding.pgbarregister.visibility = View.GONE
                     if (it.error == invalid){
                         showMessage("Invalid form")

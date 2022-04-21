@@ -39,7 +39,7 @@
             android:name=".view.authentication.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".view.start.splashscreen.SplashScreen"
+            android:name=".view.start.splashscreen.SplashScreenActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

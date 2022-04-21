@@ -18,7 +18,7 @@ import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
 import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
 
 @SuppressLint("CustomSplashScreen")
-class SplashScreen : AppCompatActivity() {
+class SplashScreenActivity : AppCompatActivity() {
     private lateinit var prefViewModel : SettingPrefViewModel
 
 
@@ -41,20 +41,20 @@ class SplashScreen : AppCompatActivity() {
 
     private fun sessionChecker(){
         prefViewModel.apply {
-            getOnBoardStatus().observe(this@SplashScreen){ curSessionBoard ->
-                getUserName().observe(this@SplashScreen){  curSessionName ->
+            getOnBoardStatus().observe(this@SplashScreenActivity){ curSessionBoard ->
+                getUserName().observe(this@SplashScreenActivity){ curSessionName ->
                     if (curSessionBoard){
                         if (curSessionName != null) {
                             if (curSessionName.isEmpty()){
-                                startActivity(Intent(this@SplashScreen, LoginActivity::class.java))
+                                startActivity(Intent(this@SplashScreenActivity, LoginActivity::class.java))
                                 finishAffinity()
                             }else{
-                                startActivity(Intent(this@SplashScreen, MainActivity::class.java))
+                                startActivity(Intent(this@SplashScreenActivity, MainActivity::class.java))
                                 finishAffinity()
                             }
                         }
                     }else{
-                        startActivity(Intent(this@SplashScreen, OnBoardingActivity::class.java))
+                        startActivity(Intent(this@SplashScreenActivity, OnBoardingActivity::class.java))
                         finishAffinity()
                     }
                 }

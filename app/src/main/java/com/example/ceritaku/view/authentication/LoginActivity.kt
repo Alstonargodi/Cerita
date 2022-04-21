@@ -14,7 +14,7 @@ import com.example.ceritaku.R
 import com.example.ceritaku.data.local.datastore.UserPrefrences
 import com.example.ceritaku.data.local.datastore.dataStore
 import com.example.ceritaku.databinding.ActivityLoginBinding
-import com.example.ceritaku.data.remote.utils.Result
+import com.example.ceritaku.data.remote.utils.MediatorResult
 import com.example.ceritaku.view.componen.PasswordBoxCustom
 import com.example.ceritaku.viewmodel.AuthViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
@@ -100,10 +100,10 @@ class LoginActivity : AppCompatActivity() {
 
         viewModel.postLogin(email,password).observe(this){
             when(it){
-                is Result.Loading->{
+                is MediatorResult.Loading->{
                     binding.pgbarlogin.visibility = View.VISIBLE
                 }
-                is Result.Sucess->{
+                is MediatorResult.Sucess->{
                     binding.pgbarlogin.visibility = View.GONE
                     saveUserLogin(
                         it.data.loginResult.name,
@@ -113,7 +113,7 @@ class LoginActivity : AppCompatActivity() {
                     showMessage("welcome + ${it.data.loginResult.name}")
                     nextPageSucess()
                 }
-                is Result.Error->{
+                is MediatorResult.Error->{
                     binding.pgbarlogin.visibility = View.GONE
                     if (it.error == invalid){
                         showMessage(getString(R.string.Login_formerror))

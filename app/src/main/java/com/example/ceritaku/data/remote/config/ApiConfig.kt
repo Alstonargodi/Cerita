@@ -9,7 +9,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiConfig {
     var base_url = BuildConfig.BASE_URL_STORY
+    var mock_url = ""
 
+    val url = if (mock_url == ""){
+        base_url
+    }else{
+        base_url
+    }
     fun setApiService(): ApiService {
 
         val loggingInterceptor =

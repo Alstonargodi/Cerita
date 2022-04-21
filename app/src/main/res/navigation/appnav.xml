@@ -53,7 +53,7 @@
         tools:layout="@layout/activity_login" />
     <activity
         android:id="@+id/splashScreen"
-        android:name="com.example.ceritaku.view.start.splashscreen.SplashScreen"
+        android:name="com.example.ceritaku.view.start.splashscreen.SplashScreenActivity"
         android:label="activity_splash_screen"
         tools:layout="@layout/activity_splash_screen" />
     <activity

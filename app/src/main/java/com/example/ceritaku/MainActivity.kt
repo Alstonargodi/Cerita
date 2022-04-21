@@ -3,6 +3,7 @@ package com.example.ceritaku
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.ceritaku.databinding.ActivityMainBinding
 import com.example.ceritaku.view.home.HomeFragment
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
 
         binding.bottommenu.visibility = View.VISIBLE
         binding.bottommenu.setOnItemSelectedListener{

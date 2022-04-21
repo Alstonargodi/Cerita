@@ -18,6 +18,7 @@ import com.example.ceritaku.databinding.LayoutBoard1Binding
 import com.example.ceritaku.view.detail.DetailStoryFragment
 import com.example.ceritaku.view.utils.paging.LoadingListAdapter
 import com.example.ceritaku.view.home.adapter.StoryListAdapter
+import com.example.ceritaku.view.utils.wrapperIdling
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
@@ -31,7 +32,7 @@ class ListStoryFragment : Fragment() {
     private lateinit var bindingError : LayoutBoard1Binding
 
     private lateinit var prefViewModel : SettingPrefViewModel
-    private var userToken = ""
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,48 +47,64 @@ class ListStoryFragment : Fragment() {
             )
         )[SettingPrefViewModel::class.java]
 
-        prefViewModel.getUserToken().observe(viewLifecycleOwner){
-            lifecycleScope.launch {
-                showRecyclerList("Bearer $it")
-                userToken = "Bearer $it"
-            }
-        }
+            fetchData()
+
         return binding.root
     }
 
 
-
-    private suspend fun showRecyclerList(userToken : String){
-        val rViewAdapter = StoryListAdapter()
-        binding.listHomeStory.adapter = rViewAdapter.withLoadStateFooter(
-            footer = LoadingListAdapter{
-                rViewAdapter.retry()
-            }
-        )
-        viewModel.getStoryList(userToken).observe(viewLifecycleOwner){
-            rViewAdapter.submitData(requireActivity().lifecycle,it)
+    private fun fetchData(){
+        prefViewModel.getUserToken().observe(viewLifecycleOwner){
+            showRecyclerList("Bearer $it")
         }
+    }
+    private fun showRecyclerList(userToken : String){
+        wrapperIdling {
+            val rViewAdapter = StoryListAdapter()
+            binding.listHomeStory.adapter = rViewAdapter.withLoadStateFooter(
+                footer = LoadingListAdapter{
+                    rViewAdapter.retry()
+                }
+            )
 
-
-        binding.listHomeStory.layoutManager = LinearLayoutManager(requireContext())
-
-        rViewAdapter.onItemClickDetail(object : StoryListAdapter.OnClickDetail{
-            override fun onClickDetail(data: Story) {
-                val bundle = Bundle()
-                val fragment = DetailStoryFragment()
-                bundle.putParcelable(extra_key_detail,data)
-                fragment.arguments = bundle
-                val supFragment = requireActivity().supportFragmentManager
-                supFragment.beginTransaction()
-                    .replace(R.id.fragmentview,fragment)
-                    .addToBackStack(null)
-                    .commit()
+            viewModel.getStoryList(userToken).observe(viewLifecycleOwner){
+                rViewAdapter.submitData(requireActivity().lifecycle,it)
             }
-        })
 
 
+            binding.listHomeStory.layoutManager = LinearLayoutManager(requireContext())
+
+            rViewAdapter.onItemClickDetail(object : StoryListAdapter.OnClickDetail{
+                override fun onClickDetail(data: Story) {
+                    val bundle = Bundle()
+                    val fragment = DetailStoryFragment()
+                    bundle.putParcelable(extra_key_detail,data)
+                    fragment.arguments = bundle
+                    val supFragment = requireActivity().supportFragmentManager
+                    supFragment.beginTransaction()
+                        .replace(R.id.fragmentview,fragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
+            })
+        }
     }
 
+
+    //todo empty error
+    private fun emptyData(message : String){
+        binding.layoutEmpty.apply {
+            root.visibility = View.VISIBLE
+            tverror.text = message
+            imgerror.setImageResource(R.drawable.ic_notfound)
+            imgerror.setOnClickListener {
+                lifecycleScope.launch {
+                    fetchData()
+                    root.visibility = View.GONE
+                }
+            }
+        }
+    }
 
 
     companion object{
