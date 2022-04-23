@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/layout_post_story"
     tools:context=".view.upload.InsertStoryFragment">
 
 
@@ -107,14 +108,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/uploadlocation" />
 
-    <com.example.ceritaku.view.componen.DescBoxCustom
+    <EditText
         android:id="@+id/descarea"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="50dp"
         android:autofillHints="name"
         android:background="#393939"
         android:gravity="top"

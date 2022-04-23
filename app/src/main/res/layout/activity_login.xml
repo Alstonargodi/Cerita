@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/login_activity"
+    android:id="@+id/login_actvity"
     tools:context=".view.authentication.LoginActivity">
 
     <TextView
@@ -24,7 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
-    <com.example.ceritaku.view.componen.EmailBoxCustom
+    <EditText
         android:id="@+id/email"
         android:layout_width="0dp"
         android:layout_height="61dp"

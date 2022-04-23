@@ -16,6 +16,8 @@ import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.data.remote.utils.MediatorResult
 import com.example.ceritaku.view.detail.DetailStoryFragment
 import com.example.ceritaku.view.home.liststory.ListStoryFragment
+import com.example.ceritaku.view.utils.IdlingConfig
+import com.example.ceritaku.view.utils.wrapperIdling
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
@@ -75,44 +77,51 @@ class MapsFragment : Fragment(){
 
 
     private fun showMapStories(listData : List<Story>){
-        val callback = OnMapReadyCallback { googleMap ->
+        wrapperIdling {
+            IdlingConfig.increment()
+            val callback = OnMapReadyCallback { googleMap ->
 
-            listData.forEach { data->
-                val position = LatLng( data.lat.toDouble(), data.lon.toDouble())
-                googleMap.addMarker(
-                    MarkerOptions()
-                        .position(position)
-                        .title(data.name)
-                )
-                googleMap.setOnInfoWindowClickListener {
+                listData.forEach { data->
+                    IdlingConfig.increment()
+                    val position = LatLng( data.lat.toDouble(), data.lon.toDouble())
+                    googleMap.addMarker(
+                        MarkerOptions()
+                            .position(position)
+                            .title(data.name)
+                    )
+                    //todo maps window detail
+                    googleMap.setOnInfoWindowClickListener {
 
+                    }
+                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
+                    IdlingConfig.decrement()
                 }
-                googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
-
-            }
 
 
-            googleMap.setMapStyle(
-                MapStyleOptions.loadRawResourceStyle(
-                    requireActivity(),
-                    R.raw.map_style
+                googleMap.setMapStyle(
+                    MapStyleOptions.loadRawResourceStyle(
+                        requireActivity(),
+                        R.raw.map_style
+                    )
                 )
-            )
 
-            googleMap.uiSettings.apply {
-                isZoomControlsEnabled = true
-                isIndoorLevelPickerEnabled = true
-                isCompassEnabled = true
-                isMapToolbarEnabled = true
+                googleMap.uiSettings.apply {
+                    isZoomControlsEnabled = true
+                    isIndoorLevelPickerEnabled = true
+                    isCompassEnabled = true
+                    isMapToolbarEnabled = true
+                }
+
+                googleMap.uiSettings.isMyLocationButtonEnabled = true
+                googleMap.isIndoorEnabled = true
+
+
             }
-
-            googleMap.uiSettings.isMyLocationButtonEnabled = true
-            googleMap.isIndoorEnabled = true
-
-
+            val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+            mapFragment?.getMapAsync(callback)
+            IdlingConfig.decrement()
         }
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
+
     }
 
     //TODO 1.2 Maps Detail Story
@@ -123,7 +132,7 @@ class MapsFragment : Fragment(){
         fragment.arguments = bundle
         val supFragment = requireActivity().supportFragmentManager
         supFragment.beginTransaction()
-            .replace(R.id.fragmentview,fragment)
+            .replace(R.id.fragmentviemain,fragment)
             .addToBackStack(null)
             .commit()
     }

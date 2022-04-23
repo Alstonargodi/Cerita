@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.example.ceritaku.databinding.ActivityMainBinding
 import com.example.ceritaku.view.home.HomeFragment
-import com.example.ceritaku.view.home.maps.MapsFragment
 import com.example.ceritaku.view.profile.ProfileFragment
 import com.example.ceritaku.view.upload.CameraFragment
 
@@ -46,7 +45,7 @@ class MainActivity : AppCompatActivity() {
         val supFragment = supportFragmentManager
         val transFragment = supFragment.beginTransaction()
         transFragment
-            .replace(R.id.fragmentview,fragment)
+            .replace(R.id.fragmentviemain,fragment)
             .commit()
     }
 

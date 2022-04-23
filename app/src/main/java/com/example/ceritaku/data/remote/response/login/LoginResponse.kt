@@ -9,7 +9,7 @@ data class LoginResponse(
     @SerializedName("loginResult")
     val loginResult: LoginResult,
     @SerializedName("message")
-    val message: String
+    val message: String?
 )
 data class LoginResult(
     @SerializedName("userId")

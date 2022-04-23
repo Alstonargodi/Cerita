@@ -1,4 +1,4 @@
-package com.example.ceritaku.repository
+package com.example.ceritaku.utils
 
 import com.example.ceritaku.data.remote.response.login.LoginResponse
 import com.example.ceritaku.data.remote.response.login.LoginResult
@@ -9,17 +9,11 @@ import com.example.ceritaku.data.remote.service.ApiService
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-class StoryFakeApiService: ApiService {
+class FakeApiService: ApiService {
+    private val dummyLoginResponse = DataDummy.genFakeLoginResponseSucces()
+
     override suspend fun postLogin(email: String, password: String): LoginResponse {
-        return LoginResponse(
-            false,
-            LoginResult(
-                "092ojakldkajdkah",
-                "TestAccount",
-                "123090as8d09audj"
-            ),
-            "Login Succes",
-        )
+        return dummyLoginResponse
     }
 
     override suspend fun postRegister(
@@ -47,4 +41,6 @@ class StoryFakeApiService: ApiService {
     ): NewStoryResponse {
         TODO("Not yet implemented")
     }
+
+
 }

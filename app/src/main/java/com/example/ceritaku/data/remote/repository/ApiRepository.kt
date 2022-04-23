@@ -14,11 +14,11 @@ import com.example.ceritaku.data.remote.service.ApiService
 import com.example.ceritaku.view.utils.paging.StoryRemoteMediator
 import com.example.ceritaku.view.utils.wrapperIdling
 import kotlinx.coroutines.flow.Flow
-
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import javax.inject.Inject
 
-class ApiRepository(private val mediatorDatabase: MediatorDatabase, private val apiService: ApiService) {
+class ApiRepository @Inject constructor(private val mediatorDatabase: MediatorDatabase, private val apiService: ApiService) {
 
     suspend fun postLogin(email : String,password : String): LiveData<MediatorResult<LoginResponse>> =
        liveData {

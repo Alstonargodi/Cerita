@@ -10,7 +10,7 @@ import com.example.ceritaku.data.remote.utils.MediatorResult
 
 object DataDummy {
 
-    fun genFakeLoginResponse(): LoginResponse{
+    fun genFakeLoginResponseSucces(): LoginResponse{
         return LoginResponse(
             false,
             LoginResult(
@@ -19,6 +19,18 @@ object DataDummy {
                 "123090as8d09audj"
             ),
             "Login Succes",
+        )
+    }
+
+    fun genFakeLoginResponseFail(): LoginResponse{
+        return LoginResponse(
+            true,
+            LoginResult(
+                "",
+                "",
+                ""
+            ),
+            null,
         )
     }
 

@@ -18,6 +18,7 @@ import com.example.ceritaku.databinding.LayoutBoard1Binding
 import com.example.ceritaku.view.detail.DetailStoryFragment
 import com.example.ceritaku.view.utils.paging.LoadingListAdapter
 import com.example.ceritaku.view.home.adapter.StoryListAdapter
+import com.example.ceritaku.view.utils.IdlingConfig
 import com.example.ceritaku.view.utils.wrapperIdling
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
@@ -82,11 +83,12 @@ class ListStoryFragment : Fragment() {
                     fragment.arguments = bundle
                     val supFragment = requireActivity().supportFragmentManager
                     supFragment.beginTransaction()
-                        .replace(R.id.fragmentview,fragment)
+                        .replace(R.id.fragmentviemain,fragment)
                         .addToBackStack(null)
                         .commit()
                 }
             })
+
         }
     }
 

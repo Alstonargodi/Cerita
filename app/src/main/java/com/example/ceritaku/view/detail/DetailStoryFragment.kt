@@ -13,7 +13,9 @@ import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.databinding.FragmentDetailStoryBinding
 import com.example.ceritaku.view.home.HomeFragment
 import com.example.ceritaku.view.home.HomeFragment.Companion.extra_key_detail
+import com.example.ceritaku.view.utils.IdlingConfig
 import com.example.ceritaku.view.utils.Utils.dateFormat
+import com.example.ceritaku.view.utils.wrapperIdling
 import java.lang.Exception
 
 
@@ -30,17 +32,26 @@ class DetailStoryFragment : Fragment() {
         val data = arguments?.getParcelable<Story>( extra_key_detail)
 
         try {
-            binding.apply {
-                tvdetailstoryDate.text = dateFormat(data?.createdAt.toString())
-                tvdetailstoryDesc.text = data?.description
-                val author = data?.name +  getString(R.string.Detail_title)
-                tvdetailstoryOp.text = author
+            wrapperIdling {
+                binding.apply {
+                   wrapperIdling {
+                       tvdetailstoryDate.text = dateFormat(data?.createdAt.toString())
+                       tvdetailstoryDesc.text = data?.description
+                       val author = data?.name +  getString(R.string.Detail_title)
+                       tvdetailstoryOp.text = author
 
-                Glide.with(binding.root.context)
-                    .load(data?.photoUrl)
-                    .into(tvdetailstoryImg)
+                       wrapperIdling {
+                           Glide.with(binding.root.context)
+                               .load(data?.photoUrl)
+                               .into(tvdetailstoryImg)
+                       }
+
+                   }
+                }
             }
+
         }catch (e : Exception){
+            IdlingConfig.decrement()
             emptyData(getString(R.string.Home_empty))
         }
 
@@ -52,7 +63,7 @@ class DetailStoryFragment : Fragment() {
         binding.tvdetailstoryBack.setOnClickListener {
             val supFragment = requireActivity().supportFragmentManager
             supFragment.beginTransaction()
-                .replace(R.id.fragmentview,HomeFragment())
+                .replace(R.id.fragmentviemain,HomeFragment())
                 .addToBackStack(null)
                 .commit()
         }

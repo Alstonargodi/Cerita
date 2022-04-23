@@ -22,8 +22,10 @@ import androidx.core.content.ContextCompat
 import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
 import com.example.ceritaku.databinding.FragmentCameraBinding
+import com.example.ceritaku.view.utils.IdlingConfig
 import com.example.ceritaku.view.utils.Utils.createFile
 import com.example.ceritaku.view.utils.Utils.uriToFile
+import com.example.ceritaku.view.utils.wrapperIdling
 import java.io.File
 
 
@@ -48,7 +50,7 @@ class CameraFragment : Fragment() {
             fragment.arguments = bundle
             fragmentManager
                 .beginTransaction()
-                .replace(R.id.fragmentview,fragment)
+                .replace(R.id.fragmentviemain,fragment)
                 .addToBackStack(null)
                 .commit()
         }
@@ -110,7 +112,11 @@ class CameraFragment : Fragment() {
             startCamera()
         }
 
-        binding.btncapture.setOnClickListener { capturePhoto() }
+        binding.btncapture.setOnClickListener {
+            wrapperIdling {
+                capturePhoto()
+            }
+        }
 
         binding.btnpickimage.setOnClickListener {
             pickImageGallery()
@@ -179,7 +185,7 @@ class CameraFragment : Fragment() {
                     fragmentManager
                         .beginTransaction()
                         .addToBackStack(null)
-                        .replace(R.id.fragmentview,fragment)
+                        .replace(R.id.fragmentviemain,fragment)
                         .commit()
 
 

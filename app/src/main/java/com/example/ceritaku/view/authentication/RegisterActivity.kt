@@ -103,33 +103,33 @@ class RegisterActivity : AppCompatActivity() {
         val email = binding.tvregisemail.text.toString()
         val password = binding.tvregisterpassword.text.toString()
 
-        viewModel.postLogin(email,password).observe(this){
-            when(it){
-                is MediatorResult.Loading->{
-                    binding.pgbarregister.visibility = View.VISIBLE
-                }
-                is MediatorResult.Sucess->{
-                    binding.pgbarregister.visibility = View.GONE
-                    saveUserLogin(
-                        it.data.loginResult.name,
-                        it.data.loginResult.token,
-                        true,
-                    )
-                    showMessage("welcome + ${it.data.loginResult.name}")
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finishAffinity()
-                }
-                is MediatorResult.Error->{
-                    binding.pgbarregister.visibility = View.GONE
-                    if (it.error == invalid){
-                        showMessage("Invalid form")
-                    }else{
-                        showMessage(it.error)
-                    }
-                    Log.d(LoginActivity.tag, it.error)
-                }
-            }
-        }
+//        viewModel.postLogin(email,password).observe(this){
+//            when(it){
+//                is MediatorResult.Loading->{
+//                    binding.pgbarregister.visibility = View.VISIBLE
+//                }
+//                is MediatorResult.Sucess->{
+//                    binding.pgbarregister.visibility = View.GONE
+//                    saveUserLogin(
+//                        it.data.loginResult.name,
+//                        it.data.loginResult.token,
+//                        true,
+//                    )
+//                    showMessage("welcome + ${it.data.loginResult.name}")
+//                    startActivity(Intent(this, MainActivity::class.java))
+//                    finishAffinity()
+//                }
+//                is MediatorResult.Error->{
+//                    binding.pgbarregister.visibility = View.GONE
+//                    if (it.error == invalid){
+//                        showMessage("Invalid form")
+//                    }else{
+//                        showMessage(it.error)
+//                    }
+//                    Log.d(LoginActivity.tag, it.error)
+//                }
+//            }
+//        }
     }
 
     private fun saveUserLogin(name : String, token : String, onBoard : Boolean){

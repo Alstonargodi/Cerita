@@ -1,0 +1,37 @@
+
+UserActivityAct
+1. Login Activity
+- memastikan login activity telah terbuat
+- memasukan email tester
+- memasukan password tester
+- memasukan data login
+- memastikan di halaman main
+2. Register Activity
+- memastikan Register activity telah terbuat
+- memasukan nama tester
+- memasukan email tester
+- memasukan password tester
+- memasukan data Register
+- memastikan di halaman main
+3. FeedStoriesToDetail
+- memastikan tab layout terbentuk
+- memastikan view pager terbentuk
+- memastikan halaman story home terbentuk
+- memastikan halaman list story terbentuk
+- klik list story urutan ke 1
+- memastikan halaman detail terbentuk
+- memastikan gambar detail muncul
+4. MapsStoriesShow
+- memastiskan tab layout terbentuk
+- click pada tab MAPS
+- memastikan peta muncul dengan benar
+5. PostNewStoriesCapture
+- click pada tombol tambah
+- click potret gambar
+- memastikan layout insert terbentuk
+- memasukan deskripsi
+- tutup keyboard
+- unggah gambar
+- memastikan list stories terbentuk
+- klik pada story yang telah terunggah berdsarkan judul
+- memastikan detail terbentuk

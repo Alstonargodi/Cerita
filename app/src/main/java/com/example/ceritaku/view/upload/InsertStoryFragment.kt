@@ -135,7 +135,7 @@ class InsertStoryFragment : Fragment(){
         val fragmentManager = requireActivity().supportFragmentManager
         fragmentManager
             .beginTransaction()
-            .replace(R.id.fragmentview,CameraFragment())
+            .replace(R.id.fragmentviemain,CameraFragment())
             .addToBackStack(null)
             .commit()
 

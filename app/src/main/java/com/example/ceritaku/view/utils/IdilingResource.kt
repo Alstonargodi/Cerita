@@ -1,9 +1,9 @@
 package com.example.ceritaku.view.utils
 
-import android.icu.number.Precision.increment
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.idling.CountingIdlingResource
 
-object EspressoIdlingResources {
+object IdlingConfig {
     private const val resource = "global"
 
     @JvmField
@@ -21,10 +21,10 @@ object EspressoIdlingResources {
 }
 
 inline fun <T> wrapperIdling(function: () -> T): T {
-    EspressoIdlingResources.increment()
+    IdlingConfig.increment()
     return try {
         function()
     } finally {
-        EspressoIdlingResources.decrement()
+        IdlingConfig.decrement()
     }
 }
