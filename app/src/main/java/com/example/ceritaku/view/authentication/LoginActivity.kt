@@ -97,33 +97,33 @@ class LoginActivity : AppCompatActivity() {
     private suspend fun login(){
         val email = binding.email.text.toString()
         val password = binding.password.text.toString()
-
-        viewModel.postLogin(email,password).observe(this){
-            when(it){
-                is MediatorResult.Loading->{
-                    binding.pgbarlogin.visibility = View.VISIBLE
-                }
-                is MediatorResult.Sucess->{
-                    binding.pgbarlogin.visibility = View.GONE
-                    saveUserLogin(
-                        it.data.loginResult.name,
-                        it.data.loginResult.token,
-                        onBoard = true,
-                    )
-                    showMessage("welcome + ${it.data.loginResult.name}")
-                    nextPageSucess()
-                }
-                is MediatorResult.Error->{
-                    binding.pgbarlogin.visibility = View.GONE
-                    if (it.error == invalid){
-                        showMessage(getString(R.string.Login_formerror))
-                    }else{
-                        showMessage(it.error)
-                    }
-                    Log.d(tag, it.error)
-                }
-            }
-        }
+//
+//        viewModel.postLogin(email,password).observe(this){
+//            when(it){
+//                is MediatorResult.Loading->{
+//                    binding.pgbarlogin.visibility = View.VISIBLE
+//                }
+//                is MediatorResult.Sucess->{
+//                    binding.pgbarlogin.visibility = View.GONE
+//                    saveUserLogin(
+//                        it.data.loginResult.name,
+//                        it.data.loginResult.token,
+//                        onBoard = true,
+//                    )
+//                    showMessage("welcome + ${it.data.loginResult.name}")
+//                    nextPageSucess()
+//                }
+//                is MediatorResult.Error->{
+//                    binding.pgbarlogin.visibility = View.GONE
+//                    if (it.error == invalid){
+//                        showMessage(getString(R.string.Login_formerror))
+//                    }else{
+//                        showMessage(it.error)
+//                    }
+//                    Log.d(tag, it.error)
+//                }
+//            }
+//        }
     }
 
     private fun saveUserLogin(name : String, token : String, onBoard : Boolean){

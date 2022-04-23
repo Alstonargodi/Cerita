@@ -4,25 +4,26 @@ import android.util.Log
 import com.example.ceritaku.data.remote.response.login.LoginResponse
 import com.example.ceritaku.data.remote.response.login.LoginResult
 import com.example.ceritaku.data.remote.response.register.RegisterResponse
+import com.example.ceritaku.data.remote.response.story.NewStoryResponse
 import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.data.remote.response.story.StoryResponse
 import com.example.ceritaku.data.remote.utils.MediatorResult
 
 object DataDummy {
 
-    fun genFakeLoginResponseSucces(): LoginResponse{
+    fun fakeLoginResponse_Success(): LoginResponse{
         return LoginResponse(
             false,
             LoginResult(
-                "092ojakldkajdkah",
-                "TestAccount",
-                "123090as8d09audj"
+                "Test",
+                "Test1244",
+                "Test1234"
             ),
-            "Login Succes",
+            "Success",
         )
     }
 
-    fun genFakeLoginResponseFail(): LoginResponse{
+    fun fakeLoginResponse_Fail(): LoginResponse{
         return LoginResponse(
             true,
             LoginResult(
@@ -30,16 +31,41 @@ object DataDummy {
                 "",
                 ""
             ),
-            null,
+            "Invalid",
         )
     }
 
-    fun genFakeSignUpResponse(): RegisterResponse{
+    fun fakeRegisterResponse_Success(): RegisterResponse{
         return RegisterResponse(
-            true,
-            "Succes"
+            false,
+            "Success"
         )
     }
+
+    fun fakeRegisterResponse_Fail(): RegisterResponse{
+        return RegisterResponse(
+            true,
+            "Invalid"
+        )
+    }
+
+    fun fakePostNewStories_Success() : NewStoryResponse{
+        return NewStoryResponse(
+            false,
+            "Upload Success"
+        )
+    }
+
+    fun fakePostNewStories_Fail() : NewStoryResponse{
+        return NewStoryResponse(
+            true,
+            "Upload Fail"
+        )
+    }
+
+
+
+
 
     fun genFakeStory_Success(): List<Story>{
         val items: MutableList<Story> = arrayListOf()

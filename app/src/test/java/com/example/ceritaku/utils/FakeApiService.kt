@@ -1,7 +1,6 @@
 package com.example.ceritaku.utils
 
 import com.example.ceritaku.data.remote.response.login.LoginResponse
-import com.example.ceritaku.data.remote.response.login.LoginResult
 import com.example.ceritaku.data.remote.response.register.RegisterResponse
 import com.example.ceritaku.data.remote.response.story.NewStoryResponse
 import com.example.ceritaku.data.remote.response.story.StoryResponse
@@ -10,10 +9,15 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 class FakeApiService: ApiService {
-    private val dummyLoginResponse = DataDummy.genFakeLoginResponseSucces()
+
 
     override suspend fun postLogin(email: String, password: String): LoginResponse {
-        return dummyLoginResponse
+        return if (email.isEmpty() || password.isEmpty()){
+            DataDummy.fakeLoginResponse_Fail()
+        }else{
+            DataDummy.fakeLoginResponse_Success()
+        }
+
     }
 
     override suspend fun postRegister(
@@ -21,7 +25,11 @@ class FakeApiService: ApiService {
         email: String,
         password: String
     ): RegisterResponse {
-        TODO("Not yet implemented")
+        return if (email.isEmpty() || password.isEmpty() || name.isEmpty()){
+            DataDummy.fakeRegisterResponse_Fail()
+        }else{
+            DataDummy.fakeRegisterResponse_Success()
+        }
     }
 
     override suspend fun getStoriesList(page: Int, size: Int, auth: Any): StoryResponse {
@@ -39,7 +47,11 @@ class FakeApiService: ApiService {
         lon: Float,
         auth: Any
     ): NewStoryResponse {
-        TODO("Not yet implemented")
+        if(description.contentLength() == 0L || auth.toString().isEmpty()){
+            return DataDummy.fakePostNewStories_Fail()
+        }else{
+            return DataDummy.fakePostNewStories_Success()
+        }
     }
 
 

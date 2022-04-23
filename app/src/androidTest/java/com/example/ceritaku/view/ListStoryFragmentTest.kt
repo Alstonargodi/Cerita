@@ -29,17 +29,14 @@ import org.junit.After
 @MediumTest
 class ListStoryFragmentTest {
 
-
     private val mockWebServer = MockWebServer()
     private val context: Context = ApplicationProvider.getApplicationContext()
-
 
 
     @Before
     fun setup(){
         ActivityScenario.launch(MainActivity::class.java)
         IdlingRegistry.getInstance().register(IdlingConfig.countingIdlingResource)
-
 
         mockWebServer.start(8080)
         ApiConfig.url = "http://127.0.0.1:8080/"

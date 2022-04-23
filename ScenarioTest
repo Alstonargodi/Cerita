@@ -1,19 +1,79 @@
 
-UserActivityAct
-1. Login Activity
+== ApiRepositoryTest ==
+
+when login with empty form error = true
+- ketika form email dan password kosong
+- memastikan respon asli error
+- memastikan ketidaksamaan antara diharapkan dan asli
+- mengembalikan error sebagai true
+
+when login with empty email error = true
+- ketika form email  kosong
+- memastikan respon asli error
+- memastikan ketidaksamaan antara diharapkan dan asli
+- mengembalikan error sebagai true
+
+when login with empty password error = true
+- ketika form password kosong
+- memastikan respon asli error
+- memastikan ketidaksamaan antara diharapkan dan asli
+- mengembalikan error sebagai true
+
+when login with fill form error = false
+- ketika form terisi
+- memastikan respon asli berhasil
+- memastikan kesamaan antara diharapkan dan asli
+- mengembalikan error sebagai false
+
+when Register with empty form error = true
+- ketika form email, nama , dan password kosong
+- memastikan respon asli error
+- memastikan ketidaksamaan antara diharapkan dan asli
+- mengembalikan error sebagai true
+
+when Register with name form error = true
+- ketika form email dan password kosong
+- memastikan respon asli error
+- memastikan ketidaksamaan antara diharapkan dan asli
+- mengembalikan error sebagai true
+
+when Register with email form error = true
+- ketika form name dan password kosong
+- memastikan respon asli error
+- memastikan ketidaksamaan antara diharapkan dan asli
+- mengembalikan error sebagai true
+
+when Register with email form error = true
+- ketika form name , email dan password terisi
+- memastikan respon asli berhasil
+- memastikan kesamaan antara diharapkan dan asli
+- mengembalikan error sebagai false
+
+
+when Post Story Fill form
+- ketika file dan lokasi terisi
+- memastikan respon asli berhasil
+- memastikan kesamaan antara diharapkan dan asli
+- mengembalikan error sebagai false
+
+== UserActivityAct ==
+
+Login Activity
 - memastikan login activity telah terbuat
 - memasukan email tester
 - memasukan password tester
 - memasukan data login
 - memastikan di halaman main
-2. Register Activity
+
+Register Activity
 - memastikan Register activity telah terbuat
 - memasukan nama tester
 - memasukan email tester
 - memasukan password tester
 - memasukan data Register
 - memastikan di halaman main
-3. FeedStoriesToDetail
+
+FeedStoriesToDetail
 - memastikan tab layout terbentuk
 - memastikan view pager terbentuk
 - memastikan halaman story home terbentuk
@@ -21,11 +81,13 @@ UserActivityAct
 - klik list story urutan ke 1
 - memastikan halaman detail terbentuk
 - memastikan gambar detail muncul
-4. MapsStoriesShow
+
+MapsStoriesShow
 - memastiskan tab layout terbentuk
 - click pada tab MAPS
 - memastikan peta muncul dengan benar
-5. PostNewStoriesCapture
+
+PostNewStoriesCapture
 - click pada tombol tambah
 - click potret gambar
 - memastikan layout insert terbentuk
@@ -35,3 +97,5 @@ UserActivityAct
 - memastikan list stories terbentuk
 - klik pada story yang telah terunggah berdsarkan judul
 - memastikan detail terbentuk
+
+repo test berarti yang di fake itu datasourcenya, boleh juga sih di mocking

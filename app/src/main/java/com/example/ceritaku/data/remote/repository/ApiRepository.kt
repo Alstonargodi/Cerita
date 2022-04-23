@@ -63,8 +63,6 @@ class ApiRepository @Inject constructor(private val mediatorDatabase: MediatorDa
         }
     }
 
-    //TODO REMOVE RESULT IF USELESS
-
 
 
     suspend fun postStory(file : MultipartBody.Part, desc : RequestBody, lat : Float, lon : Float, auth : Any)
