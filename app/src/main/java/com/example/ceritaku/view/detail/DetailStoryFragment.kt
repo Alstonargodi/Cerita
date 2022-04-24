@@ -22,44 +22,42 @@ import java.lang.Exception
 class DetailStoryFragment : Fragment() {
     private lateinit var binding: FragmentDetailStoryBinding
 
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentDetailStoryBinding.inflate(layoutInflater)
 
-        val data = arguments?.getParcelable<Story>( extra_key_detail)
+        wrapperIdling {
+            binding = FragmentDetailStoryBinding.inflate(layoutInflater)
 
-        try {
-            wrapperIdling {
+            val data = arguments?.getParcelable<Story>( extra_key_detail)
+
+            try {
                 binding.apply {
-                   wrapperIdling {
-                       tvdetailstoryDate.text = dateFormat(data?.createdAt.toString())
-                       tvdetailstoryDesc.text = data?.description
-                       val author = data?.name +  getString(R.string.Detail_title)
-                       tvdetailstoryOp.text = author
 
-                       wrapperIdling {
-                           Glide.with(binding.root.context)
-                               .load(data?.photoUrl)
-                               .into(tvdetailstoryImg)
-                       }
+                    tvdetailstoryDate.text = dateFormat(data?.createdAt.toString())
+                    tvdetailstoryDesc.text = data?.description
+                    val author = data?.name +  getString(R.string.Detail_title)
+                    tvdetailstoryOp.text = author
 
-                   }
+                    Glide.with(binding.root.context)
+                        .load(data?.photoUrl)
+                        .into(tvdetailstoryImg)
+
                 }
+            }catch (e : Exception){
+                IdlingConfig.decrement()
+                emptyData(getString(R.string.Home_empty))
             }
-
-        }catch (e : Exception){
-            IdlingConfig.decrement()
-            emptyData(getString(R.string.Home_empty))
+            return binding.root
         }
-
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        IdlingConfig.decrement()
         binding.tvdetailstoryBack.setOnClickListener {
             val supFragment = requireActivity().supportFragmentManager
             supFragment.beginTransaction()
@@ -68,6 +66,7 @@ class DetailStoryFragment : Fragment() {
                 .commit()
         }
 
+
     }
 
     private fun emptyData(message : String){
@@ -75,6 +74,7 @@ class DetailStoryFragment : Fragment() {
             root.visibility = View.VISIBLE
             tverror.text = message
             imgerror.setImageResource(R.drawable.ic_notfound)
+
         }
     }
 

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.ceritaku.R
 import com.example.ceritaku.databinding.FragmentHomeBinding
 import com.example.ceritaku.view.home.adapter.SectionPagerAdapter
+import com.example.ceritaku.view.utils.IdlingConfig
 import com.google.android.material.tabs.TabLayoutMediator
 
 
@@ -16,6 +17,7 @@ class HomeFragment : Fragment() {
     private lateinit var pagerAdapter : SectionPagerAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+
         binding = FragmentHomeBinding.inflate(layoutInflater)
 
         pagerAdapter = SectionPagerAdapter(requireActivity(), tab_titles.size)
@@ -25,6 +27,7 @@ class HomeFragment : Fragment() {
         viewPager.isUserInputEnabled = false
         TabLayoutMediator(tabs,viewPager){tab,position->
             tab.text = getString(tab_titles[position])
+            IdlingConfig.decrement()
         }.attach()
 
         return binding.root

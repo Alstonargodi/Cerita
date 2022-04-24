@@ -9,6 +9,8 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.recyclerview.widget.ListUpdateCallback
 import com.example.ceritaku.BuildConfig
+import com.example.ceritaku.data.remote.repository.ApiRepository
+import com.example.ceritaku.data.remote.response.story.NewStoryResponse
 import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.data.remote.response.story.StoryResponse
 import com.example.ceritaku.data.remote.utils.MediatorResult
@@ -19,7 +21,13 @@ import com.example.ceritaku.view.home.adapter.StoryListAdapter
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.junit.Assert
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -27,6 +35,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
 import org.mockito.junit.MockitoJUnitRunner
+import java.io.File
 
 @ExperimentalCoroutinesApi
 @RunWith(MockitoJUnitRunner::class)
@@ -39,77 +48,105 @@ class StoryViewModelTest{
     var mainCoroutineRule = MainCoroutineRule()
 
     @Mock
+
     private lateinit var storyViewModel: StoryViewModel
+    private var dummyListStory  = DataDummy.fakeListStoryResponse_Success()
+    private var dummyNewStoryResponse = DataDummy.fakePostNewStories_Success()
+    private var dummyToken = "Token"
+
+
 
     @Test
-    fun `get Feed Stories when Success`() = runTest {
-        val dummyStories = DataDummy.genFakeStory_Success()
-        val data = PagedTestDataSources.snapshot(dummyStories)
-        val story = MutableLiveData<PagingData<Story>>()
-        story.value = data
+    fun `when get Feed Stories Success`() = runTest {
+        val dummyPageStory = PagedTestDataSources.snapshot(dummyListStory.listStory)
+        val storyTemp = MutableLiveData<PagingData<Story>>()
+        storyTemp.value = dummyPageStory
 
-        `when`(storyViewModel.getStoryList(BuildConfig.TEST_TOKEN)).thenReturn(story)
+        `when`(storyViewModel.getStoryList(dummyToken)).thenReturn(storyTemp)
 
-        val getRealStories = storyViewModel.getStoryList(BuildConfig.TEST_TOKEN).getOrWaitValue()
+        val storyActual = storyViewModel.getStoryList(dummyToken).getOrWaitValue()
 
-        val realStories = AsyncPagingDataDiffer(
+        val storyActualPage = AsyncPagingDataDiffer(
             diffCallback = StoryListAdapter.DIFF_CALLBACK,
             updateCallback = storyListCallback,
             mainDispatcher = mainCoroutineRule.dispatche,
             workerDispatcher = mainCoroutineRule.dispatche
         )
-
-        realStories.submitData(getRealStories)
+        storyActualPage.submitData(storyActual)
 
         advanceUntilIdle()
-
-        Mockito.verify(storyViewModel).getStoryList(BuildConfig.TEST_TOKEN)
-        Assert.assertNotNull(realStories.snapshot())
-        Assert.assertTrue(realStories.snapshot().isNotEmpty())
-        Assert.assertEquals(dummyStories.size, realStories.snapshot().size)
-        Assert.assertEquals(dummyStories[0].name, realStories.snapshot()[0]?.name)
+        Mockito.verify(storyViewModel).getStoryList(dummyToken)
+        Assert.assertNotNull(storyActualPage.snapshot())
+        Assert.assertTrue(storyActualPage.snapshot().isNotEmpty())
+        Assert.assertEquals(dummyListStory.listStory.size, storyActualPage.snapshot().size)
+        Assert.assertEquals(dummyListStory.listStory, storyActualPage.snapshot())
     }
 
     @Test
-    fun `get Feed Stories when Error`() = runTest {
-        val dummyStories = DataDummy.genFakeStory_Success()
-        val data = PagedTestDataSources.snapshot(dummyStories)
-        val story = MutableLiveData<PagingData<Story>>()
-        story.value = data
+    fun `when Maps Stories Success`() = runTest {
+        val storyExpected = MutableLiveData<MediatorResult<StoryResponse>>()
+        storyExpected.value = MediatorResult.Sucess(dummyListStory)
 
-        `when`(storyViewModel.getStoryList("a")).thenReturn(story)
+        `when`(storyViewModel.getMapsStories(1,dummyToken)).thenReturn(storyExpected)
 
-        val getRealStories = storyViewModel.getStoryList("a").getOrWaitValue()
+        val storyActual = storyViewModel.getMapsStories(1,dummyToken).getOrWaitValue()
 
-        val realStories = AsyncPagingDataDiffer(
-            diffCallback = StoryListAdapter.DIFF_CALLBACK,
-            updateCallback = storyListCallback,
-            mainDispatcher = mainCoroutineRule.dispatche,
-            workerDispatcher = mainCoroutineRule.dispatche
+        Mockito.verify(storyViewModel).getMapsStories(1,dummyToken)
+        Assert.assertNotNull(storyActual)
+        Assert.assertFalse(storyActual is MediatorResult.Error)
+        Assert.assertTrue(storyActual is MediatorResult.Sucess)
+        Assert.assertEquals(storyExpected.value,storyActual)
+        Assert.assertEquals((storyExpected.value as MediatorResult.Sucess).data,(storyActual as MediatorResult.Sucess).data)
+    }
+
+    @Test
+    fun `when Maps Stories Error`() = runTest {
+        val storyExpected = MutableLiveData<MediatorResult<StoryResponse>>()
+        storyExpected.value = MediatorResult.Error("fail")
+
+        `when`(storyViewModel.getMapsStories(1,dummyToken)).thenReturn(storyExpected)
+
+        val storyActual = storyViewModel.getMapsStories(1,dummyToken).getOrWaitValue()
+
+        Mockito.verify(storyViewModel).getMapsStories(1,dummyToken)
+        Assert.assertNotNull(storyActual)
+        Assert.assertTrue(storyActual is MediatorResult.Error)
+        Assert.assertFalse(storyActual is MediatorResult.Sucess)
+        Assert.assertEquals(storyExpected.value,storyActual)
+        Assert.assertEquals((storyExpected.value as MediatorResult.Error).error,(storyActual as MediatorResult.Error).error)
+    }
+
+
+    @Test
+    fun `when Post New Stories`() = runTest{
+        val desc = "description".toRequestBody("text/plain".toMediaType())
+        val tempFile = File.createTempFile("prefix","suffix")
+        val requestFile = tempFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+        val multiPart: MultipartBody.Part = MultipartBody.Part.createFormData(
+            "photo",
+            tempFile.name,
+            requestFile
         )
 
-        realStories.submitData(getRealStories)
+        val newStoryExpected = MutableLiveData<MediatorResult<NewStoryResponse>>()
+        newStoryExpected.value = MediatorResult.Sucess(dummyNewStoryResponse)
 
-        Assert.assertTrue(realStories.snapshot().isNotEmpty())
-    }
+        `when`(storyViewModel.postStory(multiPart,desc,20F,20F,dummyToken)).thenReturn(newStoryExpected)
 
-    @Test
-    fun `get Maps Stories when Success`() = runTest {
-        val dummyResponse = DataDummy.genFakeStoryResponse()
-        val stories = MutableLiveData<MediatorResult<StoryResponse>>()
-        stories.value = dummyResponse
+        val newStoryActual = storyViewModel.postStory(multiPart,desc,20F,20F,dummyToken).getOrWaitValue()
 
-        `when`(storyViewModel.getMapsStories(1,BuildConfig.TEST_TOKEN)).thenReturn(stories)
-
-        val realMapsStoriesRespon = storyViewModel.getMapsStories(1,BuildConfig.TEST_TOKEN).getOrWaitValue()
-
-
-        Assert.assertEquals(stories.value,realMapsStoriesRespon)
+        Mockito.verify(storyViewModel).postStory(multiPart,desc,20F,20F,dummyToken)
+        Assert.assertNotNull(newStoryActual)
+        Assert.assertFalse(newStoryActual is MediatorResult.Error)
+        Assert.assertTrue(newStoryActual is MediatorResult.Sucess)
+        Assert.assertEquals(newStoryExpected.value,newStoryActual)
+        Assert.assertEquals((newStoryExpected.value as MediatorResult.Sucess).data,(newStoryActual as MediatorResult.Sucess).data)
 
     }
+
 }
 
-class PagedTestDataSources private constructor(private val items: List<Story>) :
+class PagedTestDataSources private constructor(private val items: MediatorResult<List<Story>>) :
     PagingSource<Int, LiveData<List<Story>>>() {
     companion object {
         fun snapshot(items: List<Story>): PagingData<Story> {

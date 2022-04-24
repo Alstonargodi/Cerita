@@ -63,6 +63,27 @@ object DataDummy {
         )
     }
 
+    fun fakeListStoryResponse_Success(): StoryResponse{
+        val items: MutableList<Story> = arrayListOf()
+        for (i in 0..5){
+            val tempData = Story(
+                "story-Z6zjczpEWMht3Txn",
+                "2022-04-19T13:24:38.736Z",
+                "kapan ada waktu lagi ke $i",
+                i.toFloat(),
+                i.toFloat(),
+                "budi",
+                "https://i.ibb.co/mXb28k9/20210426144438-1.jpg",
+            )
+            items.add(tempData)
+        }
+        return StoryResponse(
+                false,
+                items,
+                "Succesfuly"
+            )
+
+    }
 
 
 
@@ -91,8 +112,8 @@ object DataDummy {
                 "story-Z6zjczpEWMht3Txn",
                 "2022-04-19T13:24:38.736Z",
                 "kapan ada waktu lagi ke $i",
-                0F,
-                0F,
+                i.toFloat(),
+                i.toFloat(),
                 "budi",
                 "https://i.ibb.co/mXb28k9/20210426144438-1.jpg",
             )
@@ -106,7 +127,4 @@ object DataDummy {
             )
         )
     }
-
-
-
 }

@@ -20,8 +20,10 @@ import com.example.ceritaku.data.local.datastore.UserPrefrences
 import com.example.ceritaku.data.local.datastore.dataStore
 import com.example.ceritaku.data.remote.utils.MediatorResult
 import com.example.ceritaku.databinding.FragmentInsertstoryBinding
+import com.example.ceritaku.view.utils.IdlingConfig
 import com.example.ceritaku.view.utils.Utils.reduceImageSize
 import com.example.ceritaku.view.utils.Utils.rotateBitmap
+import com.example.ceritaku.view.utils.wrapperIdling
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
@@ -52,18 +54,21 @@ class InsertStoryFragment : Fragment(){
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentInsertstoryBinding.inflate(layoutInflater)
+        IdlingConfig.decrement()
+        wrapperIdling {
+            binding = FragmentInsertstoryBinding.inflate(layoutInflater)
 
-        prefViewModel = ViewModelProvider(requireActivity(),
-            PrefViewModelFactory(UserPrefrences.getInstance(requireContext().dataStore))
-        )[SettingPrefViewModel::class.java]
+            prefViewModel = ViewModelProvider(requireActivity(),
+                PrefViewModelFactory(UserPrefrences.getInstance(requireContext().dataStore))
+            )[SettingPrefViewModel::class.java]
 
 
-        prefViewModel.getUserToken().observe(viewLifecycleOwner){ userToken = "Bearer $it" }
+            prefViewModel.getUserToken().observe(viewLifecycleOwner){ userToken = "Bearer $it" }
 
-        showResultCamera()
+            showResultCamera()
 
-        return binding.root
+            return binding.root
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -93,42 +98,46 @@ class InsertStoryFragment : Fragment(){
 
 
     private suspend fun uploadResult(){
-        val desc = binding.descarea.text
-            .toString()
-            .toRequestBody("text/plain".toMediaType())
+        IdlingConfig.increment()
+        wrapperIdling {
+            val desc = binding.descarea.text
+                .toString()
+                .toRequestBody("text/plain".toMediaType())
 
-        if (getFile != null){
-            val tempFile = reduceImageSize(getFile as File)
-            val requestFile = tempFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-            val multiPart: MultipartBody.Part = MultipartBody.Part.createFormData(
-                "photo",
-                tempFile.name,
-                requestFile
-            )
+            if (getFile != null){
+                val tempFile = reduceImageSize(getFile as File)
+                val requestFile = tempFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                val multiPart: MultipartBody.Part = MultipartBody.Part.createFormData(
+                    "photo",
+                    tempFile.name,
+                    requestFile
+                )
 
 
-            viewModel.postStory(multiPart, desc, 0f, 0f,userToken).observe(viewLifecycleOwner){
-                when(it){
-                    is MediatorResult.Loading ->{
-                        binding.pgbarupload.visibility = View.VISIBLE
-                        showMessage("Uploading")
-                    }
-                    is MediatorResult.Sucess->{
-                        binding.pgbarupload.visibility = View.GONE
-                        showMessage(it.data.message)
-                        lifecycleScope.launch {
-                            delay(2000L)
-                            startActivity(Intent(requireContext(),MainActivity::class.java))
-                            activity?.finishAffinity()
+                viewModel.postStory(multiPart, desc, 0f, 0f,userToken).observe(viewLifecycleOwner){
+                    when(it){
+                        is MediatorResult.Loading ->{
+                            binding.pgbarupload.visibility = View.VISIBLE
+                            showMessage("Uploading")
                         }
-                    }
-                    is MediatorResult.Error->{
-                        binding.pgbarupload.visibility = View.GONE
-                        showMessage(it.error + "try again")
+                        is MediatorResult.Sucess->{
+                            binding.pgbarupload.visibility = View.GONE
+                            showMessage(it.data.message)
+                            lifecycleScope.launch {
+                                delay(2000L)
+                                startActivity(Intent(requireContext(),MainActivity::class.java))
+                                activity?.finishAffinity()
+                            }
+                        }
+                        is MediatorResult.Error->{
+                            binding.pgbarupload.visibility = View.GONE
+                            showMessage(it.error + "try again")
+                        }
                     }
                 }
             }
         }
+
     }
 
     private fun backToHome(){

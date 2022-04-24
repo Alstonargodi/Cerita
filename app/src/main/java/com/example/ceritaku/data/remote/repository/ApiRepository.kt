@@ -18,10 +18,10 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import javax.inject.Inject
 
-class ApiRepository @Inject constructor(private val mediatorDatabase: MediatorDatabase, private val apiService: ApiService) {
+class ApiRepository(private val mediatorDatabase: MediatorDatabase, private val apiService: ApiService) {
 
-    suspend fun postLogin(email : String,password : String): LiveData<MediatorResult<LoginResponse>> =
-       liveData {
+    suspend fun postLogin(email : String,password : String): LiveData<MediatorResult<LoginResponse>> = wrapperIdling {
+        liveData {
             emit(MediatorResult.Loading)
             try {
                 val respon = apiService.postLogin(email, password)
@@ -30,51 +30,59 @@ class ApiRepository @Inject constructor(private val mediatorDatabase: MediatorDa
                 emit(MediatorResult.Error(e.message.toString()))
             }
         }
+    }
 
-    suspend fun postRegister(name : String,email : String,password: String): LiveData<MediatorResult<RegisterResponse>> = liveData{
-        emit(MediatorResult.Loading)
-        try {
-            val respon = apiService.postRegister(name, email, password)
-            emit(MediatorResult.Sucess(respon))
-        }catch (e : Exception){
-            emit(MediatorResult.Error(e.message.toString()))
+
+    suspend fun postRegister(name : String,email : String,password: String): LiveData<MediatorResult<RegisterResponse>> = wrapperIdling {
+        liveData{
+            emit(MediatorResult.Loading)
+            try {
+                val respon = apiService.postRegister(name, email, password)
+                emit(MediatorResult.Sucess(respon))
+            }catch (e : Exception){
+                emit(MediatorResult.Error(e.message.toString()))
+            }
         }
     }
 
-    suspend fun getLocStories(page : Int,auth : String): LiveData<MediatorResult<StoryResponse>> = liveData {
-        emit(MediatorResult.Loading)
-        try {
-            val respon = apiService.getMapsStories(page,auth)
-            emit(MediatorResult.Sucess(respon))
-        }catch (e : Exception){
-            emit(MediatorResult.Error(e.message.toString()))
+    suspend fun getLocStories(page : Int,auth : String): LiveData<MediatorResult<StoryResponse>> = wrapperIdling {
+        liveData {
+            emit(MediatorResult.Loading)
+            try {
+                val respon = apiService.getMapsStories(page,auth)
+                emit(MediatorResult.Sucess(respon))
+            }catch (e : Exception){
+                emit(MediatorResult.Error(e.message.toString()))
+            }
         }
     }
 
 
     @OptIn(ExperimentalPagingApi::class)
-    fun getStoriesList(auth : String): Flow<PagingData<Story>> {
-        return wrapperIdling {
-            Pager(
+    fun getStoriesList(auth : String): Flow<PagingData<Story>> = wrapperIdling {
+        return Pager(
                 config = PagingConfig(pageSize = 5, enablePlaceholders = true),
                 remoteMediator = StoryRemoteMediator(mediatorDatabase,apiService,auth),
                 pagingSourceFactory = { mediatorDatabase.storyDao().getAllStory()}
             ).flow
-        }
+
     }
 
 
 
     suspend fun postStory(file : MultipartBody.Part, desc : RequestBody, lat : Float, lon : Float, auth : Any)
-    :LiveData<MediatorResult<NewStoryResponse>> = liveData {
-        emit(MediatorResult.Loading)
-        try {
-            val respon = apiService.postStory(file,desc,lat, lon,auth)
-            emit(MediatorResult.Sucess(respon))
-        }catch (e :  Exception){
-            emit(MediatorResult.Error(e.message.toString()))
+    :LiveData<MediatorResult<NewStoryResponse>> = wrapperIdling {
+        liveData {
+            emit(MediatorResult.Loading)
+            try {
+                val respon = apiService.postStory(file,desc,lat, lon,auth)
+                emit(MediatorResult.Sucess(respon))
+            }catch (e :  Exception){
+                emit(MediatorResult.Error(e.message.toString()))
+            }
         }
     }
+
 
 
 }

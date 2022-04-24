@@ -26,56 +26,59 @@ class StoryRemoteMediator(
         loadType: LoadType,
         state: PagingState<Int, Story>)
     : MediatorResult {
-        val page = when(loadType){
-            LoadType.REFRESH->{
-                val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
-                remoteKeys?.nextKey?.minus(1) ?: initial_page
+        wrapperIdling {
+            val page = when(loadType){
+                LoadType.REFRESH->{
+                    val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)
+                    remoteKeys?.nextKey?.minus(1) ?: initial_page
+                }
+
+                LoadType.PREPEND -> {
+                    val remoteKeys = getRemoteKeyForFirstItem(state)
+                    val prevKey = remoteKeys?.prevKey
+                        ?: return MediatorResult.Success(
+                            endOfPaginationReached = remoteKeys != null)
+                    prevKey
+                }
+
+                LoadType.APPEND -> {
+                    val remoteKeys = getRemoteKeyForLastItem(state)
+                    val nextKey = remoteKeys?.nextKey
+                        ?: return MediatorResult.Success(
+                            endOfPaginationReached = remoteKeys != null)
+                    nextKey
+                }
             }
 
-            LoadType.PREPEND -> {
-                val remoteKeys = getRemoteKeyForFirstItem(state)
-                val prevKey = remoteKeys?.prevKey
-                    ?: return MediatorResult.Success(
-                        endOfPaginationReached = remoteKeys != null)
-                prevKey
-            }
+            try {
+                val responseData = apiService.getStoriesList(
+                    page = page,
+                    size = state.config.pageSize,
+                    auth = auth
+                ).listStory
 
-            LoadType.APPEND -> {
-                val remoteKeys = getRemoteKeyForLastItem(state)
-                val nextKey = remoteKeys?.nextKey
-                    ?: return MediatorResult.Success(
-                        endOfPaginationReached = remoteKeys != null)
-                nextKey
+                val endOfPaginationReached = responseData.isEmpty()
+
+                database.withTransaction {
+                    if (loadType == LoadType.REFRESH) {
+                        database.keysDao().deleteRemoteKeys()
+                        database.storyDao().deleteStory()
+                    }
+                    val prevKey = if (page == 1) null else page - 1
+                    val nextKey = if (endOfPaginationReached) null else page + 1
+                    val keys = responseData.map {
+                        RemoteKeys(
+                            id = it.id, prevKey = prevKey, nextKey = nextKey)
+                    }
+                    database.keysDao().insertAll(keys)
+                    database.storyDao().insertStory(responseData)
+                }
+                return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
+            } catch (exception: Exception) {
+                return MediatorResult.Error(exception)
             }
         }
 
-        try {
-            val responseData = apiService.getStoriesList(
-                page = page,
-                size = state.config.pageSize,
-                auth = auth
-            ).listStory
-
-            val endOfPaginationReached = responseData.isEmpty()
-
-            database.withTransaction {
-                if (loadType == LoadType.REFRESH) {
-                    database.keysDao().deleteRemoteKeys()
-                    database.storyDao().deleteStory()
-                }
-                val prevKey = if (page == 1) null else page - 1
-                val nextKey = if (endOfPaginationReached) null else page + 1
-                val keys = responseData.map {
-                    RemoteKeys(
-                        id = it.id, prevKey = prevKey, nextKey = nextKey)
-                }
-                database.keysDao().insertAll(keys)
-                database.storyDao().insertStory(responseData)
-            }
-            return MediatorResult.Success(endOfPaginationReached = endOfPaginationReached)
-        } catch (exception: Exception) {
-            return MediatorResult.Error(exception)
-        }
     }
 
 

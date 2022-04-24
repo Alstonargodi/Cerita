@@ -39,20 +39,23 @@ class ListStoryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentListStoryBinding.inflate(layoutInflater)
-        bindingError = LayoutBoard1Binding.inflate(layoutInflater)
 
-        prefViewModel = ViewModelProvider(requireActivity(),
-            PrefViewModelFactory(
-                UserPrefrences.getInstance(requireContext().dataStore)
-            )
-        )[SettingPrefViewModel::class.java]
+        wrapperIdling {
+            binding = FragmentListStoryBinding.inflate(layoutInflater)
+            bindingError = LayoutBoard1Binding.inflate(layoutInflater)
+
+            prefViewModel = ViewModelProvider(requireActivity(),
+                PrefViewModelFactory(
+                    UserPrefrences.getInstance(requireContext().dataStore)
+                )
+            )[SettingPrefViewModel::class.java]
 
             fetchData()
 
-        return binding.root
-    }
+            return binding.root
+        }
 
+    }
 
     private fun fetchData(){
         prefViewModel.getUserToken().observe(viewLifecycleOwner){
@@ -77,6 +80,7 @@ class ListStoryFragment : Fragment() {
 
             rViewAdapter.onItemClickDetail(object : StoryListAdapter.OnClickDetail{
                 override fun onClickDetail(data: Story) {
+                    IdlingConfig.increment()
                     val bundle = Bundle()
                     val fragment = DetailStoryFragment()
                     bundle.putParcelable(extra_key_detail,data)
@@ -88,8 +92,8 @@ class ListStoryFragment : Fragment() {
                         .commit()
                 }
             })
-
         }
+
     }
 
 

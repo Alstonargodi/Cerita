@@ -3,18 +3,17 @@ package com.example.ceritaku.view
 import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ActivityScenario
+import androidx.test.core.app.ActivityScenario.ActivityAction
 import androidx.test.core.app.ApplicationProvider
-import androidx.test.filters.MediumTest
-import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
-import org.junit.Before
-import org.junit.Test
-import org.junit.runner.RunWith
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.ext.junit.rules.ActivityScenarioRule
+import androidx.test.filters.MediumTest
+import androidx.test.internal.runner.junit4.AndroidJUnit4ClassRunner
 import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
 import com.example.ceritaku.data.remote.config.ApiConfig
@@ -24,6 +23,11 @@ import com.example.ceritaku.view.utils.IdlingConfig
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
+import org.junit.Before
+import org.junit.Rule
+import org.junit.Test
+import org.junit.runner.RunWith
+
 
 @RunWith(AndroidJUnit4ClassRunner::class)
 @MediumTest
@@ -32,10 +36,12 @@ class ListStoryFragmentTest {
     private val mockWebServer = MockWebServer()
     private val context: Context = ApplicationProvider.getApplicationContext()
 
+    @get:Rule
+    var activity = ActivityScenarioRule(MainActivity::class.java)
 
     @Before
     fun setup(){
-        ActivityScenario.launch(MainActivity::class.java)
+
         IdlingRegistry.getInstance().register(IdlingConfig.countingIdlingResource)
 
         mockWebServer.start(8080)

@@ -35,29 +35,37 @@ class MapsFragment : Fragment(){
     private val viewModel : StoryViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
     private lateinit var prefViewModel : SettingPrefViewModel
 
+    override fun onStart() {
+        super.onStart()
+        IdlingConfig.decrement()
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        IdlingConfig.decrement()
+        wrapperIdling {
+            prefViewModel = ViewModelProvider(requireActivity(),
+                PrefViewModelFactory(
+                    UserPrefrences.getInstance(requireContext().dataStore)
+                )
+            )[SettingPrefViewModel::class.java]
 
-        prefViewModel = ViewModelProvider(requireActivity(),
-            PrefViewModelFactory(
-                UserPrefrences.getInstance(requireContext().dataStore)
-            )
-        )[SettingPrefViewModel::class.java]
-
-        prefViewModel.getUserToken().observe(viewLifecycleOwner){
-            lifecycleScope.launch {
-                getMapsStories("Bearer $it")
+            prefViewModel.getUserToken().observe(viewLifecycleOwner){
+                lifecycleScope.launch {
+                    getMapsStories("Bearer $it")
+                }
             }
+            return inflater.inflate(R.layout.fragment_maps, container, false)
+
         }
 
-        return inflater.inflate(R.layout.fragment_maps, container, false)
     }
 
 
     private suspend fun getMapsStories(token : String){
+        IdlingConfig.decrement()
         viewModel.getMapsStories(1,token).observe(viewLifecycleOwner){respon ->
             when(respon){
                 is MediatorResult.Loading->{
@@ -66,6 +74,7 @@ class MapsFragment : Fragment(){
                 is MediatorResult.Sucess->{
                     Log.d("jumlah lokasi",respon.data.listStory.size.toString())
                     showMapStories(respon.data.listStory)
+                    IdlingConfig.decrement()
                 }
                 is MediatorResult.Error->{
                     Log.d("lokasi","error")
@@ -77,10 +86,9 @@ class MapsFragment : Fragment(){
 
 
     private fun showMapStories(listData : List<Story>){
-        wrapperIdling {
-            IdlingConfig.increment()
+        IdlingConfig.decrement()
             val callback = OnMapReadyCallback { googleMap ->
-
+                IdlingConfig.decrement()
                 listData.forEach { data->
                     IdlingConfig.increment()
                     val position = LatLng( data.lat.toDouble(), data.lon.toDouble())
@@ -94,9 +102,7 @@ class MapsFragment : Fragment(){
 
                     }
                     googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
-                    IdlingConfig.decrement()
                 }
-
 
                 googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
@@ -114,14 +120,11 @@ class MapsFragment : Fragment(){
 
                 googleMap.uiSettings.isMyLocationButtonEnabled = true
                 googleMap.isIndoorEnabled = true
-
-
             }
-            val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        IdlingConfig.decrement()
+            val mapFragment = childFragmentManager.findFragmentById(R.id.mapstories) as SupportMapFragment?
             mapFragment?.getMapAsync(callback)
-            IdlingConfig.decrement()
-        }
-
+        IdlingConfig.decrement()
     }
 
     //TODO 1.2 Maps Detail Story

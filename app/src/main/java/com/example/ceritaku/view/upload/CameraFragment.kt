@@ -82,45 +82,51 @@ class CameraFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentCameraBinding.inflate(layoutInflater)
+        wrapperIdling {
+            binding = FragmentCameraBinding.inflate(layoutInflater)
 
-        if (!allPermissiongranted()) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                REQUIRED_PERMISSIONS,
-                REQUEST_CODE_PERMISSIONS
-            )
+            if (!allPermissiongranted()) {
+                ActivityCompat.requestPermissions(
+                    requireActivity(),
+                    REQUIRED_PERMISSIONS,
+                    REQUEST_CODE_PERMISSIONS
+                )
+            }
+
+            startCamera()
+
+            return binding.root
         }
 
-        startCamera()
-
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnbackcamera.setOnClickListener {
-            startActivity(Intent(context,MainActivity::class.java))
-        }
+        wrapperIdling {
+            binding.btnbackcamera.setOnClickListener {
+                startActivity(Intent(context,MainActivity::class.java))
+            }
 
-        binding.btnRotate.setOnClickListener {
-            cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA)
-                CameraSelector.DEFAULT_FRONT_CAMERA
-            else
-                CameraSelector.DEFAULT_BACK_CAMERA
+            binding.btnRotate.setOnClickListener {
+                cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA)
+                    CameraSelector.DEFAULT_FRONT_CAMERA
+                else
+                    CameraSelector.DEFAULT_BACK_CAMERA
 
-            startCamera()
-        }
+                startCamera()
+            }
 
-        binding.btncapture.setOnClickListener {
-            wrapperIdling {
-                capturePhoto()
+            binding.btncapture.setOnClickListener {
+                wrapperIdling {
+                    capturePhoto()
+                }
+            }
+
+            binding.btnpickimage.setOnClickListener {
+                pickImageGallery()
             }
         }
 
-        binding.btnpickimage.setOnClickListener {
-            pickImageGallery()
-        }
     }
 
     private fun startCamera(){
@@ -159,48 +165,52 @@ class CameraFragment : Fragment() {
 
 
     private fun capturePhoto(){
-        val imageResult = imageCapture?:return
-        val imageFile = createFile(requireActivity().application)
+        wrapperIdling {
+            IdlingConfig.increment()
+            val imageResult = imageCapture?:return
+            val imageFile = createFile(requireActivity().application)
 
-        val outputFiles = ImageCapture.OutputFileOptions.Builder(imageFile).build()
-        imageResult.takePicture(
-            outputFiles,
-            ContextCompat.getMainExecutor(requireContext()),
-            object :ImageCapture.OnImageSavedCallback{
-                override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    Toast.makeText(
-                        context,
-                        "Sucess capturing",
-                        Toast.LENGTH_SHORT
-                    ).show()
+            val outputFiles = ImageCapture.OutputFileOptions.Builder(imageFile).build()
+            imageResult.takePicture(
+                outputFiles,
+                ContextCompat.getMainExecutor(requireContext()),
+                object :ImageCapture.OnImageSavedCallback{
+                    override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
+                        Toast.makeText(
+                            context,
+                            "Sucess capturing",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
-                    val bundle = Bundle()
-                    val fragment = InsertStoryFragment()
-                    val imageFiles = ArrayList<File>()
-                    imageFiles.add(imageFile)
-                    bundle.putSerializable("picture",imageFiles)
+                        val bundle = Bundle()
+                        val fragment = InsertStoryFragment()
+                        val imageFiles = ArrayList<File>()
+                        imageFiles.add(imageFile)
+                        bundle.putSerializable("picture",imageFiles)
 
-                    val fragmentManager = requireActivity().supportFragmentManager
-                    fragment.arguments = bundle
-                    fragmentManager
-                        .beginTransaction()
-                        .addToBackStack(null)
-                        .replace(R.id.fragmentviemain,fragment)
-                        .commit()
+                        val fragmentManager = requireActivity().supportFragmentManager
+                        fragment.arguments = bundle
+                        fragmentManager
+                            .beginTransaction()
+                            .addToBackStack(null)
+                            .replace(R.id.fragmentviemain,fragment)
+                            .commit()
 
 
+                    }
+
+                    override fun onError(exception: ImageCaptureException) {
+                        Toast.makeText(
+                            context,
+                            "Fail capturing",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                    }
                 }
+            )
+        }
 
-                override fun onError(exception: ImageCaptureException) {
-                    Toast.makeText(
-                        context,
-                        "Fail capturing",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                }
-            }
-        )
     }
 
     private fun pickImageGallery(){

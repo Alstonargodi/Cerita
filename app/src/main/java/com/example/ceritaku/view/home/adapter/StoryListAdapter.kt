@@ -37,43 +37,35 @@ class StoryListAdapter
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val data = getItem(position)
-        if (data !=null){
-            holder.binding.apply {
-                wrapperIdling {
-
+            val data = getItem(position)
+            if (data !=null){
+                holder.binding.apply {
                     val name = "u / ${data.name}"
 
                     tvStoriesNameop.text = name
                     tvStoriesDate.text = Utils.dateFormat(data.createdAt)
                     tvStoriesDesc.text = data.description
 
-                    wrapperIdling {
-                        IdlingConfig.increment()
-                        Glide.with(root.context)
-                            .load(data.photoUrl)
-                            .into(tvStoriesImg)
-                        IdlingConfig.decrement()
-                    }
 
-
+                    Glide.with(root.context)
+                        .load(data.photoUrl)
+                        .into(tvStoriesImg)
 
                     tvStoriesDesc.setOnClickListener {
                         tvStoriesDesc.height = 200
                     }
 
-                    tvStoriesImg.setOnClickListener {
+                    holder.binding.root.setOnClickListener {
                         onClickDetail.onClickDetail(data)
-
                     }
-
                 }
+
             }
-        }
     }
 
     interface OnClickDetail{
         fun onClickDetail(data : Story)
+
     }
 
 
