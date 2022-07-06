@@ -101,7 +101,7 @@ dependencies {
 
 
     //image
-    implementation 'com.github.bumptech.glide:glide:4.13.1'
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
 
     //cameraX
     implementation "androidx.camera:camera-camera2:1.1.0-beta03"

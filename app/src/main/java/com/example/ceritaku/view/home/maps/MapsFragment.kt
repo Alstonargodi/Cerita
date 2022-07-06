@@ -45,7 +45,7 @@ class MapsFragment : Fragment(){
 
             prefViewModel.getUserToken().observe(viewLifecycleOwner){
                 lifecycleScope.launch {
-                    getMapsStories("Bearer $it")
+                    getMapsStories(it)
                 }
             }
             return inflater.inflate(R.layout.fragment_maps, container, false)

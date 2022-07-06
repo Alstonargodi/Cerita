@@ -121,7 +121,7 @@ class LoginActivity : AppCompatActivity() {
         prefViewModel.saveThemeSetting(
             onBoard,
             name,
-            token
+            "Bearer $token"
         )
     }
 
