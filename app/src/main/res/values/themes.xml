@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.Ceritaku" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">?attr/colorControlNormal</item>
+        <item name="colorPrimaryVariant">#7E7D7D</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -12,5 +12,13 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="ToolBarStyleLight" parent="android:Widget.Toolbar">
+        <item name="iconTint">@color/white</item>
+        <item name="drawableTint">@color/white</item>
+        <item name="android:fontFamily">@font/notomedium</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 </resources>

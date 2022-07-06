@@ -1,33 +1,63 @@
 package com.example.ceritaku.view.authentication
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.ceritaku.R
+import com.example.ceritaku.MainActivity
 import com.example.ceritaku.databinding.ActivityRegisterBinding
-import com.example.ceritaku.remote.Result
+import com.example.ceritaku.data.remote.utils.MediatorResult
+import com.example.ceritaku.view.componen.PasswordBoxCustom
 import com.example.ceritaku.viewmodel.AuthViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
+import com.example.ceritaku.viewmodel.SettingPrefViewModel
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
+
 class RegisterActivity : AppCompatActivity() {
+    private val viewModel : AuthViewModel by viewModels{ VModelFactory.getInstance(this) }
+    private val prefViewModel : SettingPrefViewModel by viewModels{ VModelFactory.getInstance(this) }
+
     private lateinit var binding: ActivityRegisterBinding
-    private val viewModel : AuthViewModel by viewModels{
-        VModelFactory.getInstance()
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        setEditTextPassword()
+
         binding.btnregister.setOnClickListener {
             lifecycleScope.launch {
                 register()
             }
         }
+
+        binding.btncancel.setOnClickListener {
+            startActivity(Intent(this,LoginActivity::class.java))
+            finishAffinity()
+        }
+    }
+
+    private fun boxChecker(): Boolean{
+        val name = binding.tvregisname.text.toString()
+        val email = binding.tvregisemail.text.toString()
+        val password = binding.tvregisterpassword.text.toString()
+
+        when {
+            email.isEmpty() -> return true
+            password.isEmpty() -> return true
+            name.isEmpty() -> return true
+            else -> (password.isNotEmpty() && email.isNotEmpty())
+        }
+            return false
     }
 
     private suspend fun register(){
@@ -35,16 +65,97 @@ class RegisterActivity : AppCompatActivity() {
         val email = binding.tvregisemail.text.toString()
         val password = binding.tvregisterpassword.text.toString()
 
-        viewModel.postRegister(name, email, password).observe(this){
-            when(it){
-                is Result.Sucess ->{
-                    Log.d("loading",it.data.message)
+        if(!boxChecker()){
+            viewModel.postRegister(name, email, password).observe(this){
+                when(it){
+                    is MediatorResult.Loading ->{
+                        binding.pgbarregister.visibility = View.VISIBLE
+                    }
+
+                    is MediatorResult.Sucess ->{
+                        binding.pgbarregister.visibility = View.GONE
+                        showMessage(it.data.message + " and welcome")
+                        lifecycleScope.launch {
+                            loginRegister()
+                        }
+                    }
+
+                    is MediatorResult.Error ->{
+                        binding.pgbarregister.visibility = View.GONE
+                        showMessage(it.error + "try again")
+                    }
+
                 }
-                is Result.Error ->{
-                    Log.d("loading",it.error.toString())
+            }
+        }else{
+            showMessage("fill textbox first")
+        }
+    }
+
+    private suspend fun loginRegister(){
+        val email = binding.tvregisemail.text.toString()
+        val password = binding.tvregisterpassword.text.toString()
+
+        viewModel.postLogin(email,password).observe(this){
+            when(it){
+                is MediatorResult.Loading->{
+                    binding.pgbarregister.visibility = View.VISIBLE
+                }
+                is MediatorResult.Sucess->{
+                    binding.pgbarregister.visibility = View.GONE
+                    saveUserLogin(
+                        it.data.loginResult.name,
+                        it.data.loginResult.token,
+                        true,
+                    )
+                    showMessage("welcome + ${it.data.loginResult.name}")
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finishAffinity()
+                }
+                is MediatorResult.Error->{
+                    binding.pgbarregister.visibility = View.GONE
+                    if (it.error == invalid){
+                        showMessage("Invalid form")
+                    }else{
+                        showMessage(it.error)
+                    }
+                    Log.d(LoginActivity.tag, it.error)
                 }
             }
         }
+    }
 
+    private fun saveUserLogin(name : String, token : String, onBoard : Boolean){
+        prefViewModel.saveThemeSetting(
+            onBoard,
+            name,
+            token
+        )
+    }
+
+    private fun setEditTextPassword(){
+
+        binding.tvregisterpassword.transformationMethod = PasswordTransformationMethod.getInstance()
+        binding.tvregisterpassword.onItemClickDetail(object  : PasswordBoxCustom.SetHideCallBack{
+            override fun setHideCallback(status: Boolean) {
+                if (status){
+                    binding.tvregisterpassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                }else{
+                    binding.tvregisterpassword.transformationMethod = null
+                }
+            }
+        })
+    }
+
+    private fun showMessage(message : String){
+        Snackbar.make(
+            binding.root,
+            message,
+            Snackbar.LENGTH_LONG
+        ).show()
+    }
+
+    companion object{
+        const val invalid = "HTTP 400 Bad Requesttry again"
     }
 }

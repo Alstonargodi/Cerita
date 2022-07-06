@@ -4,17 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/register_activity"
     tools:context=".view.authentication.RegisterActivity">
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="327dp"
+        android:layout_width="0dp"
         android:layout_height="57dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
         android:fontFamily="@font/poppinsregular"
-        android:text="Register"
+        android:text="@string/Register"
         android:textAlignment="center"
-        android:textColor="#636060"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,14 +24,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
+    <com.example.ceritaku.view.componen.PasswordBoxCustom
         android:id="@+id/tvregisterpassword"
-        android:layout_width="327dp"
-        android:layout_height="57dp"
-        android:layout_marginTop="56dp"
+        android:layout_width="0dp"
+        android:layout_height="51dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        android:drawableStart="@drawable/ic_baseline_lock_24"
+        android:drawablePadding="10dp"
         android:fontFamily="@font/poppinsregular"
-        android:hint="password"
-        android:textColor="#636060"
+        android:hint="@string/Password"
+        android:padding="5dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.44"
@@ -38,36 +44,80 @@
 
     <EditText
         android:id="@+id/tvregisname"
-        android:layout_width="337dp"
+        android:layout_width="0dp"
         android:layout_height="61dp"
-        android:layout_marginTop="60dp"
-        android:hint="name"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        android:drawableStart="@drawable/ic_baseline_person_24"
+        android:drawablePadding="10dp"
+        android:hint="@string/Username"
+        android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        android:autofillHints="name"
+        android:inputType="text" />
 
-    <EditText
+    <com.example.ceritaku.view.componen.EmailBoxCustom
         android:id="@+id/tvregisemail"
-        android:layout_width="337dp"
+        android:layout_width="0dp"
         android:layout_height="61dp"
-        android:layout_marginTop="52dp"
-        android:hint="email"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="10dp"
+        android:drawableStart="@drawable/ic_baseline_email_24"
+        android:drawablePadding="10dp"
+        android:hint="@string/Email"
+        android:padding="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvregisname" />
+        app:layout_constraintTop_toBottomOf="@+id/tvregisname"
+        android:autofillHints="emailAddress"
+        android:inputType="textEmailAddress" />
 
     <Button
         android:id="@+id/btnregister"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="10dp"
-        android:text="register"
+        android:text="@string/Register_order"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvregisterpassword" />
+
+    <TextView
+        android:id="@+id/btncancel"
+        android:layout_width="0dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:text="@string/cancel"
+        android:textColor="#3C9AE4"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnregister"
+        app:layout_constraintVertical_bias="0.094" />
+
+    <ProgressBar
+        android:id="@+id/pgbarregister"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="110dp"
+        android:layout_height="88dp"
+        android:layout_marginTop="180dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

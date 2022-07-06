@@ -1,5 +1,76 @@
 <resources>
     <string name="app_name">Ceritaku</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--spalshscreen-->
+    <string name="Splash">peoplespalh</string>
+    <string name="splash_text">Cerita</string>
+
+    <!--onboard page-->
+    <string name="Onboard_title">For First Time..</string>
+    <string name="Onboard_subtitle">let we introduce our apps</string>
+    <string name="Onboard_final">click me !</string>
+    <string name="Onboard_indicator1">page 1</string>
+    <string name="Onboard_indicator2">page2</string>
+    <string name="Onboard_indicator3">page3</string>
+    <string name="Onboard_iconpage1">iconpage1</string>
+    <string name="Onboard_text1">Tell your stories with outhers</string>
+    <string name="Onboard_text2">hear their epic story</string>
+    <string name="Onboard_icon2">icon2</string>
+    <string name="Onboard_icon3">icon3</string>
+    <string name="Onboard_text3">also you can add a picture</string>
+
+    <!--auth page-->
+    <string name="Login">Login</string>
+    <string name="Email">Email</string>
+    <string name="Password">Password</string>
+    <string name="Signin_order">Let\'s go</string>
+    <string name="Register">Register</string>
+    <string name="Signin_or">new comer\'s ?</string>
+    <string name="Sigin_subtitle">Before we go…</string>
+    <string name="Username">Username</string>
+    <string name="Register_order">sign me up</string>
+    <string name="cancel">Cancel</string>
+    <!--home-->
+    <string name="Home_title">Cerita</string>
+    <string name="Home_error">Error view</string>
+    <!--insert page-->
+    <string name="insert_back">backtohome</string>
+    <string name="insert_title">new post</string>
+    <string name="insert_order">Upload</string>
+    <string name="insert_photoresult">photoresult</string>
+    <string name="insert_description">Description</string>
+    <string name="insert_descinput">deskripsi</string>
+    <string name="insert_uploading">Uploading</string>
+    <!--camera page-->
+    <string name="Camera_gallery">pickimage</string>
+    <string name="Camera_backhome">btnbackhome</string>
+    <string name="Camera_capture">capture</string>
+    <string name="Detail_backhom">backtohome</string>
+    <string name="Detail_name">Story</string>
+    <string name="Detail_pic">detail pic</string>
+    <string name="Setting_title">Setting</string>
+    <string name="Setting_account">Current account</string>
+    <string name="Setting_name">name profile</string>
+    <string name="Setting_order">Logout</string>
+    <string name="Itemcv_photo">imgprofile</string>
+    <string name="Setting_langauge">Language</string>
+    <!--Login activity-->
+    <string name="Login_error">please check again</string>
+    <string name="Login_formerror">Invalid form</string>
+    <string name="Login_fail">Fail</string>
+    <!--home activity-->
+    <string name="Home_try">please try again :(</string>
+    <string name="Home_empty">No data, looks no one add their story</string>
+    <!--detail activity-->
+    <string name="Detail_title"> Story</string>
+    <string name="rotatecamera">rotatecamera</string>
+
+    <string name="tabone">Feed</string>
+    <string name="tabtwo">Maps</string>
+    <string name="feed">Feed</string>
+    <string name="maps">Maps</string>
+    <string name="find_my_location">Find My Location</string>
+
+
 </resources>

@@ -1,0 +1,209 @@
+
+== ApiRepositoryTest ==
+
+when login with empty form error = true
+- ketika form email dan password kosong
+- memastikan respon asli error
+- memastikan ketidaksamaan antara diharapkan dan asli
+- mengembalikan error sebagai true
+
+when login with empty email error = true
+- ketika form email  kosong
+- memastikan respon asli error
+- memastikan ketidaksamaan antara diharapkan dan asli
+- mengembalikan error sebagai true
+
+when login with empty password error = true
+- ketika form password kosong
+- memastikan respon asli error
+- memastikan ketidaksamaan antara diharapkan dan asli
+- mengembalikan error sebagai true
+
+when login with fill form error = false
+- ketika form terisi
+- memastikan respon asli berhasil
+- memastikan kesamaan antara diharapkan dan asli
+- mengembalikan error sebagai false
+
+when Register with empty form error = true
+- ketika form email, nama , dan password kosong
+- memastikan respon asli error
+- memastikan ketidaksamaan antara diharapkan dan asli
+- mengembalikan error sebagai true
+
+when Register with name form error = true
+- ketika form email dan password kosong
+- memastikan respon asli error
+- memastikan ketidaksamaan antara diharapkan dan asli
+- mengembalikan error sebagai true
+
+when Register with email form error = true
+- ketika form name dan password kosong
+- memastikan respon asli error
+- memastikan ketidaksamaan antara diharapkan dan asli
+- mengembalikan error sebagai true
+
+when Register with email form error = true
+- ketika form name , email dan password terisi
+- memastikan respon asli berhasil
+- memastikan kesamaan antara diharapkan dan asli
+- mengembalikan error sebagai false
+
+when Post Story Fill form
+- ketika file dan lokasi terisi
+- memastikan respon asli berhasil
+- memastikan kesamaan antara diharapkan dan asli
+- mengembalikan error sebagai false
+
+when get token preferences
+- memastikan data ketidaksamaan
+
+when get name preferences
+- memastikan data ketidaksamaan
+
+when get onboard preferences
+- memastikan data ketidaksamaan
+
+when get List Stories with Token
+- memastikan bahwa tidak terjadi error
+- memastikan pernyataan error sama
+- memastikan berhasil antara expected dan actual
+
+when get List Stories without Token
+- memastikan bahwa  error
+- memastikan pernyataan error sama
+- memastikan pesan antara expected dan actual
+
+when get maps Stories with Token
+- memastikan bahwa tidak terjadi error
+- memastikan pernyataan error sama
+- memastikan berhasil antara expected dan actual
+
+when get maps Stories without Token
+- memastikan bahwa  error
+- memastikan pernyataan error sama
+- memastikan pesan antara expected dan actual
+
+
+== AuthViewModelTest ==
+
+when login with fill form error = false
+- memverifikasi repository sesuai
+- memastikan actual tidak null
+- memastikan error sebagai false (tidak terjadi)
+- memastikan berhasil mengambil data
+- memastikan kesamaan data actual dan expect
+
+when login with empty email error = true
+- memverifikasi repository sesuai
+- memastikan actual tidak null
+- memastikan error sebagai true (terjadi)
+- memastikan berhasil mengambil data
+- memastikan ketidaksamaan data actual dan expect
+
+
+when login with empty password error = true
+- memverifikasi repository sesuai
+- memastikan actual tidak null
+- memastikan error sebagai true (terjadi)
+- memastikan berhasil mengambil data
+- memastikan ketidaksamaan data actual dan expect
+
+when Register with fill form error = false
+- memverifikasi repository sesuai
+- memastikan actual tidak null
+- memastikan error sebagai false (tidak terjadi)
+- memastikan berhasil mengambil data
+- memastikan kesamaan data actual dan expect
+
+when Register with empty name error = true
+- memverifikasi repository sesuai
+- memastikan actual tidak null
+- memastikan error sebagai true (terjadi)
+- memastikan berhasil mengambil data
+- memastikan ketidaksamaan data actual dan expect
+
+when Register with empty email error = true
+- memverifikasi repository sesuai
+- memastikan actual tidak null
+- memastikan error sebagai true (terjadi)
+- memastikan berhasil mengambil data
+- memastikan ketidaksamaan data actual dan expect
+
+when Register with empty password error = true
+- memverifikasi repository sesuai
+- memastikan actual tidak null
+- memastikan error sebagai true (terjadi)
+- memastikan berhasil mengambil data
+- memastikan ketidaksamaan data actual dan expect
+
+== StoryViewModelTest ==
+
+when get Feed Stories Success
+- memverifikasi viewmodel sesuai
+- memastikan actual tidak null
+- memastikan data tidak kosong
+- memastikan error sebagai false (tidak terjadi)
+- memastikan kesamaan data actual dan expect
+
+when Maps Stories Success
+- memverifikasi viewmodel sesuai
+- memastikan actual tidak null
+- memastikan data tidak kosong
+- memastikan error sebagai false (tidak terjadi)
+- memastikan kesamaan data actual dan expect
+
+when Maps Stories Error
+- memverifikasi viewmodel sesuai
+- memastikan actual tidak null
+- memastikan data tidak kosong
+- memastikan error sebagai true (terjadi)
+- memastikan tidak berhasil mengambil data
+- memastikan kesamaan data actual dan expect
+
+when Post New Stories
+- memverifikasi viewmodel sesuai
+- memastikan actual tidak null
+- memastikan data tidak kosong
+- memastikan error sebagai false (tidak terjadi)
+- memastikan respon berhasil
+- memastikan kesamaan data actual dan expect
+
+== SettingPrefViewModelTest ==
+
+get user token when success
+- memastikan repository benar
+- memastikan kesamaan data expected dan actual
+
+get user name when success
+- memastikan repository benar
+- memastikan kesamaan data expected dan actual
+
+get user onboard when success
+- memastikan repository benar
+- memastikan nilai bernilai benar
+- memastikan kesamaan data expected dan actual
+
+== UserActivityTest ==
+
+FeedStoriesToDetail
+- memastikan tab layout terbentuk
+- memastikan view pager terbentuk
+- memastikan halaman story home terbentuk
+- memastikan halaman list story terbentuk
+- klik list story urutan ke 1
+- memastikan halaman detail terbentuk
+- memastikan deksripsi muncul
+
+
+PostNewStoriesCapture
+- click pada tombol tambah
+- click potret gambar
+- memastikan layout insert terbentuk
+- memasukan deskripsi
+- tutup keyboard
+- unggah gambar
+- memastikan list stories terbentuk
+- klik pada story yang telah terunggah berdsarkan judul
+- memastikan detail terbentuk
+

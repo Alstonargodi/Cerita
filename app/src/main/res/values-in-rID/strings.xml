@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ceritaku</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!--spalshscreen-->
+    <string name="Splash">peoplespalh</string>
+    <string name="splash_text">Cerita</string>
+
+    <!--onboard page-->
+    <string name="Onboard_title">Untuk pertama kali..</string>
+    <string name="Onboard_subtitle">biarkan kami memperkenalkan aplikasi kami</string>
+    <string name="Onboard_final">klik saya !</string>
+    <string name="Onboard_indicator1">halaman 1</string>
+    <string name="Onboard_indicator2">halaman2</string>
+    <string name="Onboard_indicator3">halaman3</string>
+    <string name="Onboard_iconpage1">iconpage1</string>
+    <string name="Onboard_text1">Ceritakan kisah Anda dengan orang luar</string>
+    <string name="Onboard_text2">dengarkan kisah epik mereka</string>
+    <string name="Onboard_icon2">ikon2</string>
+    <string name="Onboard_icon3">ikon3</string>
+    <string name="Onboard_text3">Anda juga dapat menambahkan gambar</string>
+
+    <!--auth page-->
+    <string name="Login">Login</string>
+    <string name="Email">Email</string>
+    <string name="Password">Password</string>
+    <string name="Signin_order">Ayo pergi</string>
+    <string name="Register">Daftar</string>
+    <string name="Signin_or">pendatang baru?</string>
+    <string name="Sigin_subtitle">Sebelum kita pergi…</string>
+    <string name="Username">Nama Pengguna</string>
+    <string name="Register_order">daftarkan saya</string>
+    <string name="cancel">Batal</string>
+
+    <!--home-->
+    <string name="Home_title">Cerita</string>
+    <string name="Home_error">Tampilan kesalahan</string>
+
+
+    <!--insert page-->
+    <string name="insert_back">kembali ke rumah</string>
+    <string name="insert_title">postingan baru</string>
+    <string name="insert_order">Unggah</string>
+    <string name="insert_photoresult">hasilfoto</string>
+    <string name="insert_description">Deskripsi</string>
+    <string name="insert_descinput">deskripsi</string>
+    <string name="insert_uploading">Mengunggah</string>
+
+
+    <!--camera page-->
+    <string name="Camera_gallery">pilihan gambar</string>
+    <string name="Camera_backhome">btnbackhome</string>
+    <string name="Camera_capture">tangkap</string>
+    <string name="Detail_backhom">kembali ke rumah</string>
+    <string name="Detail_name">Cerita</string>
+    <string name="Detail_pic">gambar detail</string>
+    <string name="Setting_title">Setelan</string>
+    <string name="Setting_account">Akun saat ini</string>
+    <string name="Setting_name">profil nama</string>
+    <string name="Setting_order">Keluar</string>
+    <string name="Itemcv_photo">imgprofile</string>
+    <string name="Setting_langauge">bahasa</string>
+    <!--Login activity-->
+    <string name="Login_error">tolong dicek kembali</string>
+    <string name="Login_formerror">form invalid</string>
+    <string name="Login_fail">gagal</string>
+    <!--home activity-->
+    <string name="Home_try">coba lagi :(</string>
+    <string name="Home_empty">Tidak ada data, sepertinya tidak ada yang menambahkan cerita mereka</string>
+    <!--detail activity-->
+    <string name="Detail_title"> Story</string>
+    <string name="rotatecamera">rotatecamera</string>
+
+    <string name="tabone">List</string>
+    <string name="tabtwo">Maps</string>
+    <string name="feed">Feed</string>
+    <string name="maps">Maps</string>
+    <string name="find_my_location">Find My Location</string>
+</resources>

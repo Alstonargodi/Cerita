@@ -16,12 +16,61 @@
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" >
         <action
-            android:id="@+id/action_homeFragment_to_addStoryFragment"
-            app:destination="@id/addStoryFragment" />
+            android:id="@+id/action_homeFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_detailStoryFragment"
+            app:destination="@id/detailStoryFragment" />
     </fragment>
     <fragment
-        android:id="@+id/addStoryFragment"
-        android:name="com.example.ceritaku.AddStoryFragment"
-        android:label="fragment_add_story"
-        tools:layout="@layout/fragment_add_story" />
+        android:id="@+id/cameraFragment"
+        android:name="com.example.ceritaku.view.upload.CameraFragment"
+        android:label="fragment_camera"
+        tools:layout="@layout/fragment_camera" >
+        <action
+            android:id="@+id/action_cameraFragment_to_insertStoryFragment"
+            app:destination="@id/insertStoryFragment" />
+        <action
+            android:id="@+id/action_cameraFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/insertStoryFragment"
+        android:name="com.example.ceritaku.view.upload.InsertStoryFragment"
+        android:label="fragment_insertstory"
+        tools:layout="@layout/fragment_insertstory" >
+        <action
+            android:id="@+id/action_insertStoryFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_insertStoryFragment_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.ceritaku.view.authentication.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
+    <activity
+        android:id="@+id/splashScreen"
+        android:name="com.example.ceritaku.view.start.splashscreen.SplashScreenActivity"
+        android:label="activity_splash_screen"
+        tools:layout="@layout/activity_splash_screen" />
+    <activity
+        android:id="@+id/registerActivity"
+        android:name="com.example.ceritaku.view.authentication.RegisterActivity"
+        android:label="activity_register"
+        tools:layout="@layout/activity_register" />
+    <fragment
+        android:id="@+id/detailStoryFragment"
+        android:name="com.example.ceritaku.view.detail.DetailStoryFragment"
+        android:label="fragment_detail_story"
+        tools:layout="@layout/fragment_detail_story" >
+        <action
+            android:id="@+id/action_detailStoryFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="detailStory"
+            app:argType="com.example.ceritaku.data.remote.response.story.Story" />
+    </fragment>
 </navigation>

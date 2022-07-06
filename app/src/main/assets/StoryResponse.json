@@ -1,0 +1,51 @@
+{
+  "error": false,
+  "message": "Stories fetched successfully",
+  "listStory": [
+    {
+      "id": "story-Xu_WmBDNai0C89Iu",
+      "name": "pangeran",
+      "description": "uhihih",
+      "photoUrl": "https://i.ibb.co/mXb28k9/20210426144438-1.jpg",
+      "createdAt": "2022-04-19T13:27:15.656Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-OvrFULq7ZXrhCE7X",
+      "name": "haris",
+      "description": "test lur",
+      "photoUrl": "https://i.ibb.co/mXb28k9/20210426144438-1.jpg",
+      "createdAt": "2022-04-19T13:26:37.402Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-Jf_jVQiGluOnGW7L",
+      "name": "podashon",
+      "description": "biar tau kau\n",
+      "photoUrl": "https://i.ibb.co/mXb28k9/20210426144438-1.jpg",
+      "createdAt": "2022-04-19T13:25:02.742Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-Z6zjczpEWMht3Txn",
+      "name": "podashon",
+      "description": "kapan ada waktu lagi",
+      "photoUrl": "https://i.ibb.co/mXb28k9/20210426144438-1.jpg",
+      "createdAt": "2022-04-19T13:24:38.736Z",
+      "lat": null,
+      "lon": null
+    },
+    {
+      "id": "story-MpxSRUWTs21V-nXC",
+      "name": "zilong",
+      "description": ".",
+      "photoUrl": "https://i.ibb.co/mXb28k9/20210426144438-1.jpg",
+      "createdAt": "2022-04-19T13:22:17.363Z",
+      "lat": null,
+      "lon": null
+    }
+  ]
+}

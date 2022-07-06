@@ -4,27 +4,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SplashScreen">
+    android:id="@+id/splash_activity"
+    tools:context=".view.start.splashscreen.SplashScreenActivity">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="0dp"
-        android:layout_height="384dp"
+        android:layout_height="280dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/ic_story" />
+        app:srcCompat="@drawable/ic_story"
+        android:contentDescription="@string/Splash" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="0dp"
         android:layout_height="70dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="68dp"
+        android:layout_marginEnd="20dp"
         android:fontFamily="@font/poppinsregular"
         android:gravity="center"
-        android:text="Ceritaku"
+        android:text="@string/splash_text"
         android:textColor="#3C9AE4"
         android:textSize="34sp"
         android:textStyle="bold"

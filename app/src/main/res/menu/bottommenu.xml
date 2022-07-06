@@ -2,7 +2,7 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title=""
+        android:title="home"
         android:id="@+id/rumah"
         android:visible="true"
         android:enabled="true"
@@ -12,12 +12,12 @@
     <item
         android:id="@+id/add"
         android:icon="@drawable/ic_baseline_add_circle_outline_24"
-        android:title=""
+        android:title="post"
         >
     </item>
     <item
-        android:id="@+id/profile"
-        android:icon="@drawable/ic_baseline_person_24"
-        android:title="">
+        android:id="@+id/setting"
+        android:icon="@drawable/ic_baseline_settings_24"
+        android:title="setting">
     </item>
 </menu>
