@@ -15,7 +15,6 @@ import com.example.ceritaku.R
 import java.io.*
 import java.text.SimpleDateFormat
 import java.time.Instant
-import java.time.LocalDate
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -113,7 +112,7 @@ object Utils {
         return myFile
     }
 
-    fun createTempFile(context: Context): File {
+    private fun createTempFile(context: Context): File {
         val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(timeStamp, ".jpg", storageDir)
     }

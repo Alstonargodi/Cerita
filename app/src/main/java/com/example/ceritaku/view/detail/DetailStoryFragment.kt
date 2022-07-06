@@ -39,7 +39,7 @@ class DetailStoryFragment : Fragment() {
 
                     tvdetailstoryDate.text = dateFormat(data?.createdAt.toString())
                     tvdetailstoryDesc.text = data?.description
-                    val author = data?.name +  getString(R.string.Detail_title)
+                    val author = data?.name
                     tvdetailstoryOp.text = author
 
                     Glide.with(binding.root.context)

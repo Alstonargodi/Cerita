@@ -76,6 +76,7 @@ class CameraFragment : Fragment() {
 
     private fun allPermissiongranted() = REQUIRED_PERMISSIONS.all{
         ContextCompat.checkSelfPermission(requireContext(),it) == PackageManager.PERMISSION_GRANTED
+
     }
 
     override fun onCreateView(

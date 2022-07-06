@@ -68,6 +68,9 @@
 
     <string name="tabone">Feed</string>
     <string name="tabtwo">Maps</string>
+    <string name="feed">Feed</string>
+    <string name="maps">Maps</string>
+    <string name="find_my_location">Find My Location</string>
 
 
 </resources>

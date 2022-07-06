@@ -1,10 +1,6 @@
 package com.example.ceritaku.view
 
-import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
-import androidx.test.core.app.ActivityScenario
-import androidx.test.core.app.ActivityScenario.ActivityAction
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.action.ViewActions.click
@@ -34,7 +30,7 @@ import org.junit.runner.RunWith
 class ListStoryFragmentTest {
 
     private val mockWebServer = MockWebServer()
-    private val context: Context = ApplicationProvider.getApplicationContext()
+
 
     @get:Rule
     var activity = ActivityScenarioRule(MainActivity::class.java)
@@ -69,7 +65,7 @@ class ListStoryFragmentTest {
             .perform(RecyclerViewActions.actionOnItemAtPosition<StoryListAdapter.ViewHolder>(0,click()))
         onView(withId(R.id.layout_detailstory)).check(matches(isDisplayed()))
         onView(withId(R.id.tvdetailstory_img)).check(matches(isDisplayed()))
-        onView(withText("pangeranStory")).check(matches(isDisplayed()))
+        onView(withText("pangeran")).check(matches(isDisplayed()))
         onView(withText("uhihih")).check(matches(isDisplayed()))
     }
 
@@ -88,7 +84,7 @@ class ListStoryFragmentTest {
             .perform(RecyclerViewActions.actionOnItemAtPosition<StoryListAdapter.ViewHolder>(3,click()))
         onView(withId(R.id.layout_detailstory)).check(matches(isDisplayed()))
         onView(withId(R.id.tvdetailstory_img)).check(matches(isDisplayed()))
-        onView(withText("podashonStory")).check(matches(isDisplayed()))
+        onView(withText("podashon")).check(matches(isDisplayed()))
         onView(withText("kapan ada waktu lagi")).check(matches(isDisplayed()))
 
     }
@@ -105,7 +101,7 @@ class ListStoryFragmentTest {
             .perform(RecyclerViewActions.actionOnItemAtPosition<StoryListAdapter.ViewHolder>(3,click()))
         onView(withId(R.id.layout_detailstory)).check(matches(isDisplayed()))
         onView(withId(R.id.tvdetailstory_img)).check(matches(isDisplayed()))
-        onView(withText("podashonStory")).check(matches(isDisplayed()))
+        onView(withText("podashon")).check(matches(isDisplayed()))
         onView(withText("kapan ada waktu lagi")).check(matches(isDisplayed()))
     }
 

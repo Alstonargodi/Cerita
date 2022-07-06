@@ -7,31 +7,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
-import com.example.ceritaku.data.local.datastore.UserPrefrences
-import com.example.ceritaku.data.local.datastore.dataStore
+import androidx.fragment.app.viewModels
 import com.example.ceritaku.databinding.FragmentProfileBinding
 import com.example.ceritaku.view.authentication.LoginActivity
-import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
-import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
+import com.example.ceritaku.viewmodel.SettingPrefViewModel
+import com.example.ceritaku.viewmodel.VModelFactory
 
 
 @Suppress("SameParameterValue")
 class ProfileFragment : Fragment() {
     private lateinit var binding : FragmentProfileBinding
-    private lateinit var prefViewModel : SettingPrefViewModel
-
+    private val prefViewModel : SettingPrefViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentProfileBinding.inflate(layoutInflater)
-        prefViewModel = ViewModelProvider(requireActivity(),
-            PrefViewModelFactory(
-                UserPrefrences.getInstance(requireContext().dataStore)
-            )
-        )[SettingPrefViewModel::class.java]
+
 
         prefViewModel.getUserName().observe(viewLifecycleOwner){ name ->
             binding.curprofile.text = name

@@ -1,13 +1,11 @@
 package com.example.ceritaku.utils
 
-import android.util.Log
 import com.example.ceritaku.data.remote.response.login.LoginResponse
 import com.example.ceritaku.data.remote.response.login.LoginResult
 import com.example.ceritaku.data.remote.response.register.RegisterResponse
 import com.example.ceritaku.data.remote.response.story.NewStoryResponse
 import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.data.remote.response.story.StoryResponse
-import com.example.ceritaku.data.remote.utils.MediatorResult
 
 object DataDummy {
 
@@ -82,49 +80,31 @@ object DataDummy {
                 items,
                 "Succesfuly"
             )
-
     }
 
-
-
-
-    fun genFakeStory_Success(): List<Story>{
+    fun fakeListStoryResponse_Fail(): StoryResponse{
         val items: MutableList<Story> = arrayListOf()
-        for (i in 0..5){
-            val tempData = Story(
-            "story-Z6zjczpEWMht3Txn",
-            "2022-04-19T13:24:38.736Z",
-            "kapan ada waktu lagi ke $i",
+
+        val tempData = Story(
+            "",
+            "",
+            "",
             0F,
             0F,
-            "budi",
-            "https://i.ibb.co/mXb28k9/20210426144438-1.jpg",
-            )
-            items.add(tempData)
-        }
-        return items
-    }
+            "",
+            "",
+        )
+        items.add(tempData)
 
-    fun genFakeStoryResponse(): MediatorResult<StoryResponse>{
-        val items: MutableList<Story> = arrayListOf()
-        for (i in 0..5){
-            val tempData = Story(
-                "story-Z6zjczpEWMht3Txn",
-                "2022-04-19T13:24:38.736Z",
-                "kapan ada waktu lagi ke $i",
-                i.toFloat(),
-                i.toFloat(),
-                "budi",
-                "https://i.ibb.co/mXb28k9/20210426144438-1.jpg",
-            )
-            items.add(tempData)
-        }
-        return MediatorResult.Sucess(
-            StoryResponse(
-                false,
-                items,
-                "Succesfuly"
-            )
+        return StoryResponse(
+            true,
+            items,
+            "No credentials"
         )
     }
+
+    fun fakeTokenPrefrences(): String = "tokendummy"
+    fun fakeNamePrefrences(): String = "namedummy"
+    fun fakeOnBoardStatusPrefrences() : Boolean  = true
+
 }

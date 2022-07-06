@@ -7,11 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.ceritaku.R
-import com.example.ceritaku.data.local.datastore.UserPrefrences
-import com.example.ceritaku.data.local.datastore.dataStore
 import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.data.remote.utils.MediatorResult
 import com.example.ceritaku.view.detail.DetailStoryFragment
@@ -20,8 +17,7 @@ import com.example.ceritaku.view.utils.IdlingConfig
 import com.example.ceritaku.view.utils.wrapperIdling
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
-import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
-import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
+import com.example.ceritaku.viewmodel.SettingPrefViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
@@ -33,7 +29,7 @@ import kotlinx.coroutines.launch
 class MapsFragment : Fragment(){
 
     private val viewModel : StoryViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
-    private lateinit var prefViewModel : SettingPrefViewModel
+    private val prefViewModel : SettingPrefViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
 
     override fun onStart() {
         super.onStart()
@@ -46,11 +42,6 @@ class MapsFragment : Fragment(){
     ): View? {
         IdlingConfig.decrement()
         wrapperIdling {
-            prefViewModel = ViewModelProvider(requireActivity(),
-                PrefViewModelFactory(
-                    UserPrefrences.getInstance(requireContext().dataStore)
-                )
-            )[SettingPrefViewModel::class.java]
 
             prefViewModel.getUserToken().observe(viewLifecycleOwner){
                 lifecycleScope.launch {
@@ -97,9 +88,9 @@ class MapsFragment : Fragment(){
                             .position(position)
                             .title(data.name)
                     )
-                    //todo maps window detail
-                    googleMap.setOnInfoWindowClickListener {
 
+                    googleMap.setOnInfoWindowClickListener {
+                        toDetailPage(data)
                     }
                     googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
                 }
@@ -127,7 +118,6 @@ class MapsFragment : Fragment(){
         IdlingConfig.decrement()
     }
 
-    //TODO 1.2 Maps Detail Story
     private fun toDetailPage(data : Story){
         val bundle = Bundle()
         val fragment = DetailStoryFragment()

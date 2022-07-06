@@ -7,40 +7,31 @@ import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
-import com.example.ceritaku.data.local.datastore.UserPrefrences
-import com.example.ceritaku.data.local.datastore.dataStore
 import com.example.ceritaku.databinding.ActivityLoginBinding
 import com.example.ceritaku.data.remote.utils.MediatorResult
 import com.example.ceritaku.view.componen.PasswordBoxCustom
+import com.example.ceritaku.view.utils.IdlingConfig
 import com.example.ceritaku.viewmodel.AuthViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
-import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
-import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
+import com.example.ceritaku.viewmodel.SettingPrefViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding : ActivityLoginBinding
-    private val viewModel : AuthViewModel by viewModels{
-        VModelFactory.getInstance(this)
-    }
-    private lateinit var prefViewModel : SettingPrefViewModel
+    private val viewModel : AuthViewModel by viewModels{ VModelFactory.getInstance(this) }
+    private val prefViewModel : SettingPrefViewModel by viewModels{ VModelFactory.getInstance(this) }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        IdlingConfig.decrement()
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-
-        prefViewModel = ViewModelProvider(this,
-            PrefViewModelFactory(UserPrefrences.getInstance(dataStore))
-        )[SettingPrefViewModel::class.java]
 
 
         setEditTextPassword()
@@ -80,11 +71,11 @@ class LoginActivity : AppCompatActivity() {
     private fun sessionChecker(){
         prefViewModel.getUserName().observe(this){ respon->
             if (respon.isNullOrEmpty()){
-                if (boxChecker()){
+                if (boxChecker())
                     showMessage(getString(R.string.Login_error))
-                }else{
+                else
                     lifecycleScope.launch { login() }
-                }
+
             }else{
                 startActivity(
                     Intent(this,MainActivity::class.java)
@@ -97,33 +88,33 @@ class LoginActivity : AppCompatActivity() {
     private suspend fun login(){
         val email = binding.email.text.toString()
         val password = binding.password.text.toString()
-//
-//        viewModel.postLogin(email,password).observe(this){
-//            when(it){
-//                is MediatorResult.Loading->{
-//                    binding.pgbarlogin.visibility = View.VISIBLE
-//                }
-//                is MediatorResult.Sucess->{
-//                    binding.pgbarlogin.visibility = View.GONE
-//                    saveUserLogin(
-//                        it.data.loginResult.name,
-//                        it.data.loginResult.token,
-//                        onBoard = true,
-//                    )
-//                    showMessage("welcome + ${it.data.loginResult.name}")
-//                    nextPageSucess()
-//                }
-//                is MediatorResult.Error->{
-//                    binding.pgbarlogin.visibility = View.GONE
-//                    if (it.error == invalid){
-//                        showMessage(getString(R.string.Login_formerror))
-//                    }else{
-//                        showMessage(it.error)
-//                    }
-//                    Log.d(tag, it.error)
-//                }
-//            }
-//        }
+
+        viewModel.postLogin(email,password).observe(this){
+            when(it){
+                is MediatorResult.Loading->{
+                    binding.pgbarlogin.visibility = View.VISIBLE
+                }
+                is MediatorResult.Sucess->{
+                    binding.pgbarlogin.visibility = View.GONE
+                    saveUserLogin(
+                        it.data.loginResult.name,
+                        it.data.loginResult.token,
+                        onBoard = true,
+                    )
+                    showMessage("welcome ${it.data.loginResult.name}")
+                    nextPageSucess()
+                }
+                is MediatorResult.Error->{
+                    binding.pgbarlogin.visibility = View.GONE
+                    if (it.error == invalid){
+                        showMessage(getString(R.string.Login_formerror))
+                    }else{
+                        showMessage(it.error)
+                    }
+                    Log.d(tag, it.error)
+                }
+            }
+        }
     }
 
     private fun saveUserLogin(name : String, token : String, onBoard : Boolean){

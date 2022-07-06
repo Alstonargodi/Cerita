@@ -7,37 +7,30 @@ import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.ceritaku.MainActivity
-import com.example.ceritaku.data.local.datastore.UserPrefrences
-import com.example.ceritaku.data.local.datastore.dataStore
 import com.example.ceritaku.databinding.ActivityRegisterBinding
 import com.example.ceritaku.data.remote.utils.MediatorResult
 import com.example.ceritaku.view.componen.PasswordBoxCustom
 import com.example.ceritaku.viewmodel.AuthViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
-import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
-import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
+import com.example.ceritaku.viewmodel.SettingPrefViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
 
 class RegisterActivity : AppCompatActivity() {
+    private val viewModel : AuthViewModel by viewModels{ VModelFactory.getInstance(this) }
+    private val prefViewModel : SettingPrefViewModel by viewModels{ VModelFactory.getInstance(this) }
+
     private lateinit var binding: ActivityRegisterBinding
-    private val viewModel : AuthViewModel by viewModels{
-        VModelFactory.getInstance(this)
-    }
-    private lateinit var prefViewModel : SettingPrefViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRegisterBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        prefViewModel = ViewModelProvider(this,
-            PrefViewModelFactory(UserPrefrences.getInstance(dataStore))
-        )[SettingPrefViewModel::class.java]
 
         setEditTextPassword()
 
@@ -103,33 +96,33 @@ class RegisterActivity : AppCompatActivity() {
         val email = binding.tvregisemail.text.toString()
         val password = binding.tvregisterpassword.text.toString()
 
-//        viewModel.postLogin(email,password).observe(this){
-//            when(it){
-//                is MediatorResult.Loading->{
-//                    binding.pgbarregister.visibility = View.VISIBLE
-//                }
-//                is MediatorResult.Sucess->{
-//                    binding.pgbarregister.visibility = View.GONE
-//                    saveUserLogin(
-//                        it.data.loginResult.name,
-//                        it.data.loginResult.token,
-//                        true,
-//                    )
-//                    showMessage("welcome + ${it.data.loginResult.name}")
-//                    startActivity(Intent(this, MainActivity::class.java))
-//                    finishAffinity()
-//                }
-//                is MediatorResult.Error->{
-//                    binding.pgbarregister.visibility = View.GONE
-//                    if (it.error == invalid){
-//                        showMessage("Invalid form")
-//                    }else{
-//                        showMessage(it.error)
-//                    }
-//                    Log.d(LoginActivity.tag, it.error)
-//                }
-//            }
-//        }
+        viewModel.postLogin(email,password).observe(this){
+            when(it){
+                is MediatorResult.Loading->{
+                    binding.pgbarregister.visibility = View.VISIBLE
+                }
+                is MediatorResult.Sucess->{
+                    binding.pgbarregister.visibility = View.GONE
+                    saveUserLogin(
+                        it.data.loginResult.name,
+                        it.data.loginResult.token,
+                        true,
+                    )
+                    showMessage("welcome + ${it.data.loginResult.name}")
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finishAffinity()
+                }
+                is MediatorResult.Error->{
+                    binding.pgbarregister.visibility = View.GONE
+                    if (it.error == invalid){
+                        showMessage("Invalid form")
+                    }else{
+                        showMessage(it.error)
+                    }
+                    Log.d(LoginActivity.tag, it.error)
+                }
+            }
+        }
     }
 
     private fun saveUserLogin(name : String, token : String, onBoard : Boolean){

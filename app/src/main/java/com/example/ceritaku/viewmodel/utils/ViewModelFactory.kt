@@ -3,9 +3,8 @@ package com.example.ceritaku.viewmodel
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.ceritaku.data.local.mediator.database.MediatorDatabase
-import com.example.ceritaku.data.remote.repository.ApiRepository
 import com.example.ceritaku.data.remote.injection.Injection
+import com.example.ceritaku.data.remote.repository.ApiRepository
 
 @Suppress("UNCHECKED_CAST")
 class VModelFactory private constructor(
@@ -13,12 +12,18 @@ class VModelFactory private constructor(
     ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(AuthViewModel::class.java)){
-            return AuthViewModel(repository) as T
-        }else if (modelClass.isAssignableFrom(StoryViewModel::class.java)){
-            return StoryViewModel(repository) as T
+        return when {
+            modelClass.isAssignableFrom(AuthViewModel::class.java) -> {
+                AuthViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(StoryViewModel::class.java) -> {
+                StoryViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(SettingPrefViewModel::class.java) -> {
+                SettingPrefViewModel(repository) as T
+            }
+            else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
         }
-        throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)
     }
 
     companion object{

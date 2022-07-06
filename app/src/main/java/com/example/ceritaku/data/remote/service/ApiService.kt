@@ -3,11 +3,9 @@ package com.example.ceritaku.data.remote.service
 import com.example.ceritaku.data.remote.response.login.LoginResponse
 import com.example.ceritaku.data.remote.response.register.RegisterResponse
 import com.example.ceritaku.data.remote.response.story.NewStoryResponse
-import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.data.remote.response.story.StoryResponse
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
 import retrofit2.http.*
 
 interface ApiService {
@@ -32,13 +30,13 @@ interface ApiService {
     suspend fun getStoriesList(
         @Query("page") page : Int,
         @Query("size") size : Int,
-        @Header("Authorization") auth: Any
+        @Header("Authorization") auth: String
     ): StoryResponse
 
     @GET("stories")
     suspend fun getMapsStories(
         @Query("location") page: Int,
-        @Header("Authorization") auth: Any
+        @Header("Authorization") auth: String
     ): StoryResponse
 
     @Multipart

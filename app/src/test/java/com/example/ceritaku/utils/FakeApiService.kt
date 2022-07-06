@@ -32,12 +32,21 @@ class FakeApiService: ApiService {
         }
     }
 
-    override suspend fun getStoriesList(page: Int, size: Int, auth: Any): StoryResponse {
-        TODO("Not yet implemented")
+
+    override suspend fun getStoriesList(page: Int, size: Int, auth: String): StoryResponse {
+        return if (auth.isEmpty()){
+            DataDummy.fakeListStoryResponse_Fail()
+        }else{
+            DataDummy.fakeListStoryResponse_Success()
+        }
     }
 
-    override suspend fun getMapsStories(page: Int, auth: Any): StoryResponse {
-        TODO("Not yet implemented")
+    override suspend fun getMapsStories(page: Int, auth: String): StoryResponse {
+        return if (auth.isEmpty()){
+            DataDummy.fakeListStoryResponse_Fail()
+        }else{
+            DataDummy.fakeListStoryResponse_Success()
+        }
     }
 
     override suspend fun postStory(
@@ -47,10 +56,10 @@ class FakeApiService: ApiService {
         lon: Float,
         auth: Any
     ): NewStoryResponse {
-        if(description.contentLength() == 0L || auth.toString().isEmpty()){
-            return DataDummy.fakePostNewStories_Fail()
+        return if(description.contentLength() == 0L || auth.toString().isEmpty()){
+            DataDummy.fakePostNewStories_Fail()
         }else{
-            return DataDummy.fakePostNewStories_Success()
+            DataDummy.fakePostNewStories_Success()
         }
     }
 

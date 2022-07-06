@@ -44,4 +44,7 @@
     <string name="Itemcv_photo">imgprofile</string>
     <string name="Setting_langauge">Language</string>
     <string name="rotatecamera">rotatecamera</string>
+    <string name="feed">Feed</string>
+    <string name="maps">Maps</string>
+    <string name="find_my_location">Find My Location</string>
 </resources>

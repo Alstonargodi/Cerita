@@ -1,6 +1,5 @@
 package com.example.ceritaku.view.utils
 
-import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.idling.CountingIdlingResource
 
 object IdlingConfig {

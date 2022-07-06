@@ -1,8 +1,10 @@
 package com.example.ceritaku.data.remote.repository
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.liveData
 import androidx.paging.*
+import com.example.ceritaku.data.local.datastore.UserPreferences
 import com.example.ceritaku.data.local.mediator.database.MediatorDatabase
 import com.example.ceritaku.data.remote.utils.MediatorResult
 import com.example.ceritaku.data.remote.response.login.LoginResponse
@@ -16,9 +18,13 @@ import com.example.ceritaku.view.utils.wrapperIdling
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import javax.inject.Inject
 
-class ApiRepository(private val mediatorDatabase: MediatorDatabase, private val apiService: ApiService) {
+
+class ApiRepository(
+    private val mediatorDatabase: MediatorDatabase,
+    private val apiService: ApiService,
+    private val preferences: UserPreferences
+    ) {
 
     suspend fun postLogin(email : String,password : String): LiveData<MediatorResult<LoginResponse>> = wrapperIdling {
         liveData {
@@ -61,11 +67,10 @@ class ApiRepository(private val mediatorDatabase: MediatorDatabase, private val 
     @OptIn(ExperimentalPagingApi::class)
     fun getStoriesList(auth : String): Flow<PagingData<Story>> = wrapperIdling {
         return Pager(
-                config = PagingConfig(pageSize = 5, enablePlaceholders = true),
-                remoteMediator = StoryRemoteMediator(mediatorDatabase,apiService,auth),
-                pagingSourceFactory = { mediatorDatabase.storyDao().getAllStory()}
-            ).flow
-
+            config = PagingConfig(pageSize = 5, enablePlaceholders = true),
+            remoteMediator = StoryRemoteMediator(mediatorDatabase,apiService,auth),
+            pagingSourceFactory = { mediatorDatabase.storyDao().getAllStory()}
+        ).flow
     }
 
 
@@ -83,6 +88,12 @@ class ApiRepository(private val mediatorDatabase: MediatorDatabase, private val 
         }
     }
 
+    fun getUserToken(): LiveData<String> = preferences.getUserToken().asLiveData()
+    fun getUserName(): LiveData<String> = preferences.getUserName().asLiveData()
+    fun getOnBoardStatus(): LiveData<Boolean> = preferences.getonBoardStatus().asLiveData()
 
+    suspend fun savePrefrences(onBoardStatus : Boolean, name : String, token : String){
+        preferences.savePrefrences(onBoardStatus,name, token)
+    }
 
 }

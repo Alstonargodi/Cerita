@@ -1,22 +1,14 @@
 package com.example.ceritaku.repository
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.MutableLiveData
-import com.example.ceritaku.BuildConfig
+import com.example.ceritaku.data.local.datastore.UserPreferences
 import com.example.ceritaku.data.local.mediator.database.MediatorDatabase
 import com.example.ceritaku.data.remote.repository.ApiRepository
-import com.example.ceritaku.data.remote.response.login.LoginResponse
-import com.example.ceritaku.data.remote.response.login.LoginResult
-import com.example.ceritaku.data.remote.response.register.RegisterResponse
 import com.example.ceritaku.data.remote.service.ApiService
-import com.example.ceritaku.data.remote.utils.MediatorResult
 import com.example.ceritaku.utils.DataDummy
 import com.example.ceritaku.utils.FakeApiService
 import com.example.ceritaku.utils.MainCoroutineRule
-import com.example.ceritaku.view.utils.Utils
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import kotlinx.coroutines.test.runTest
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -28,7 +20,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.InjectMocks
 import org.mockito.Mockito.mock
 import org.mockito.junit.MockitoJUnitRunner
 import java.io.File
@@ -43,7 +34,7 @@ class ApiRepositoryTest {
     @get:Rule
     var mainCoroutineRule = MainCoroutineRule()
 
-
+    private lateinit var userPreferences: UserPreferences
     private lateinit var apiService : ApiService
     private lateinit var apiRepository : ApiRepository
     private lateinit var database : MediatorDatabase
@@ -52,8 +43,9 @@ class ApiRepositoryTest {
     @Before
     fun setUp(){
         apiService = FakeApiService()
+        userPreferences = mock(UserPreferences::class.java)
         database = mock(MediatorDatabase::class.java)
-        apiRepository = ApiRepository(database,apiService)
+        apiRepository = ApiRepository(database,apiService,userPreferences)
     }
 
 
@@ -158,6 +150,67 @@ class ApiRepositoryTest {
         assertEquals(postExpected.error,postActual.error)
         assertEquals(postExpected.message,postActual.message)
 
+    }
+
+    @Test
+    fun `when get List Stories with Token`() = runTest {
+        val listExpected = DataDummy.fakeListStoryResponse_Success()
+        val listActual = apiService.getStoriesList(1,10,"token")
+
+        assertFalse(listActual.error)
+        assertEquals(listExpected.error,listExpected.error)
+        assertEquals(listExpected.message,listActual.message)
+    }
+
+    @Test
+    fun `when get List Stories without Token`() = runTest {
+        val listExpected = DataDummy.fakeListStoryResponse_Fail()
+        val listActual = apiService.getStoriesList(1,10,"")
+
+        assertTrue(listActual.error)
+        assertEquals(listExpected.error,listExpected.error)
+        assertEquals(listExpected.message,listActual.message)
+    }
+
+    @Test
+    fun `when get maps Stories with Token`() = runTest {
+        val mapsExpected = DataDummy.fakeListStoryResponse_Success()
+        val mapsActual = apiService.getMapsStories(1,"token")
+
+        assertFalse(mapsActual.error)
+        assertEquals(mapsExpected.error,mapsExpected.error)
+        assertEquals(mapsExpected.message,mapsActual.message)
+    }
+
+    @Test
+    fun `when get maps Stories without Token`() = runTest {
+        val mapsExpected = DataDummy.fakeListStoryResponse_Fail()
+        val mapsActual = apiService.getMapsStories(1,"")
+
+        assertTrue(mapsActual.error)
+        assertEquals(mapsExpected.error,mapsExpected.error)
+        assertEquals(mapsExpected.message,mapsActual.message)
+    }
+
+    @Test
+    fun `when get token preferences`() = runTest {
+        val tokenExpected = DataDummy.fakeTokenPrefrences()
+        val tokenActual = userPreferences.getUserToken()
+        assertNotEquals(tokenExpected,tokenActual)
+    }
+
+    @Test
+    fun `when get name preferences`() = runTest{
+        val tokenExpected = DataDummy.fakeNamePrefrences()
+        val tokenActual = userPreferences.getUserName()
+        assertNotEquals(tokenExpected,tokenActual)
+    }
+
+    @Test
+    fun `when get onboard preferences`() = runTest{
+        val tokenExpected = DataDummy.fakeOnBoardStatusPrefrences()
+        val tokenActual = userPreferences.getUserName()
+        assertNotEquals(tokenExpected,tokenActual)
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.ceritaku.view.upload
 
+import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
@@ -8,27 +9,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.ceritaku.MainActivity
 import com.example.ceritaku.R
-import com.example.ceritaku.data.local.datastore.UserPrefrences
-import com.example.ceritaku.data.local.datastore.dataStore
 import com.example.ceritaku.data.remote.utils.MediatorResult
 import com.example.ceritaku.databinding.FragmentInsertstoryBinding
 import com.example.ceritaku.view.utils.IdlingConfig
 import com.example.ceritaku.view.utils.Utils.reduceImageSize
-import com.example.ceritaku.view.utils.Utils.rotateBitmap
 import com.example.ceritaku.view.utils.wrapperIdling
+import com.example.ceritaku.viewmodel.SettingPrefViewModel
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
-import com.example.ceritaku.viewmodel.utils.PrefViewModelFactory
-import com.example.ceritaku.viewmodel.utils.SettingPrefViewModel
-import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationRequest.create
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
@@ -37,18 +35,24 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
+import java.util.concurrent.TimeUnit
 
 
 class InsertStoryFragment : Fragment(){
 
-    //TODO 2.5 insert Current Location
+ 
     private lateinit var binding : FragmentInsertstoryBinding
     private val viewModel : StoryViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
-    private lateinit var prefViewModel : SettingPrefViewModel
+    private val prefViewModel : SettingPrefViewModel by viewModels{ VModelFactory.getInstance(requireContext()) }
+
     private var getFile: File? = null
     private var userToken = ""
+    private var curLongitude = 0F
+    private var curlatitude = 0F
 
-    private lateinit var mMap : GoogleMap
+
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var locationRequest: LocationRequest
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,10 +62,7 @@ class InsertStoryFragment : Fragment(){
         wrapperIdling {
             binding = FragmentInsertstoryBinding.inflate(layoutInflater)
 
-            prefViewModel = ViewModelProvider(requireActivity(),
-                PrefViewModelFactory(UserPrefrences.getInstance(requireContext().dataStore))
-            )[SettingPrefViewModel::class.java]
-
+            fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
             prefViewModel.getUserToken().observe(viewLifecycleOwner){ userToken = "Bearer $it" }
 
@@ -86,13 +87,18 @@ class InsertStoryFragment : Fragment(){
         binding.btnbacktohome.setOnClickListener {
             backToHome()
         }
+
+        binding.uploadlocation.setOnClickListener {
+            createLocationRequest()
+            "Finding..".also { binding.uploadlocation.text = it }
+        }
     }
 
     private fun showResultCamera(){
         val arrayFile = arguments?.getSerializable("picture") as ArrayList<*>
         val file = arrayFile[0] as File
         getFile = file
-        val result = rotateBitmap(BitmapFactory.decodeFile(file.path))
+        val result = BitmapFactory.decodeFile(file.path)
         binding.imageView3.setImageBitmap(result)
     }
 
@@ -114,7 +120,7 @@ class InsertStoryFragment : Fragment(){
                 )
 
 
-                viewModel.postStory(multiPart, desc, 0f, 0f,userToken).observe(viewLifecycleOwner){
+                viewModel.postStory(multiPart, desc, curlatitude, curLongitude,userToken).observe(viewLifecycleOwner){
                     when(it){
                         is MediatorResult.Loading ->{
                             binding.pgbarupload.visibility = View.VISIBLE
@@ -158,6 +164,20 @@ class InsertStoryFragment : Fragment(){
     }
 
 
+    private val requestPermissionLauncher =
+        registerForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions()
+        ) { permissions ->
+            when {
+                permissions[Manifest.permission.ACCESS_FINE_LOCATION] ?: false -> {
+                    getMyLastLocation()
+                }
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] ?: false -> {
+                    getMyLastLocation()
+                }
+                else -> {}
+            }
+        }
 
     private fun checkPermission(permission: String): Boolean {
         return ContextCompat.checkSelfPermission(
@@ -166,6 +186,42 @@ class InsertStoryFragment : Fragment(){
         ) == PackageManager.PERMISSION_GRANTED
     }
 
+    private fun createLocationRequest() {
+        locationRequest = create().apply {
+            interval = TimeUnit.SECONDS.toMillis(1)
+            maxWaitTime = TimeUnit.SECONDS.toMillis(1)
+            priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        }
 
+        val builder = LocationSettingsRequest.Builder()
+            .addLocationRequest(locationRequest)
+        val client: SettingsClient = LocationServices.getSettingsClient(requireActivity())
+        client.checkLocationSettings(builder.build())
+            .addOnSuccessListener {
+                getMyLastLocation()
+            }
+            .addOnFailureListener {
+                "Fail to get location Try Again".also { binding.uploadlocation.text = it }
+            }
 
+    }
+
+    private fun getMyLastLocation() {
+        if(checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) && checkPermission(Manifest.permission.ACCESS_COARSE_LOCATION)){
+            fusedLocationClient.lastLocation.addOnSuccessListener { location  ->
+                if (location != null){
+                    curLongitude = location.longitude.toFloat()
+                    curlatitude = location.latitude.toFloat()
+                    "Location has found $curlatitude - $curLongitude".also { binding.uploadlocation.text = it }
+                }
+
+            }
+        } else {
+            requestPermissionLauncher.launch(arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+            )
+        }
+    }
 }

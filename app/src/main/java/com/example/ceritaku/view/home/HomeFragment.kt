@@ -34,14 +34,8 @@ class HomeFragment : Fragment() {
     }
 
 
-
-
-
     companion object{
-        const val TAG = "HomeFragment"
-
         const val extra_key_detail = "detailstory"
-
         var tab_titles = intArrayOf(
             R.string.tabone,
             R.string.tabtwo

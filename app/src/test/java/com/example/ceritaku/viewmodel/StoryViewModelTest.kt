@@ -8,8 +8,6 @@ import androidx.paging.PagingData
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import androidx.recyclerview.widget.ListUpdateCallback
-import com.example.ceritaku.BuildConfig
-import com.example.ceritaku.data.remote.repository.ApiRepository
 import com.example.ceritaku.data.remote.response.story.NewStoryResponse
 import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.data.remote.response.story.StoryResponse
@@ -27,7 +25,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.junit.Assert
-import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

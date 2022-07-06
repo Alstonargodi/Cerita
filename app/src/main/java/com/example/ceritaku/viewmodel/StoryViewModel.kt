@@ -13,7 +13,6 @@ class StoryViewModel(private val apiRepository: ApiRepository): ViewModel() {
     fun getStoryList(auth : String): LiveData<PagingData<Story>>  =
         apiRepository.getStoriesList(auth).asLiveData().cachedIn(viewModelScope)
 
-
     suspend fun getMapsStories(page : Int,auth : String) =
         apiRepository.getLocStories(page, auth)
 
