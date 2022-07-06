@@ -42,7 +42,7 @@ interface ApiService {
     @Multipart
     @POST("stories")
     suspend fun postStory(
-        @Part file: MultipartBody.Part,
+        @Part photo: MultipartBody.Part,
         @Part("description") description : RequestBody,
         @Part("lat") lat : Float,
         @Part("lon") lon : Float,

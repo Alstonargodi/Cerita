@@ -30,11 +30,6 @@ class ListStoryFragment : Fragment() {
 
     private var rViewAdapter = StoryListAdapter()
 
-    override fun onStart() {
-        super.onStart()
-
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -42,9 +37,7 @@ class ListStoryFragment : Fragment() {
         wrapperIdling {
             binding = FragmentListStoryBinding.inflate(layoutInflater)
             bindingError = LayoutBoard1Binding.inflate(layoutInflater)
-
             showRecyclerList()
-
             return binding.root
         }
 
@@ -63,7 +56,6 @@ class ListStoryFragment : Fragment() {
                 viewModel.getStoryList(userToken).observe(viewLifecycleOwner){
                     rViewAdapter.submitData(requireActivity().lifecycle,it)
                 }
-
 
                 binding.listHomeStory.layoutManager = LinearLayoutManager(requireContext())
 

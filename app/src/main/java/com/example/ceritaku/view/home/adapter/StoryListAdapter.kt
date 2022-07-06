@@ -1,6 +1,7 @@
 package com.example.ceritaku.view.home.adapter
 
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
@@ -40,10 +41,12 @@ class StoryListAdapter : PagingDataAdapter<Story, StoryListAdapter.ViewHolder>(D
                     tvStoriesDate.text = Utils.dateFormat(data.createdAt)
                     tvStoriesDesc.text = data.description
 
-
                     Glide.with(root.context)
+                        .asBitmap()
                         .load(data.photoUrl)
                         .into(tvStoriesImg)
+
+                    Log.d("story list",data.photoUrl)
 
                     tvStoriesDesc.setOnClickListener {
                         tvStoriesDesc.height = 200

@@ -64,7 +64,7 @@ class InsertStoryFragment : Fragment(){
 
             fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
 
-            prefViewModel.getUserToken().observe(viewLifecycleOwner){ userToken = "Bearer $it" }
+            prefViewModel.getUserToken().observe(viewLifecycleOwner){ userToken = it }
 
             showResultCamera()
 
