@@ -12,7 +12,9 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-Sometimes we get interesting stories,even makes more interesting if other people can know and hear our stories. so with Cerita we can hear strangers stories based on their experience and also we can know where that happen by maps. this project also part of submission Learn Android Development in intermediate level by Dicoding Academy
+With Cerita, users can share their stories and experiences with others by creating a narrative on the app. These stories can be about any topic and are displayed on a map, allowing others to see where the story took place.
+Users can browse through the stories on the map and read through the narratives to gain new perspectives and learn about different places and experiences. They can also add their own stories to the app, giving them a platform to share their own experiences with the community.
+Cerita is a great way to learn about different places and experiences from the perspective of others, and is a valuable tool for those who are interested in storytelling and sharing their own experiences with others. It is also a fun and engaging way to improve my skills in Android development as part of my submission for the intermediate level of the Dicoding Academy.
 
 ### Built With
 
