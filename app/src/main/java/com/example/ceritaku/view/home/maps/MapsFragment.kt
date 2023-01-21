@@ -42,16 +42,13 @@ class MapsFragment : Fragment(){
     ): View? {
         IdlingConfig.decrement()
         wrapperIdling {
-
             prefViewModel.getUserToken().observe(viewLifecycleOwner){
                 lifecycleScope.launch {
                     getMapsStories(it)
                 }
             }
             return inflater.inflate(R.layout.fragment_maps, container, false)
-
         }
-
     }
 
 
