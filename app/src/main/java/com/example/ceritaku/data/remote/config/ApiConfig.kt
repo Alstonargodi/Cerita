@@ -16,7 +16,6 @@ object ApiConfig {
     }
 
     fun setApiService(): ApiService {
-
         val loggingInterceptor =
             if(BuildConfig.DEBUG){
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)

@@ -22,14 +22,18 @@ import com.example.ceritaku.viewmodel.SettingPrefViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
+import com.mapbox.maps.extension.style.style
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.*
+import com.mapbox.maps.plugin.scalebar.ScaleBarPlugin
 import kotlinx.coroutines.launch
 
 class MapsFragment : Fragment(){
@@ -49,7 +53,9 @@ class MapsFragment : Fragment(){
     ): View? {
         binding = FragmentMapsBinding.inflate(layoutInflater)
         mapView = binding.mapstories
-        mapView?.getMapboxMap()?.loadStyleUri(Style.SATELLITE)
+        mapView?.getMapboxMap()?.apply {
+            loadStyleUri(Style.DARK)
+        }
         IdlingConfig.decrement()
         wrapperIdling {
             prefViewModel.getUserToken().observe(viewLifecycleOwner){
@@ -103,6 +109,15 @@ class MapsFragment : Fragment(){
                         true
                     })
                 }
+                val cameraPosition = CameraOptions.Builder()
+                    .center(Point.fromLngLat(
+                        data.lat.toDouble(),
+                        data.lon.toDouble()
+                    ))
+                    .build()
+
+
+                mapView?.getMapboxMap()?.setCamera(cameraPosition)
                 pointAnnotaionManager?.create(pointAnnotaionOptions)
             }
     }

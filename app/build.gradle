@@ -145,5 +145,6 @@ dependencies {
 
     //mapbox
     implementation 'com.mapbox.maps:android:10.10.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-gestures:0.8.0'
 
 }
