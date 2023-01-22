@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId "com.example.ceritaku"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
         buildConfigField 'String', 'BASE_URL_STORY', '"https://story-api.dicoding.dev/v1/"'
@@ -143,5 +143,7 @@ dependencies {
     testImplementation 'org.mockito:mockito-inline:3.12.4'
     implementation "javax.inject:javax.inject:1"
 
+    //mapbox
+    implementation 'com.mapbox.maps:android:10.10.0'
 
 }

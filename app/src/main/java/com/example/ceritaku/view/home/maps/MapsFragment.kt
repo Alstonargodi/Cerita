@@ -11,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.ceritaku.R
 import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.data.remote.utils.MediatorResult
+import com.example.ceritaku.databinding.FragmentMapsBinding
 import com.example.ceritaku.view.detail.DetailStoryFragment
 import com.example.ceritaku.view.home.liststory.ListStoryFragment
 import com.example.ceritaku.view.utils.IdlingConfig
@@ -24,12 +25,18 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
+import com.mapbox.geojson.Point
+import com.mapbox.maps.MapView
+import com.mapbox.maps.Style
+import com.mapbox.maps.plugin.annotation.annotations
+import com.mapbox.maps.plugin.annotation.generated.*
 import kotlinx.coroutines.launch
 
 class MapsFragment : Fragment(){
-
+    private lateinit var binding : FragmentMapsBinding
     private val viewModel : StoryViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
     private val prefViewModel : SettingPrefViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
+    private var mapView : MapView? = null
 
     override fun onStart() {
         super.onStart()
@@ -40,6 +47,9 @@ class MapsFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentMapsBinding.inflate(layoutInflater)
+        mapView = binding.mapstories
+        mapView?.getMapboxMap()?.loadStyleUri(Style.SATELLITE)
         IdlingConfig.decrement()
         wrapperIdling {
             prefViewModel.getUserToken().observe(viewLifecycleOwner){
@@ -47,8 +57,8 @@ class MapsFragment : Fragment(){
                     getMapsStories(it)
                 }
             }
-            return inflater.inflate(R.layout.fragment_maps, container, false)
         }
+        return binding.root
     }
 
 
@@ -74,45 +84,27 @@ class MapsFragment : Fragment(){
 
 
     private fun showMapStories(listData : List<Story>){
+        val annotaionApi = mapView?.annotations
+        val pointAnnotaionManager = annotaionApi?.createCircleAnnotationManager(mapView!!)
         IdlingConfig.decrement()
-            val callback = OnMapReadyCallback { googleMap ->
-                IdlingConfig.decrement()
-                listData.forEach { data->
-                    IdlingConfig.increment()
-                    val position = LatLng( data.lat.toDouble(), data.lon.toDouble())
-                    googleMap.addMarker(
-                        MarkerOptions()
-                            .position(position)
-                            .title(data.name)
-                    )
-
-                    googleMap.setOnInfoWindowClickListener {
+            listData.forEach { data ->
+                val pointAnnotaionOptions : CircleAnnotationOptions = CircleAnnotationOptions()
+                    .withPoint(Point.fromLngLat(
+                        data.lat.toDouble(),
+                        data.lon.toDouble()
+                    ))
+                    .withCircleRadius(8.0)
+                    .withCircleColor("#ee4e8b")
+                    .withCircleStrokeWidth(2.0)
+                    .withCircleStrokeColor("#ffffff")
+                pointAnnotaionManager?.apply {
+                    addClickListener(OnCircleAnnotationClickListener{
                         toDetailPage(data)
-                    }
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
+                        true
+                    })
                 }
-
-                googleMap.setMapStyle(
-                    MapStyleOptions.loadRawResourceStyle(
-                        requireActivity(),
-                        R.raw.map_style
-                    )
-                )
-
-                googleMap.uiSettings.apply {
-                    isZoomControlsEnabled = true
-                    isIndoorLevelPickerEnabled = true
-                    isCompassEnabled = true
-                    isMapToolbarEnabled = true
-                }
-
-                googleMap.uiSettings.isMyLocationButtonEnabled = true
-                googleMap.isIndoorEnabled = true
+                pointAnnotaionManager?.create(pointAnnotaionOptions)
             }
-        IdlingConfig.decrement()
-            val mapFragment = childFragmentManager.findFragmentById(R.id.mapstories) as SupportMapFragment?
-            mapFragment?.getMapAsync(callback)
-        IdlingConfig.decrement()
     }
 
     private fun toDetailPage(data : Story){
