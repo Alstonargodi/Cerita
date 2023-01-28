@@ -6,11 +6,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.ceritaku.R
 import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.data.remote.utils.MediatorResult
+import com.example.ceritaku.databinding.DetailAnnotationBinding
 import com.example.ceritaku.databinding.FragmentMapsBinding
 import com.example.ceritaku.view.detail.DetailStoryFragment
 import com.example.ceritaku.view.home.liststory.ListStoryFragment
@@ -19,29 +21,23 @@ import com.example.ceritaku.view.utils.wrapperIdling
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import com.example.ceritaku.viewmodel.SettingPrefViewModel
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
-import com.mapbox.maps.extension.style.style
+import com.mapbox.maps.ViewAnnotationAnchor
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.*
-import com.mapbox.maps.plugin.scalebar.ScaleBarPlugin
+import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import kotlinx.coroutines.launch
 
 class MapsFragment : Fragment(){
     private lateinit var binding : FragmentMapsBinding
+    private lateinit var mapBinding : DetailAnnotationBinding
     private val viewModel : StoryViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
     private val prefViewModel : SettingPrefViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
     private var mapView : MapView? = null
-
+    private lateinit var viewAnnotation : View
     override fun onStart() {
         super.onStart()
         IdlingConfig.decrement()
@@ -52,6 +48,8 @@ class MapsFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMapsBinding.inflate(layoutInflater)
+        mapBinding = DetailAnnotationBinding.inflate(layoutInflater)
+
         mapView = binding.mapstories
         mapView?.getMapboxMap()?.apply {
             loadStyleUri(Style.DARK)
@@ -87,41 +85,55 @@ class MapsFragment : Fragment(){
         }
     }
 
-
-
     private fun showMapStories(listData : List<Story>){
-        val annotaionApi = mapView?.annotations
-        val pointAnnotaionManager = annotaionApi?.createCircleAnnotationManager(mapView!!)
+        val annotationApi = mapView?.annotations
+        val pointAnnotationManager = annotationApi?.createCircleAnnotationManager(mapView!!)
         IdlingConfig.decrement()
             listData.forEach { data ->
                 val pointAnnotaionOptions : CircleAnnotationOptions = CircleAnnotationOptions()
                     .withPoint(Point.fromLngLat(
-                        data.lat.toDouble(),
-                        data.lon.toDouble()
+                        data.lon.toDouble(),
+                        data.lat.toDouble()
                     ))
                     .withCircleRadius(8.0)
                     .withCircleColor("#ee4e8b")
                     .withCircleStrokeWidth(2.0)
                     .withCircleStrokeColor("#ffffff")
-                pointAnnotaionManager?.apply {
+                pointAnnotationManager?.apply {
                     addClickListener(OnCircleAnnotationClickListener{
-                        toDetailPage(data)
+//                        toDetailPage(data)
                         true
                     })
                 }
+                showAnnotation(data)
                 val cameraPosition = CameraOptions.Builder()
                     .center(Point.fromLngLat(
-                        data.lat.toDouble(),
-                        data.lon.toDouble()
+                        data.lon.toDouble(),
+                        data.lat.toDouble()
                     ))
                     .build()
-
-
                 mapView?.getMapboxMap()?.setCamera(cameraPosition)
-                pointAnnotaionManager?.create(pointAnnotaionOptions)
+//                pointAnnotationManager?.create(pointAnnotaionOptions)
             }
+        FragmentMapsBinding.bind(viewAnnotation)
     }
 
+    private fun showAnnotation(data : Story){
+        viewAnnotation = binding.mapstories.viewAnnotationManager.addViewAnnotation(
+            resId = R.layout.detail_annotation,
+            options = viewAnnotationOptions {
+                geometry(Point.fromLngLat(
+                data.lon.toDouble(),
+                data.lat.toDouble()
+            ))
+                anchor(ViewAnnotationAnchor.BOTTOM)
+            },
+        )
+        viewAnnotation.visibility = View.VISIBLE
+        val titleView = viewAnnotation.findViewById<TextView>(R.id.tv_anot)
+        titleView.text = "a"
+
+    }
     private fun toDetailPage(data : Story){
         val bundle = Bundle()
         val fragment = DetailStoryFragment()
