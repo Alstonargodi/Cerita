@@ -1,14 +1,18 @@
 package com.example.ceritaku.view.home.maps
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.example.ceritaku.R
 import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.data.remote.utils.MediatorResult
@@ -21,11 +25,18 @@ import com.example.ceritaku.view.utils.wrapperIdling
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import com.example.ceritaku.viewmodel.SettingPrefViewModel
+import com.mapbox.geojson.Feature
 import com.mapbox.geojson.Point
 import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
 import com.mapbox.maps.ViewAnnotationAnchor
+import com.mapbox.maps.extension.style.expressions.dsl.generated.image
+import com.mapbox.maps.extension.style.image.image
+import com.mapbox.maps.extension.style.layers.generated.symbolLayer
+import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
+import com.mapbox.maps.extension.style.sources.generated.geoJsonSource
+import com.mapbox.maps.extension.style.style
 import com.mapbox.maps.plugin.annotation.annotations
 import com.mapbox.maps.plugin.annotation.generated.*
 import com.mapbox.maps.viewannotation.viewAnnotationOptions
@@ -33,9 +44,10 @@ import kotlinx.coroutines.launch
 
 class MapsFragment : Fragment(){
     private lateinit var binding : FragmentMapsBinding
-    private lateinit var mapBinding : DetailAnnotationBinding
+
     private val viewModel : StoryViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
     private val prefViewModel : SettingPrefViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
+
     private var mapView : MapView? = null
     private lateinit var viewAnnotation : View
     override fun onStart() {
@@ -48,8 +60,6 @@ class MapsFragment : Fragment(){
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMapsBinding.inflate(layoutInflater)
-        mapBinding = DetailAnnotationBinding.inflate(layoutInflater)
-
         mapView = binding.mapstories
         mapView?.getMapboxMap()?.apply {
             loadStyleUri(Style.DARK)
@@ -113,7 +123,7 @@ class MapsFragment : Fragment(){
                     ))
                     .build()
                 mapView?.getMapboxMap()?.setCamera(cameraPosition)
-//                pointAnnotationManager?.create(pointAnnotaionOptions)
+                pointAnnotationManager?.create(pointAnnotaionOptions)
             }
         FragmentMapsBinding.bind(viewAnnotation)
     }
@@ -130,10 +140,14 @@ class MapsFragment : Fragment(){
             },
         )
         viewAnnotation.visibility = View.VISIBLE
-        val titleView = viewAnnotation.findViewById<TextView>(R.id.tv_anot)
-        titleView.text = "a"
+        val imageView = viewAnnotation.findViewById<ImageView>(R.id.img_anot)
+        Glide.with(requireContext())
+            .load(data.photoUrl)
+            .into(imageView)
 
     }
+
+
     private fun toDetailPage(data : Story){
         val bundle = Bundle()
         val fragment = DetailStoryFragment()

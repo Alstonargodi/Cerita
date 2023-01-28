@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/drawable-v24/ic_baseline_settings_24.xml" value="0.3195" />
+        <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/drawable/ic_arrow_up.xml" value="0.1765" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/drawable/ic_baseline_add_circle_outline_24.xml" value="0.3195" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/drawable/ic_baseline_arrow_back_ios_new_24_camera.xml" value="0.3005" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/drawable/ic_baseline_camera_24.xml" value="0.3005" />
@@ -21,7 +22,7 @@
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/activity_onboarding.xml" value="0.15" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/activity_register.xml" value="0.17" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/activity_splash_screen.xml" value="0.18" />
-        <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/detail_annotation.xml" value="0.33" />
+        <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/detail_annotation.xml" value="0.5" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_add_story.xml" value="0.29270833333333335" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_camera.xml" value="0.33" />
         <entry key="..\:/Users/alsto/AndroidStudioProjects/Ceritaku/app/src/main/res/layout/fragment_detail_story.xml" value="0.22" />
