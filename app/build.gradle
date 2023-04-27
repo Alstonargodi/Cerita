@@ -13,11 +13,11 @@ android {
     defaultConfig {
         applicationId "com.example.ceritaku"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
         buildConfigField 'String', 'BASE_URL_STORY', '"https://story-api.dicoding.dev/v1/"'
-        buildConfigField  'String','TEST_TOKEN' , '"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLWp6b2pEWUd4NFV0cUs5clUiLCJpYXQiOjE2NTA1MjM3Nzl9.vFleHHhbN-J3n-9cgnCWNruk0RmH0tbW0cAI0zUxdWc"'
+        buildConfigField  'String','TEST_TOKEN' , '"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJ1c2VyLUFoazA4NEFSUUF1S0J4SnIiLCJpYXQiOjE2ODI1NTU4NDZ9.3YnyylTh69hPAxWMDoWdKHLh-wF2ZccxD__9yKgRjZ8"'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -143,5 +143,8 @@ dependencies {
     testImplementation 'org.mockito:mockito-inline:3.12.4'
     implementation "javax.inject:javax.inject:1"
 
+    //mapbox
+    implementation 'com.mapbox.maps:android:10.10.0'
+    implementation 'com.mapbox.mapboxsdk:mapbox-android-gestures:0.8.0'
 
 }

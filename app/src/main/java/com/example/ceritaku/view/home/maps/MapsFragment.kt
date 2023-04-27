@@ -1,16 +1,23 @@
 package com.example.ceritaku.view.home.maps
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.bumptech.glide.Glide
 import com.example.ceritaku.R
 import com.example.ceritaku.data.remote.response.story.Story
 import com.example.ceritaku.data.remote.utils.MediatorResult
+import com.example.ceritaku.databinding.DetailAnnotationBinding
+import com.example.ceritaku.databinding.FragmentMapsBinding
 import com.example.ceritaku.view.detail.DetailStoryFragment
 import com.example.ceritaku.view.home.liststory.ListStoryFragment
 import com.example.ceritaku.view.utils.IdlingConfig
@@ -18,19 +25,31 @@ import com.example.ceritaku.view.utils.wrapperIdling
 import com.example.ceritaku.viewmodel.StoryViewModel
 import com.example.ceritaku.viewmodel.VModelFactory
 import com.example.ceritaku.viewmodel.SettingPrefViewModel
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.MarkerOptions
+import com.mapbox.geojson.Feature
+import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.MapView
+import com.mapbox.maps.Style
+import com.mapbox.maps.ViewAnnotationAnchor
+import com.mapbox.maps.extension.style.expressions.dsl.generated.image
+import com.mapbox.maps.extension.style.image.image
+import com.mapbox.maps.extension.style.layers.generated.symbolLayer
+import com.mapbox.maps.extension.style.layers.properties.generated.IconAnchor
+import com.mapbox.maps.extension.style.sources.generated.geoJsonSource
+import com.mapbox.maps.extension.style.style
+import com.mapbox.maps.plugin.annotation.annotations
+import com.mapbox.maps.plugin.annotation.generated.*
+import com.mapbox.maps.viewannotation.viewAnnotationOptions
 import kotlinx.coroutines.launch
 
 class MapsFragment : Fragment(){
+    private lateinit var binding : FragmentMapsBinding
 
     private val viewModel : StoryViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
     private val prefViewModel : SettingPrefViewModel by viewModels{ VModelFactory.getInstance(requireActivity()) }
 
+    private var mapView : MapView? = null
+    private lateinit var viewAnnotation : View
     override fun onStart() {
         super.onStart()
         IdlingConfig.decrement()
@@ -40,6 +59,11 @@ class MapsFragment : Fragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentMapsBinding.inflate(layoutInflater)
+        mapView = binding.mapstories
+        mapView?.getMapboxMap()?.apply {
+            loadStyleUri(Style.DARK)
+        }
         IdlingConfig.decrement()
         wrapperIdling {
             prefViewModel.getUserToken().observe(viewLifecycleOwner){
@@ -47,8 +71,8 @@ class MapsFragment : Fragment(){
                     getMapsStories(it)
                 }
             }
-            return inflater.inflate(R.layout.fragment_maps, container, false)
         }
+        return binding.root
     }
 
 
@@ -71,49 +95,58 @@ class MapsFragment : Fragment(){
         }
     }
 
-
-
     private fun showMapStories(listData : List<Story>){
+        val annotationApi = mapView?.annotations
+        val pointAnnotationManager = annotationApi?.createCircleAnnotationManager(mapView!!)
         IdlingConfig.decrement()
-            val callback = OnMapReadyCallback { googleMap ->
-                IdlingConfig.decrement()
-                listData.forEach { data->
-                    IdlingConfig.increment()
-                    val position = LatLng( data.lat.toDouble(), data.lon.toDouble())
-                    googleMap.addMarker(
-                        MarkerOptions()
-                            .position(position)
-                            .title(data.name)
-                    )
-
-                    googleMap.setOnInfoWindowClickListener {
-                        toDetailPage(data)
-                    }
-                    googleMap.moveCamera(CameraUpdateFactory.newLatLng(position))
+            listData.forEach { data ->
+                val pointAnnotaionOptions : CircleAnnotationOptions = CircleAnnotationOptions()
+                    .withPoint(Point.fromLngLat(
+                        data.lon.toDouble(),
+                        data.lat.toDouble()
+                    ))
+                    .withCircleRadius(8.0)
+                    .withCircleColor("#ee4e8b")
+                    .withCircleStrokeWidth(2.0)
+                    .withCircleStrokeColor("#ffffff")
+                pointAnnotationManager?.apply {
+                    addClickListener(OnCircleAnnotationClickListener{
+//                        toDetailPage(data)
+                        true
+                    })
                 }
-
-                googleMap.setMapStyle(
-                    MapStyleOptions.loadRawResourceStyle(
-                        requireActivity(),
-                        R.raw.map_style
-                    )
-                )
-
-                googleMap.uiSettings.apply {
-                    isZoomControlsEnabled = true
-                    isIndoorLevelPickerEnabled = true
-                    isCompassEnabled = true
-                    isMapToolbarEnabled = true
-                }
-
-                googleMap.uiSettings.isMyLocationButtonEnabled = true
-                googleMap.isIndoorEnabled = true
+                showAnnotation(data)
+                val cameraPosition = CameraOptions.Builder()
+                    .center(Point.fromLngLat(
+                        data.lon.toDouble(),
+                        data.lat.toDouble()
+                    ))
+                    .build()
+                mapView?.getMapboxMap()?.setCamera(cameraPosition)
+                pointAnnotationManager?.create(pointAnnotaionOptions)
             }
-        IdlingConfig.decrement()
-            val mapFragment = childFragmentManager.findFragmentById(R.id.mapstories) as SupportMapFragment?
-            mapFragment?.getMapAsync(callback)
-        IdlingConfig.decrement()
+        FragmentMapsBinding.bind(viewAnnotation)
     }
+
+    private fun showAnnotation(data : Story){
+        viewAnnotation = binding.mapstories.viewAnnotationManager.addViewAnnotation(
+            resId = R.layout.detail_annotation,
+            options = viewAnnotationOptions {
+                geometry(Point.fromLngLat(
+                data.lon.toDouble(),
+                data.lat.toDouble()
+            ))
+                anchor(ViewAnnotationAnchor.BOTTOM)
+            },
+        )
+        viewAnnotation.visibility = View.VISIBLE
+        val imageView = viewAnnotation.findViewById<ImageView>(R.id.img_anot)
+        Glide.with(requireContext())
+            .load(data.photoUrl)
+            .into(imageView)
+
+    }
+
 
     private fun toDetailPage(data : Story){
         val bundle = Bundle()

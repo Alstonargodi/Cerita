@@ -20,12 +20,10 @@ import com.example.ceritaku.viewmodel.SettingPrefViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
-
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding : ActivityLoginBinding
     private val viewModel : AuthViewModel by viewModels{ VModelFactory.getInstance(this) }
     private val prefViewModel : SettingPrefViewModel by viewModels{ VModelFactory.getInstance(this) }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         IdlingConfig.decrement()
@@ -33,9 +31,7 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         setEditTextPassword()
-
 
         binding.btnlogin.setOnClickListener {
             sessionChecker()

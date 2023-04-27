@@ -11,12 +11,9 @@ object ApiConfig {
 
     var url = BuildConfig.BASE_URL_STORY
 
-    private val base_url  by lazy {
-        url
-    }
+    private val base_url by lazy { url }
 
     fun setApiService(): ApiService {
-
         val loggingInterceptor =
             if(BuildConfig.DEBUG){
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
