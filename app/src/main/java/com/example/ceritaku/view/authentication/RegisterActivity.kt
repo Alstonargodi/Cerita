@@ -129,7 +129,7 @@ class RegisterActivity : AppCompatActivity() {
         prefViewModel.saveThemeSetting(
             onBoard,
             name,
-            token
+            "Bearer $token"
         )
     }
 

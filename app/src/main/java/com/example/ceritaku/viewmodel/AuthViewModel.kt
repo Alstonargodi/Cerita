@@ -3,7 +3,9 @@ package com.example.ceritaku.viewmodel
 import androidx.lifecycle.ViewModel
 import com.example.ceritaku.data.remote.repository.ApiRepository
 
-class AuthViewModel(private val apiRepository: ApiRepository): ViewModel() {
+class AuthViewModel(
+    private val apiRepository: ApiRepository
+): ViewModel() {
 
     suspend fun postLogin(email : String, password : String) =
         apiRepository.postLogin(email,password)

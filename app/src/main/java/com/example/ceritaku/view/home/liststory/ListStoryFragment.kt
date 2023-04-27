@@ -37,7 +37,11 @@ class ListStoryFragment : Fragment() {
         wrapperIdling {
             binding = FragmentListStoryBinding.inflate(layoutInflater)
             bindingError = LayoutBoard1Binding.inflate(layoutInflater)
-            showRecyclerList()
+
+
+            if (savedInstanceState == null){
+                showRecyclerList()
+            }
             return binding.root
         }
 

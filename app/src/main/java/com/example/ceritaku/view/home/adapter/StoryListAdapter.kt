@@ -20,7 +20,6 @@ class StoryListAdapter : PagingDataAdapter<Story, StoryListAdapter.ViewHolder>(D
         this.onClickDetail = onItemCLickDetail
     }
 
-
     @RequiresApi(Build.VERSION_CODES.O)
     class ViewHolder(val binding : ItemStoryBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -62,7 +61,6 @@ class StoryListAdapter : PagingDataAdapter<Story, StoryListAdapter.ViewHolder>(D
 
     interface OnClickDetail{
         fun onClickDetail(data : Story)
-
     }
 
 

@@ -8,8 +8,8 @@ import com.example.ceritaku.data.remote.repository.ApiRepository
 
 @Suppress("UNCHECKED_CAST")
 class VModelFactory private constructor(
-    private val repository : ApiRepository):
-    ViewModelProvider.NewInstanceFactory() {
+    private val repository : ApiRepository
+ ): ViewModelProvider.NewInstanceFactory() {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when {
